@@ -31,487 +31,53 @@
 %header stuff
 \setlength{\headsep}{24pt}  % space between header and text
 \pagestyle{fancy}     % set pagestyle for document
-\lhead{Notes on the Schur-Weyl Functor} % put text in header (left side)
+\lhead{General Exam Paper} % put text in header (left side)
 \rhead{Nico Courts} % put text in header (right side)
 \cfoot{\itshape p. \thepage}
 \setlength{\headheight}{15pt}
 %\allowdisplaybreaks
 
 % Document-Specific Macros
-\DeclareMathOperator{\1}{\mathbbm{1}}
-\DeclareMathOperator{\GL}{GL}
-\DeclareMathOperator{\Sym}{Sym}
+
 
 \begin{document}
 %make the title page
-\title{Notes on the Schur-Weyl Functor \vspace{-1ex}}
+\title{General Exam Paper \vspace{-1ex}}
 \author{Nico Courts}
-\date{Summer 2019}
+\date{Winter 2019}
 \maketitle
 
 \begin{abstract}
-	These notes are my summary of the development of the Schur-Weyl functor from representations of the Schur algebra $S(n,d)$ to 
-	representations of $\frakS_d$. After developing the theory that arose beginning in Schur's 1901 thesis, we will establish that this 
-	functor is exact and behaves nicely with respect to simple modules, as well as being a monoidal functor (under the correct monoidal structure).
+	We begin by going through a considerable amount of domain knowledge concerning representations of $\GL_n$,
+	representations of $\frakS_n$, and strict polynomial functors all in service of understanding the Schur-Weyl 
+	functor that relates several of these categories. From there, we investigate recent work on the part of Krause 
+	and his students Aquilino and Reischuk on this functor and the fact that it is monoidal under reasonably natural monoidal structures on 
+	the categories in question. Finally we ask some questions about whether the monoidal structure on strict polynomial functors 
+	extends meaningfully to pathologies that arise in positive characteristic.
 \end{abstract}
 
-\section{Background and Introduction}
-The primary reference for this paper is J.A. Green's \textit{Polynomial Representations of $\GL_n$} \cite{green}. Other sources will be used as well, 
-and will be introduced as needed.
+\tableofcontents
 
-The basic idea for this theory begins with Schur's thesis in 1901 \cite{schur-thesis}. Here he developed the theory underlying
-the representation theory of the general linear group $\GL_n$. As a tool, he recognized that the irreducible representations of 
-$\GL_n$ took on a particular form that made them amenable to admitting actions by symmetric groups. Then Schur could rely on 
-Frobenius' development of the representation theory for $\frakS_d$ to say something about $\GL_n$.
+\newpage
+\section{Introduction}
+The story of this project (more-or-less) begins with Schur's doctoral thesis \cite{schur-thesis} in which he defined
+polynomial representations of $\GL_n$---a theory which he developed more completely in his later paper \textit{\"Uber die 
+rationalen Darstellungen der allgemeinen linearen Gruppe}\footnote{\textit{On the rational representations of the general linear group}}
+\cite{schur-rational}. In these papers, Schur develops the idea of a \textbf{polynomial representation of $\GL_n$},
+meaning a (finite dimensional) representation where the coefficient functions of the representing map 
+\[\rho:\GL_n\to \GL(V)\]
+is polynomial in each coordinate. That is, if $V=\oplus_{i=1}^n kv_i$, then for every $1\le i,j\le n$, we have the map
+$r_{v_iv_j}:\GL_n\to k$ such that 
+\[\rho(g)\cdot v_i=\sum_{i=1}^n r_{v_iv_j}v_j\]
 
-\subsection{Notation}
-We always use $\frakS_d$ to denote the symmetric group on $d$ letters, and let $k$ be an infinite field (unless otherwise noted).
+\section{Representations of \texorpdfstring{$\GL_n$}{GLn} and of \texorpdfstring{$\frakS_n$}{Sn}}
 
-\subsection{Representations of Semigroups}
-Recall that a \textbf{semigroup} is a group where we relax the inverse requirement. If we are interested in studying the representation 
-theory of a semigroup $\Gamma$, there are some natural modules to consider:
-\begin{ex}
-	$k\Gamma=\bigoplus_{g\in \Gamma}kg$, the \textbf{semigroup algebra} for $\Gamma$ over $k$. Notice that if $\Gamma$ is infinite, we only take 
-	the elements that are supported at finitely many $g$ (that is, only finitely many coefficients are nonzero).
-\end{ex}
-\begin{ex}\label{ex:bimod} $k^\Gamma$, the set of all maps $\Gamma\to k$, which is naturally a commutative $k$-algebra. It inherits a $k\Gamma$-bimodule structure 
-	by considering the left- and right-translation maps $L_g:k^\Gamma\to k$ and $R_g:k^\Gamma\to k$ defined for all $g\in\Gamma$ by 
-	\[L_g(f)(h)= f(gh)\qquad R_g(f)(h)=f(hg)\]
-	Due to the fact that $L_g$ defines the \textit{right} action and $R_g$ the left, we write for simplicity:
-	\[g\circ f=R_g(f)\quad\text{and}\quad f\circ g=L_g(f).\]
-\end{ex}
+\section{Strict Polynomial Functors}
 
-It is in the context of the $k\Gamma$ module $k^\Gamma$ that we get our first definition:
-\begin{defn}\label{defn-finitary}
-	Let $k^\Gamma$ be as above. Then an element $f:\Gamma\to k$ is called a \textbf{finitary element} or \textbf{representative function}
-	if $f$ satisfies one of the following equivalent conditions:
-	\begin{itemize}
-		\item $k^\Gamma f$ is finite dimensional over $k$.
-		\item $f k^\Gamma$ is finite dimensional over $k$.
-		\item $\Delta f\in k^\Gamma\otimes k^\Gamma$ -- in other words, the comultiplication $\Delta f$ is finitely supported.
-	\end{itemize}
-\end{defn}
-\begin{rmk}
-	The collection of all finitary elements of $k^\Gamma$ will be written $F=F(k^\Gamma)$ and is a $k$-bialgebra -- in particular,
-	a sub-bialgebra of $k^\Gamma$.
-\end{rmk}
-\begin{rmk}
-	The reason such elements are called representative functions is that if we fix a finite dimensional $V$ over $k$ 
-	and a basis $\calB$ for $V$, we can write down the structure maps of a particular $\Gamma$ action by noticing 
-	\[g\cdot \alpha=\sum_{\beta\in\calB}r_{\alpha\beta}(g)\beta\]
-	where $r_{\alpha\beta}:\Gamma\to k$ are called the \textbf{coefficient functions} of the representation.
+\section{The Schur-Weyl Functor}
 
-	Then the $k$-span $\operatorname{cf}(V)=\sum_{\alpha,\beta}k\cdot r_{\alpha\beta}$ of coefficient functions for a particular (finite-dimensional) representation 
-	$V$ ends up being a subcoalgebra of $k^\Gamma$ and in fact every finitary function lies in $\operatorname{cf}(V)$ for some 
-	finite-dimensional $V$. Here we can just take $V=k^\Gamma f$ which is finite dimensional by defn~\ref{defn-finitary}.
-\end{rmk}
+\section{Questions and Extensions}
 
-An important idea that comes from this that one can define an \textbf{algebraic representation theory} of $\Gamma$ over $k$. Take any subcoalgebra $A$ of $F=F(k^\Gamma)$
-and define the $A$\textbf{-representation theory} of $\Gamma$ to be the full subcategory $\mathbf{mod}_A(k\Gamma)$ of $\rmod (k\Gamma)$ to be the one whose 
-objects are the (finite-dimensional) $k\Gamma$ modules $V$ such that $\text{cf}(V)\subseteq A$.
-
-A nice result is that the (left) $A$-rational $k\Gamma$-modules are equivalent to the category $\mathbf{com}(A)$ of finite (right) $A$-comodules.
-\begin{prop}\label{prop-modcomod}
-	$\mathbf{mod}_A(k\Gamma)\simeq \mathbf{com}(A)$
-\end{prop}
-\begin{prf}
-	\textit{Sketch:} Take an $A$-rational $k\Gamma$ module $V$ with action $\tau:\Gamma\to V$. Fix a basis $\{v_i\}_1^n$
-	and as before extract the structure maps $r_{\alpha\beta}$:
-	\[\tau(v_\alpha)=\sum_\beta r_{\alpha\beta} v_\beta.\]
-	
-	Then define the comodule $(V,\gamma)$ with coaction $\gamma$ via 
-	\[\gamma(v_\alpha)=\sum_\beta v_\beta\otimes r_{\alpha\beta}.\]
-	One can check this defines a comodule structure on $V$. 
-
-	The process reverses very easily, where one extracts the $r_{\alpha\beta}$ from the coaction.
-	By construction we will have that $r_{\alpha\beta}\in A$, so we get the $A$-rationality for free.
-
-	Some mopping up shows that these are equivalences of categories, which is pretty believable. 
-\end{prf}	
-\begin{rmk}
-	One of the most immediate consequences of this realization (it is barely a proof) is that we can define a left $A^\ast=\Hom_k(A,k)$-module (note that $A^\ast$ is a $k$-algebra with the convolution product)
-	structure on any right $A$-comodule. We do this by writing for any $f\in A^\ast$
-	\[f\cdot v=(\1_V\otimes f)(\gamma(v))\]
-	or in coordinates 
-	\[f\cdot v_\alpha=\sum_\beta f(r_{\alpha\beta})v_\beta\]
-\end{rmk}
-
-\section{Polynomial representations of \texorpdfstring{$\GL_n$}{GLn} and the Schur Algebra}
-From now on, we specialize the theory in the section above to the case when $\Gamma=\GL_n$ (we can think of this as the group scheme). 
-
-\subsection{Generators and Bases}
-There are very natural choices of generators (as (co)algebras and as $k$ spaces). Starting off, we can define
-\[A_k(n)\cong k[\omega_{ij}]\]
-for $1\le i,j\le n$, where we can think of $\omega_{ij}:\Gamma\to k$ as the map that ``extracts'' from $g\in\Gamma$ the $(i,j)^{th}$ entry.
-
-Then $A_k(n)$ is the set of \textbf{polynomial maps} $\Gamma\to k$. Then we define $A_k(n,r)$ to be the $k$-space spanned by all homogeneous degree $r$ 
-polynomials in $A_k(n)$. A stars-and-bars argument gets us that there are $\binom{n^2+r-1}{r}$ ways to choose a monomial of degree $r$ from among the $n^2$ generators,
-so this gives us the dimension of $A_k(n,d)$.
-
-\subsection{Index Notation}
-\label{subsec:index}
-We need to use multi-indicies to rigorously discuss monomials so let $I(n,r)$ denote the set of length $r$ multi-indices drawn from $\underline n$. Then 
-we can impose the equivalence relation: if $\alpha,\beta\in I(n,r)$,
-\[\alpha\sim\beta \quad\Leftrightarrow\quad \alpha=(n_{i_1},\dots,n_{i_r})\text{ and } \beta=(n_{i_{\sigma(1)}},\dots, n_{i_{\sigma(r)}})\]
-for some $\sigma\in\frakS_r$. That is, two multi-indices are equivalent if they contain the same indicies with the same multiplicities. Sometimes it is useful to think 
-of this as a group action of $\frakS_r$ on $I(n,r)$, and we say two elements are equivalent if they are in the same orbit.
-
-Extend this group action (and thus relation) to $I(n,r)\times I(n,r)$ where $G$ acts diagonally:
-\[g\cdot(i,j)=(g\cdot i,g\cdot j).\]
-
-\subsection{Module Categories}
-The module categories\footnote{Equivalently the appropriate comodule categories in light of prop.~\ref{prop-modcomod}} $\mathbf{mod}_{A}(k\Gamma)$ of 
-(homogeneous degree $r$) polynomial representations of $\GL_n(k)$ (when $A=A_k(n,r)$ and $A=A_k(n)$ respectively) are precisely what you'd think. We will sometimes 
-use the notation $M_k(n)$ and $M_k(n,r)$ following the text.
-
-One of the big realizations of Schur's was that any polynomial representation of $\GL_n$ splits into a direct sum of homogeneous polynomial representations:
-\begin{thm}[{\cite[p.5]{schur-thesis}}]
-	Let $V\in M_k(n)$. Then 
-	\[V\cong \bigoplus_{r\ge 0} V_r\]
-	where $V_r\in M_k(n,r)$ for all $r$.
-\end{thm}
-\begin{cor}
-	The indecomposable modules in $M_k(n)$ are all in $M_k(n,r)$ for some $r$.
-\end{cor}
-
-But then if we are interested in the structure of polynomial representations of $\Gamma$, we can restrict our attention entirely to the homogeneous modules
-of any particular degree. The upshot here is that $A_k(n,r)$ is finite dimensional, so very computationally amenable.
-
-\subsection{The Schur Algebra}
-\begin{defn}
-	The \textbf{Schur algebra} $S_k(n,d)$ is the dual of $A=A_k(n,d):$
-	\[S_k(n,d)=A^\ast=\Hom_k(A(n,d),k).\]
-\end{defn}
-
-We can write down an explicit basis for $S_k(n,r)$ as a dual basis for the basis $\{c_{ij}|i,j\in I(n,r)\}$ for $A_k(n,r)$. We denote this basis $\xi_{ij}$, where 
-\[\xi_{ij}(c_{kl})=\begin{cases}
-	1,& (i,j)\sim (k,l)\\
-	0,&\text{otherwise}
-\end{cases}\]
-and we can define multiplication via the coproduct $\Delta$ on $A_k(s,r)$:
-\[\xi\eta(c)=\sum \xi(c_{(1)})\eta(c_{(2)})\]
-where we recall that $\Delta(c_{ij})=\sum_k c_{ik}\otimes c_{kj}$ and $\varepsilon(c)=c(I_n)$ are the coalgebra structure inherited on $A_k(n,r)$ 
-from $A_k(n)$ and thus from $k^\Gamma$.
-
-\begin{prop}
-	The product of two basis elements in $S_k(n,r)$ is given by 
-	\[\xi_{ab}\xi_{cd}=\sum_{(p,q)\in I(n,r)^2}Z_{a,b,c,d,p,q}\xi_{pq}\]
-	where 
-	\[Z_{a,b,c,d,p,q}=\#\{s\in I(n,r)|(a,b)\sim(p,s)\text{ and }(c,d)\sim(s,q)\}\]
-\end{prop}
-\begin{cor}
-	$\xi_{ab}\xi_{cd}=0$ if $b\not\sim c$.
-\end{cor}
-\begin{cor}\label{cor:idempotent}
-	$\xi_{ab}\xi_{bb}=\xi_{ab}=\xi_{aa}\xi_{ab}$.
-\end{cor}
-
-The last thing here is to notice that $\varepsilon=\sum_{I(n,r)^2}\xi_{ab}$ where equality can be seen by evaluating at the basis $c_{ab}$ of $A_k(n,r)$.
-
-\subsection{The Evaluation Map}
-There is a natural map $e:k\Gamma\to S_k(n,r)$ defined in the following way: if $f\in A_k(n,r)\subset k^\Gamma$ (which can be uniquely extended $k$-linearly 
-to a map on $k\Gamma$),
-\[e(\kappa)(f)=f(\kappa)\]
-where $\kappa\in k\Gamma$.
-
-The use of this map is that (since it can be shown to be surjective and that things in the kernel of this map must act by zero on $M_k(n,r)$), that the category
-of $S_k(n,r)$ modules and the category of $A_k(n,r)$-rational $k\Gamma$ representations are equivalent. The evaluation map gives us a direct translation between 
-the two actions: $\kappa\cdot v=e(\kappa)\cdot v$ and if $k\Gamma$ acts on $V$ with structure maps $(r_{ab})$, then for $\xi\in S_k(n,r)$,
-\[\xi\cdot v_b=\sum_a \xi(r_{ab})v_a\]
-
-\subsection{Modular Theory}
-We can extract the $\bbZ$ forms $A_\bbZ(n)$ and $A_\bbZ(n,r)$ as the $\bbZ$ span of the basis elements $c_{ij}^\bbQ$ (the basis with respect to $k=\bbQ$). These 
-are closed under $\Delta$ and have the further property that for instance $\varepsilon(A_\bbZ(n,r))\subseteq\bbZ$.
-
-Then we can extend scalars in the way we'd like: there is a $k$-colagebra isomorphism 
-\[A_\bbZ(n,r)\otimes_\bbZ k\cong A_k(n,r),\] 
-so we can recover the larger algebra from this $\bbZ$-form. But this actually transfers to the Schur algebra as well!
-
-Define $S_\bbZ(n,r)$ to be the collection of $\xi\in S_\bbQ(n,r)$ such that $\xi(A_\bbZ(n,r))\subseteq\bbZ$. Then we get a $k$-algebra isomorphism
-\[S_\bbZ(n,r)\otimes_\bbZ k\cong S_k(n,r).\]
-This gives us a $\bbZ$-form for the scheme $S(n,r)$ -- or that ``the Schur scheme is defined over $\bbZ$.''
-
-We can also define a $\bbZ$-form of a ($A_\bbQ(n,r)$-rational) $\bbQ\Gamma$-module $V$ to be denoted $V_\bbZ$ and to be the $\bbZ$-span of a $\bbQ$-basis for $V$
-and to furthermore be closed under the $S_\bbZ(n,r)$-action (leveraging the equivalence of categories in the previous section).
-
-This process of generating $V_k$ modules by extending scalars from a $\bbZ$-form is called \textbf{modular reduction}, and has a small caveat:
-the $\bbZ$-form we pick needn't be unique and, in general, using different $\bbZ$-forms will yield non-isomorphic extensions to $k$-modules. The upshot here,
-following the theory developed in \cite{brauer} and \cite{green-locFinReps}, is that the multiplicity with which simple modules occur in a composition series of $V_k$
-are not dependent on the choice of $\bbZ$-form.
-
-\subsection{The Trick}
-To do some magic we notice that there is a duality at play between the $A_k(n,r)$-regular representations of $\GL_n$ and the representations of $\frakS_r$, 
-and to see this we consider the natural action of these groups on $E^{\otimes r}$, where $E\cong k^n$. The left action by $\Gamma$ is just the diagonal action 
-on each $k^n$ and $\frakS_r$ acts on $E^{\otimes r}$ on the right by permuting the tensor factors. The critical thing to notice here is that these two 
-actions commute with one another:
-\[(g\cdot v)\cdot\sigma=g\cdot(v\cdot\sigma),\ \forall g\in\Gamma, \sigma\in\frakS_r.\]
-
-Then we get some results from Schur's 1927 paper \textit{\"Uber the rationalen Darstellungen der allgemeinen linearen Gruppe}, a reference to which I am yet to cook up.
-\begin{thm}[Schur]
-	Let $\varphi:S_k(n,r)\to \End_k(E^{\otimes r})$ be the representation afforded by the above action of $S_k(n,r)$. Then 
-	\begin{itemize}
-		\item $\Im \varphi=\End_{k\frakS_r}(E^{\otimes r})$; and 
-		\item $\ker\varphi=0$.
-	\end{itemize}
-	So $S_k(n,r)\cong \End_{k\frakS_r}(E^{\otimes r})$.
-\end{thm}
-The idea here is to take our $\xi_{ab}$ basis for $S_k(n,r)$ and determine where the images go. Not too hard, I think.
-\begin{cor}[Schur]
-	If $\ch k=0$ or $\ch k>r$, then $S_k(n,r)$ is semisimple. That is every element of $M_k(n,r)$ is completely reducible.
-\end{cor}
-To see this, we just use the fact that $k\frakS_r$ is semisimple as in usual representation theory. Thus $E^{\otimes r}$ is 
-completely reducible, but the endomorphism ring of a completely reducible module is semisimple, so by the above theorem, $S_k(n,r)$ is semisimple.
-
-\subsection{Back to \texorpdfstring{$\bbZ$}{Z}-forms}
-In fact, $E^{\otimes r}$ is a $\GL_n$-module (this time regarded as an affine group scheme over $\bbZ$). Let $\{V_k\}$ be a collection 
-of $k$-modules for each $k$ in some family of infinite fields. Then we say $\{V_k\}$ is \textbf{defined over $\bbZ$} if there is a $\bbZ$-form $V_\bbZ$
-and a family of isomorphisms $\delta_k:V_\bbZ\otimes k\to V_k$.
-
-In particular, the family of modules $E^{\otimes r}_k$ is defined over $\bbZ$.
-
-\subsection{Contravariant Duality}\label{subsec:contra}
-In group theory a usual way to define a dual representation for a $k\Gamma$-module $V$ is to take the linear 
-dual $V^\ast=\Hom_k(V,k)$ and define a left action of $\Gamma$ by 
-\[g\cdot f(v)=f(g^{-1}v)\]
-which give you another (left) $k\Gamma$-module. The problem with this process in our case is that the resulting 
-module may have structure maps $r_{ab}$ that no longer lie in $A_k(n,r)$. To account for this, we instead define the 
-\textbf{contravariant dual} $V^\circ$, defined using the transpose:
-\[g\cdot f=f(g^{\text{tr}}v).\]
-
-It is clear that the map $J:S_k(n,r)\to S_k(n,r)$ sending $\xi_{ab}$ to $\xi_{ba}$ is an involutory antihomomorphism.
-Notice 
-\[J(\xi)(c_{ab})=\xi(c_{ba})\]
-and so by taking $\xi=e_g$, we get 
-\[J(e_g)(c_{ab})=e_g(c_{ba})=c_{ba}(g)=c_{ab}(g^{\text{tr}})\]
-so $J(e_g)=e_{g^{\text{tr}}}$.
-
-So given an $A_k(n,r)$-rational $k\Gamma$ representation $V$, the corresponding $S_k(n,r)$ action on $V^\circ$ is given by 
-\[\xi\cdot f (v)=f(J(\xi)v).\]
-
-\subsection{\texorpdfstring{$A_k(n,r)$}{Ak(n,r)} as a \texorpdfstring{$k\Gamma$}{kGamma}-module}
-Recall from example~\ref{ex:bimod} the left and right actions by $k\Gamma$ we put on $k^\Gamma$. The coproduct $\Delta$ on $k^\Gamma$
-defining multiplication in the usual way, that is
-\[\left(\sum_h f_h\otimes f_h'\right)(s,t)=\Delta(f)(s,t)=f(st)\]
-gives us a convenient way to write, for any $c\in A_k(n,r)$, (since $R_tc(g)=c(gt)=\sum_h f_h(g)\otimes f_h'(t)=L_g c(t)$)
-\[t\circ c= R_t c=\Delta(c)(-,t)=\sum_h f_h(-)f_h'(t)=\sum_h f'_h(t)f_h\]
-and similarly
-\[c\circ t=\sum_h f_h(t)f'_h.\]
-These can be extended linearly from $t\in\Gamma$ to $k\Gamma$, giving us (commuting) left and right actions on $A_k(n,r)$.
-
-Then some results in the book show that these actions on $A_k(n,r)$ by $k^\Gamma$ descends to ones by $A_k(n,r)$ itself, 
-and thus becomes an $A_k(n,r)$- and thus $S_k(n,r)$-bimodule.
-
-Of course this gives us a $k\Gamma$-bimodule structure on $S_k(n,r)$ as well, and then using the following:
-\begin{thm}\label{thm:bil-forms}
-	Contravariant bilinear forms $(\cdot,\cdot):V\times W\to k$ where by contravariant we mean, for all $\xi\in S_k(n,r)$,
-	\[(\xi\cdot v,w)=(v,J(\xi)\cdot w)\]
-	are in bijection with linear maps $\Lambda:V\to W^\circ$ via the relation 
-	\[\Lambda(v)(w)=(v,w).\]
-	Furthermore $\Lambda$ is an isomorphism if and only if its corresponding form under this bijection is non-degenerate.
-\end{thm}
-Then by letting $(\cdot,\cdot):S_k(n,r)\times A_k(n,r)\to k$ (a form on $S_k(n,r)$-modules!) be the form given by 
-\[(\xi, c)=J(\xi)(c)\]
-one can check that this is indeed bilinear and contravariant, and furthermore non-degenerate, giving us an isomorphism 
-\begin{cor}
-	\[A_k(n,r)\cong S_k(n,r)^\circ\]
-	as $k\Gamma$-bimodules.
-\end{cor}
-\begin{rmk}
-	The book is a bit scant on details, but I believe the idea here is that this whole thing can be done in $M'_k(n,r)$, the 
-	category of \textit{right} $S_k(n,r)$-modules, giving us a bimodule (instead of right module) isomorphism.
-\end{rmk}
-
-\section{Weights and Characters}
-The structure theory of representation category $M_k(n,r)$ closely resembles the theory of weights that arises in the study of 
-semisimple Lie algebras. The standard reference is \cite{humphreys-liereps}, however I have recently been enjoying Fulton \& Harris' 
-lovely set of lectures in \cite{fulton-harris}. I am going to take some time to make sure I understand their treatment before diving into this fully.
-
-\begin{defn}
-	Let $\Lambda(n,r)$ be the $\frakS_r$ orbit space of $I(n,r)$ (cf. subsection~\ref{subsec:index}). This is called the (dimension $r$)
-	collection of \textbf{weights of $\GL_n$}.
-
-	Notice that these should be thought of a monomials in the polynomial algebra on $n$ indeterminates.
-\end{defn}
-\begin{rmk}
-	Notice that each element $\alpha\in\Lambda(n,r)$ can be represented as an $n$-tuple where $\alpha_i$ is the number of times 
-	that $i$ appears in any multi-index in $\alpha$. This is essentially the multi-degree.
-\end{rmk}
-
-Then we can identify $\frakS_n=W$ as the Weyl group of $\GL_n$. This acts on the left of $I(n,r)$ not by simply permuting labels, but by applying 
-a permutation from the bigger $\frakS_n$:
-\[\sigma\cdot(i_1,\dots,i_r)=(\sigma(i_1),\dots,\sigma(i_r)).\]
-This action commutes with the right action of $\frakS_r$, so this action we just defined descends to one on $\Lambda(n,r)$.
-\begin{defn}
-	A \textbf{dominant weight} is a weight $\lambda=(\lambda_1,\dots,\lambda_r)\in\Lambda(n,r)$ such that 
-	\[\lambda_1\ge\cdots\ge\lambda_r.\]
-	Denote the set of all dominant weights in $\Lambda(n,r)$ as $\Lambda^+(n,r)$.
-\end{defn}
-\begin{rmk}
-	Notice that each $W$-orbit in $\Lambda(n,r)$ has a unique dominant weight (although it may be achieved multiple times).
-\end{rmk}
-\begin{rmk}
-	Elements in $\Lambda^+(n,r)$ correspond bijectively to partions of $r$ into not more than $n$ parts.
-\end{rmk}
-\subsection{Weight Spaces}
-Now notice that corollary~\ref{cor:idempotent} gave us that $\xi_{ii}^2=\xi_{ii}$ and the corollary before gave us $\xi_{ii}\xi_{jj}=\delta_{ij}$. Then the correspondence between $A_k(n,r)$-rational 
-representations and $S_k(n,r)$ modules gives us that (for $V\in M_k(n,r)$):
-\[\varepsilon(v)=e(1_\Gamma)(v)=1_\Gamma\cdot v=v\]
-and the decomposition\footnote{Note that here we are using that $\xi_{ii}=\xi_{jj}$ if and only if $i\sim j$, so we can represent $\xi_{ii}$ 
-by orbit $\alpha$ of $i$ under $\frakS_r$.} $\varepsilon=\sum_{\alpha\in\Lambda(n,r)}\xi_\alpha$,
-\[V=\varepsilon(V)=\sum_{\alpha\in\Lambda(n,r)}\xi_{\alpha}V\]
-giving us our decomposition into weight spaces. To see{ this we show that 
-\[\xi_\alpha V= V^\alpha=\{v\in V|x(t)v=t_1^{\alpha_1}\cdots t_n^{\alpha_n}v,\; \forall x(t)\in T_n(k)\}\]
-where $T_n(k)$ is the maximal split torus consisting of diagonal matrices in $\GL_n(k)$. Here the notation is that 
-\[x(t)=\operatorname{diag}(t_1,\dots,t_n).\]
-\begin{rmk}
-	Define the character $\chi^\alpha:T_n(k)\to k$ via 
-	\[\chi^\alpha(x(t))=t_1^{\alpha_1}\cdots t_n^{\alpha_n}\]
-\end{rmk}
-Then we have the result 
-\begin{prop}
-	\[\xi_\alpha V= V^\alpha\]
-\end{prop}
-\begin{prf}
-	To see this, we begin by computing the image of $c_{i,j}$ under the image of $e_{x(t)}$ and $\sum_{\alpha}\chi^\alpha(x(t))\xi_\alpha$:
-	\[e_{x(t)}(c_{i,j})=\prod_k c_{i_kj_k}(e_{x(t)})\]
-	which is zero unless $i_k=j_k$ for all $k$--in other words, if $i=j$. Then in this case, 
-	\[e_{x(t)}(c_{i,i})=\chi^\alpha(x(t))\]
-	where $\alpha$ is the weight associated to $i$.
-
-	Computing from the other end, $\xi_\alpha(c_{ij})=0$ unless $\alpha$ is the weight of $i$ and 
-	$j=i$. If $i=j$, a single term is nonzero--the summand corresponding to $\alpha$, the weight of $i$, giving us $\chi^\alpha(x(t))$.
-
-	Since the $S_k(n,r)$ action via $e_{x(t)}$ corresponds to the $\GL_n$ action via $x(t)$. Then take any element $w\in\xi_\alpha V$ and using that the 
-	$\xi_{i,i}$ are orthogonal idempotents, we can compute the action of $T_k(n)$ on $\xi_\alpha V$:
-	\[x(t)\cdot v=e_{x(t)}v=t_1^{\alpha_1}\cdots t_n^{\alpha_n} v\]
-	so $v\in V^\alpha$.
-
-	Now if $v\in V^\alpha\cap V^\beta$, consider the action by $A=\operatorname{diag}(2,1,1,\dots,1)$. Then since 
-	\[A\cdot v=2^{\alpha_1}v=2^{\beta_1}v\]
-	this forces $\alpha_1=\beta_1$ and similar arguments show that $\alpha=\beta$. Thus the sum of $V^\alpha$'s are direct and since their sum is all of $V$ (since their sum 
-	contains the sum of the $\xi_\alpha V$), we get that these summands are precisely the $\xi_\alpha V$.
-\end{prf}
-\begin{rmk}
-	A very useful consequence here is that we have a subalgebra $D_k(n,r)\subseteq S_k(n,r)$ spanned over $k$ by the $\xi_\alpha$ for $\alpha\in\Lambda(n,r)$
-	This is the image of $T_k(n)$ under the evaluation map $e$.
-\end{rmk}
-
-Another useful fact: the weight spaces $V^\alpha$ are stable under the $\frakS_n$ action (up to isomorphism).
-\begin{prop}\label{prop:dom-weight-dimension}
-	Let $\omega\in\frakS_n$. Then 
-	\[V^\alpha\cong V^{\omega(\alpha)}.\]
-\end{prop}
-\begin{prf}
-	The proof of this boils down to noticing that the action of $\GL_n$ on $V^{\omega(\alpha)}$ is the same of a translated 
-	version of $\GL_n$. Specifically, let $\eta_\omega$ be the permutation matrix taking the standard basis to $\{e_{\omega(1)},\dots,e_{\omega(n)}\}$.
-	Then 
-	\[x(t_{\omega(1)},\dots,t_{\omega(n)})=\eta_\omega^{-1}x(t_1,\dots,t_n)\]
-	so application of $n_\omega$ yields an isomorphism from $V^\alpha$ to $V^{\omega(\alpha)}$.
-\end{prf}
-The restriction to the $\alpha$-weight elements is an exact functor!
-\begin{prop}\label{prop:xi-exact}
-	If 
-	\[0\to A\to B\to C\to 0\]
-	is a short exact sequence of elements in $M_k(n,r)$, then so is 
-	\[0\to A^\alpha\to B^\alpha\to C^\alpha\to 0\]
-	for all $\alpha\in\Lambda(n,r)$.
-\end{prop}
-\begin{prf}
-	Left exactness is immediate since this functor acts on morphisms by restriction to a subspace. Right exactness follows since for 
-	any $\xi_\alpha c\in\xi_\alpha C$, since the map $g:B\to C$ is surjective, there is a $b\in B$ mapping to $c$. But then 
-	$\xi_\alpha b\in\xi_\alpha B$ and its image is 
-	\[g(\xi_\alpha b)=\xi_\alpha g(b)=(\xi_\alpha)^2c=\xi_\alpha c\]
-	since $\xi_\alpha$ is idempotent.
-\end{prf}
-
-\subsubsection{Extending Scalars}\label{subsubsec:extending}
-Notice that a simple computation using linear algebra and counting degrees gets us that 
-for any $V\in M_k(n,r)$ and $W\in M_k(n,s)$, we can define the module $V\otimes W\in M_k(n,r+s)$ 
-where if $\gamma\in \Lambda(n,r+s),$ the weight spaces are
-\[(V\otimes W)^\gamma=\bigoplus_{\alpha,\beta}V^\alpha\otimes W^\beta\]
-where the sum is over all $\alpha$ and $\beta$ whose sum is $\gamma$.
-
-Notice that we can identify each $\xi_{i,j}\in S_k(n,r)$ with $\xi_{i,j}^L$ in any field extension $L$ of $k$. 
-In this way, we can embed $S_k(n,r)$ in $S_L(n,r)$. But then if we let $V_L=V\otimes_k L$ for any $V\in M_k(n,r)$, we extend scalars in the obvious way:
-\[\left(\sum l_{i,j}\xi_{i,j}\right)(v\otimes a)=\sum \xi_{i,j}(v)\otimes l_{i,j}\cdot a\]
-to make $V_L$ into an $S_L(n,r)$-module. But then just by degree considerations we have
-\begin{prop}
-	The weight space $V_L^\alpha$ is the $L$ span of $V^\alpha$. Thus $\dim_k V^\alpha=\dim_L V_L^\alpha$.
-\end{prop}
-
-\subsubsection{Contravariant Duals}
-
-Our discussion of contravariant duality in section~\ref{subsec:contra} continues in terms of these weight modules:
-
-Notice that if $(,)$ is a contravariant pairing of $V$ and $W$, then since $J(\xi_\alpha)=\xi_\alpha$, we get 
-\[(\xi_\alpha v,\xi_\beta w)=(v,J(\xi_\alpha)\xi_\beta w)=(v,\xi_\alpha\xi_\beta w)\]
-which is zero unless $\alpha=\beta$.
-
-Therefore having a nondegenerate contravariant pairing is equivalent to there being a pairing that is nondegenerate 
-when restricted to $V^\alpha\times W^\alpha$ for all $\alpha\in\Lambda(n,r)$.
-
-So in particular if $W=V^\circ$, there is an isomorphism $V\to V^\circ$ sending each element to its dual,
-so we know there is a nondegenerate contravariant pairing by theorem~\ref{thm:bil-forms}. 
-This implies that we get a map $V^\alpha\to (V^\circ)^\alpha$ and since the pairing is still nondegenerate upon restricting to $V^\alpha$, this is an isomorphism. In particular,
-\[\dim V^\alpha=\dim (V^\circ)^\alpha\]
-
-\subsubsection{\texorpdfstring{$\bbZ$}{Z}-defined Families}
-Let $\{V_k\}$ be a family defined over $\bbZ$ by $V_\bbZ$ and isomorphisms $\delta_k:V_\bbZ\otimes k\to V_k$. Then since we can consider $\xi_\alpha^\bbQ$ 
-to be the same functional as $\xi_\alpha^\bbZ$ defined over $\bbZ$, we get 
-\[V_\bbZ=\bigoplus \xi_\alpha^\bbQ V_\bbZ=\bigoplus V_\bbZ\cap V_\bbQ^\alpha\]
-and using the discussion in \ref{subsubsec:extending}, we get 
-\begin{prop}
-	For each $V_k$, a module defined over $\bbZ$ by $V_\bbZ$ and $\delta:V_\bbZ\otimes k\to V_k$,
-	$V_k^\alpha$ is the $k$-span of the image of $\xi_\alpha^\bbQ V_\bbZ\otimes 1_k$ under $\delta$.
-\end{prop}
-\begin{rmk}
-	As the summand of a free $\bbZ$-module, $\xi_\alpha^Q V_\bbZ$ is projective whence free (as a $\bbZ$-module). Thus if $r=\rank \xi_\bbQ^\alpha V_\bbZ$, 
-	then $\dim_\bbQ V_\bbQ^\alpha=r=\dim_k V_k^\alpha$.
-\end{rmk}
-
-\subsection{Characters}
-The theory of characters comes into play as always in representation theory, but here we see a slight distinction:
-we define \textit{formal characters} on $n$ intederminates to stand in for the traditional characters.
-
-Recall that in standard representation theory, the \textbf{(natural) character} of a representation $(V,\rho)$ over $k$ of a group $\Gamma$ is a map 
-\[\varphi_V:\Gamma\to k\]
-defined element-wise by 
-\[\varphi_V(g)=\tr \rho(g).\]
-The problem with this approach is that we want to define the character in terms of \textit{eigenvalues} of a given matrix, 
-but we don't necessarily have access to these eigenvalues over an arbitrary field $k$. For this reason, we define 
-the formal character of an element below and then show that after passing to an appropriate extension of $k$ (e.g. the algebraic closure)
-the natural character at $g$ coincides with evaluating the formal character at the eigenvalues of the matrix $\rho(g)$.
-
-\subsubsection{Formal Characters}
-Let $V\in M_k(n,r)$. Then we write 
-\[\Phi_V(X_1,\dots, X_n)=\sum_{\alpha\in\Lambda_k(n,r)}(\dim_k V^\alpha) \ X_1^{\alpha_1}\cdots X_n^{\alpha_n}\]
-or by leveraging the monomial basis for symmetric functions (this function is symmetric using proposition~\ref{prop:dom-weight-dimension}):
-\[\Phi_V(X_i)=\sum_{\lambda\in\Lambda^+_k(n,r)}(\dim_kV^\lambda)\ m_\lambda(X_1,\dots,X_n)\]
-
-Now by proposition~\ref{prop:xi-exact}, we can quickly see that if the following is exact:
-\[0\to V_1\to V\to V_2\to 0\]
-the character of $V$ is 
-\[\Phi_{V}=\Phi_{V_1}+\Phi_{V_2}=\Phi_{V_1}+\Phi_{V/V_1}\]
-and by induction, given any composition series 
-\[V=V_0\supset V_1\supset\cdots V_l=0\]
-the character of $V$ can be computed via its composition factors \`a la Jordan-H\"older:
-\[\Phi_V=\sum_{i=1}^l \Phi_{V_{i-1}/V_i}\]
-and by the discussion of tensor products, 
-\[\Phi_{V\otimes W}=\Phi_V\Phi_W.\]
-
-\subsubsection{Illustration: Alternating Powers}
-An important example comes from returning to considering $E=\oplus_1^n k\cdot e_i$ on which $\Gamma$ acts naturally. Then if we let 
-$V=\bigwedge^r E$, then the character of $V$ is 
-\[\Phi_V(X_1,\dots,X_n)=m_{(1,\dots,1,0,\dots,0)}(X_i)=X_1\cdots X_r+\cdots\]
-since a basis for $V$ are the $r$-fold wedges of distinct $e_i$: $e_{i_1}\wedge\cdots\wedge e_{i_r}$ (where we consider only those products that 
-are in order of ascending index).
-
-\subsubsection{Characters and Symmetric Functions}
-Let $\Sym(n,r)$ be the collection of symmetric functions in $\bbZ[X_1,\dots, X_n]$ that are homogeneous of degree $r$.
-Then 
-\begin{prop}
-	The additive subgroup of $\bbZ[X_i]$ spanned by the $\Phi_V$ for all $V\in M_k(n,r)$ is precisely $\Sym(n,r)$ (and thus is independent of $k$).
-\end{prop}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%  Bibliography %%%%%%%%%%%%%
