@@ -56,28 +56,74 @@
 	extends meaningfully to pathologies that arise in positive characteristic.
 \end{abstract}
 
+\renewcommand{\baselinestretch}{0.75}\normalsize
 \tableofcontents
+\renewcommand{\baselinestretch}{1.0}\normalsize
 
 \newpage
 \section{Introduction}
+\subsection{Schur and Polynomial Representations}
 The story of this project (more-or-less) begins with Schur's doctoral thesis \cite{schur-thesis} in which he defined
 polynomial representations of $\GL_n$---a theory which he developed more completely in his later paper \textit{\"Uber die 
-rationalen Darstellungen der allgemeinen linearen Gruppe}\footnote{\textit{On the rational representations of the general linear group}}
+rationalen Darstellungen der allgemeinen linearen Gruppe}\footnote{English: \textit{On the rational representations of the general linear group}}
 \cite{schur-rational}. In these papers, Schur develops the idea of a \textbf{polynomial representation of $\GL_n$},
 meaning a (finite dimensional) representation where the coefficient functions of the representing map 
 \[\rho:\GL_n\to \GL(V)\]
 is polynomial in each coordinate. That is, if $V=\oplus_{i=1}^n kv_i$, then for every $1\le i,j\le n$, we have the map
 $r_{v_iv_j}:\GL_n\to k$ such that 
-\[\rho(g)\cdot v_i=\sum_{i=1}^n r_{v_iv_j}v_j\]
+\[\rho(g)\cdot v_i=\sum_{i=1}^n r_{v_iv_j}v_j.\]
+
+A result in \cite{schur-thesis} gives us a nice simplifying observation: if $V$ is a polynomial representation,
+then $V$ decomposes as a direct sum of representations 
+\[V=\bigoplus_\delta V_\delta\]
+where each $V_\delta$ is a polynomial representation where the coefficient functions are \textit{homogeneous degree $\delta$}. 
+This allows us to focus our attention to the structure of these $V_\delta$ as the fundamental building blocks of the theory.
+
+One of the more surprising connections made in this theory comes from the observation that the vector space (recall $V\cong k^n$)
+\[E=V^{\otimes r}\]
+is made into a $(\GL_n(k),\frakS_r)$-bimodule in a very natural way, and that this bimodule gives us a way to relate 
+$\rmod {\frakS_r}$ with (a subcategory of) $\lmod {\GL_n(k)}$ via the so-called \textbf{Schur-Weyl functor.}
+
+\subsection{The Schur-Weyl Functor}
+Clearly a connection between representations of two groups that are so ubiquitous in group theory and math in general 
+is a stunning observation, and much effort has been expended since the late 20th century to study this functor and its 
+properties---especially in how it relates the representation theory of these two groups. 
+
+For instance, Friedlander and Suslin \cite{friedlander-suslin}
+originally discussed the idea of \textbf{strict polynomial functors} and showed that the category of repesentations 
+of the Schur algebra $S(n,d)$ was equivalent to the category $\calP_d$ of homodegree $d$ strict polynomial functors.
+
+In later work, Krause \cite{krause-strict-poly-func} used an alternative construction of $\calP_d$ as the category of
+of reprsentations of the $d$-divided powers of the category of finitely generated projective $k$-modules. The upshot being that 
+the latter object $\Gamma^d P_k$ has an obvious monoidal structure which $\calP_d$ inherits in a natural way. This new concrete 
+monoidal structure opens up the field to discussing several notions of duality defined in different contexts 
+and solidifying connections between them.
+
+Krause's students Aquilino and Reischuk, in their paper \cite{aquilino-reischuk}, prove, among other facts, that 
+under these natural monoidal structures the Schur-Weyl functor is in fact monoidal. This puts the theory of representations 
+of these groups and algebras firmly in the realm of monoidal categories, opening up the area to new questions using 
+tools from category theory.
 
 \section{Representations of \texorpdfstring{$\GL_n$}{GLn} and of \texorpdfstring{$\frakS_n$}{Sn}}
 
-\section{Strict Polynomial Functors}
-
 \section{The Schur-Weyl Functor}
+
+\section{Strict Polynomial Functors}
 
 \section{Questions and Extensions}
 
+\section*{Acknowledgements}
+\label{sec:ack}
+\addcontentsline{toc}{section}{\nameref{sec:ack}}
+I extend my most heartfelt thanks to my advisor, Julia Pevtsova, who not only helped me immensely in setting a target 
+for this project, but also introduced me to many of the classical ideas found in this paper (some times more than once). 
+Her knowledge and understanding while I learned this subject has been absolutely invaluable to me.
+
+My thanks also to my loving partner, who stands besides me in good times and in bad and always patiently humors me when 
+I need someone to spew math at (or a shoulder to cry on).
+
+Finally, thank you to my friends and colleagues in the University of Washington math department for many fruitful conversations 
+and for helping me to foster my natural mathematical curiosity into a raging fire.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%  Bibliography %%%%%%%%%%%%%
@@ -85,5 +131,6 @@ $r_{v_iv_j}:\GL_n\to k$ such that
 \medskip
 
 \printbibliography
+\addcontentsline{toc}{section}{References}
 
 \end{document}
