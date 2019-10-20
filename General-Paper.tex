@@ -2,8 +2,15 @@
 
 \usepackage{setspace}
 
-\usepackage{amsmath, graphicx, color, fancyhdr, tikz-cd, mdframed, enumitem, framed, adjustbox, bbm, upgreek, xcolor, hyperref, manfnt}
+\usepackage{graphicx, color, fancyhdr, tikz-cd, mdframed, enumitem, framed, adjustbox, bbm, upgreek, xcolor, manfnt}
 \usepackage[framed,thmmarks]{ntheorem}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks = true,
+	linkcolor = [rgb]{0,0,0.5},
+	citecolor = [rgb]{0.6,0,0},
+	urlcolor = [rgb]{0,0,0.5}
+}
 \usepackage[style=alphabetic, bibencoding=utf8]{biblatex}
 %Set the bibliography file
 \bibliography{sources}
@@ -14,6 +21,7 @@
 
 %Replacement for the old geometry package
 \usepackage{fullpage}
+\usepackage{amsmath}
 
 %Input my definitions
 \input{./mydefs.tex}
@@ -91,7 +99,7 @@ properties---especially in how it relates the representation theory of these two
 
 For instance, Friedlander and Suslin \cite{friedlander-suslin}
 originally discussed the idea of \textbf{strict polynomial functors} and showed that the category of repesentations 
-of the Schur algebra $S(n,d)$ was equivalent to the category $\calP_d$ of homodegree $d$ strict polynomial functors.
+of the Schur algebra $S(n,d)$ was equivalent to the category $\calP_d$ of homogeneous degree $d$ strict polynomial functors.
 
 In later work, Krause \cite{krause-strict-poly-func} used an alternative construction of $\calP_d$ as the category of
 of reprsentations of the $d$-divided powers of the category of finitely generated projective $k$-modules. The upshot being that 
@@ -105,8 +113,71 @@ of these groups and algebras firmly in the realm of monoidal categories, opening
 tools from category theory.
 
 \section{Representations of \texorpdfstring{$\GL_n$}{GLn} and of \texorpdfstring{$\frakS_n$}{Sn}}
+Through the following discussion, let $\Gamma=\Gamma_k=\GL_n(k)$ for some field $k$. Let $\rho:\Gamma\to \GL(V)$ be a representation of $\Gamma.$
 
 \section{The Schur-Weyl Functor}
+From the discussion in the last section it is evident that the combinatorics behind the representation theory of $S(n,r)$ and $\frakS(r)$ have some intersections
+in their use of Young tableaux and this connection is more than superficial. In fact, there is a functor relating the representations
+of these two objects in the following way:
+\subsection{Construction of the functor}
+
+Let $V\in M_k(n,r)$ be a $S(n,r)$-representation and select any weight $\alpha\in\Lambda(n,r)$. Then the weight space 
+\[V^\alpha=\xi_\alpha V\]
+becomes a $S(\alpha)\eqdef\xi_\alpha S(n,r)\xi_\alpha$-module using the action from $S(n,r)$. Now if we allow $r\le n$ and let
+\[\omega=(1,\dots,1,0,\dots,0)\in\Lambda(n,r)\]
+notice that $S(\omega)$ is spanned by the elements
+\[\xi_\omega\xi_{i,j}\xi_\omega,\quad i,j\in I(n,r)\]
+but by the multiplication rules established in the definition of $S(n,r)$, these are nonzero precisely when 
+$i$ and $j$ are both of shape $\omega$. So then since $\xi_{i,j}=\xi_{i\sigma,j\sigma}$ for all $\sigma\in\frakS_r$, we can take as
+a basis of $S(\omega)$ the set 
+\[\{\xi_{u\pi,u}|\pi\in\frakS_r\}\]
+where $u=(1,2,\cdots,r)\in I(n,r)$.
+
+To prove the next statement we require a computational result.
+\begin{lem}\label{lem:somega-mult}
+	If $u=(1,2,\dots,r)\in I(n,r)$, then for all $\pi,\sigma\in\frakS_r$,
+	\[\xi_{u\pi,u}\cdot \xi_{u\sigma,u}=\xi_{u\pi\sigma,u}.\]
+\end{lem}
+\begin{prf}
+	Using the formulas for multiplication in $S(n,r)$, recall that 
+	\begin{equation}
+		\xi_{u\pi,u}\cdot\xi_{u\sigma,u}=\sum Z_{i,j} \xi_{i,j}\label{eq:1}
+	\end{equation}
+	where 
+	\[Z_{i,j}=\#\{s\in I(n,r)|(u\pi,u)\sim(i,s)\text{ and }(u\sigma,u)\sim (s,j)\}.\]
+	Then for each $i,j$, since $u=(1,2,\dots,r)$ has no stabilizer in $\frakS_r$, there is a unique 
+	$g$ such that $u\pi g=i$, meaning that $s=ug$. 
+
+	But then this fixes (again a unique) $h\in\frakS_r$ such that $u\sigma h=s=u g$ whence $\sigma h= g$. 
+	One computes that 
+	\[u\pi\sigma h = u\pi g=i\quad\text{and}\quad uh = j\]
+	therefore since in the above computation $s$ was completely determined by $i$, we have
+	\[Z_{i,j}=\left\{\begin{array}{lr}
+		1, &  (i,j)\sim(u\pi\sigma,u)\\
+		0, & \text{otherwise}
+	\end{array}\right.\]
+	and the result follows.
+\end{prf}
+Using this result, we prove a more obviously useful statement:
+
+\begin{lem}
+	$S(\omega)\cong k\frakS(r)$.
+\end{lem}
+\begin{prf}
+	Define the map $\varphi:S(\omega)\to k\frakS_r$ on the basis above to be 
+	\[\varphi (\xi_{u\pi,u})=\pi\]
+	and extending $k$-linearly.
+
+	This is a homomorphism since 
+	\[\varphi(\xi_{u\pi,u}\xi_{u\sigma,u})=\varphi(\xi_{u\pi\sigma,u})=\pi\sigma\]
+	and it is bijective since it is bijective on the respective bases.
+\end{prf}
+The upshot of these lemmas is that one can define the functor 
+\[\calF:M_k(n,r)\to \Rep(\frakS_r)\]
+via the map that sends any representation $V$ to its $\omega$ weight space.
+
+
+\subsection{}
 
 \section{Strict Polynomial Functors}
 
