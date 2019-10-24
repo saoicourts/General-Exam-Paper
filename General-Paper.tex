@@ -18,6 +18,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[urw-garamond]{mathdesign}
 \usepackage{garamondx}
+\usepackage{ytableau}
 
 %Replacement for the old geometry package
 \usepackage{fullpage}
@@ -77,17 +78,26 @@ rationalen Darstellungen der allgemeinen linearen Gruppe}\footnote{English: \tex
 \cite{schur-rational}. In these papers, Schur develops the idea of a \textbf{polynomial representation of $\GL_n$},
 meaning a (finite dimensional) representation where the coefficient functions of the representing map 
 \[\rho:\GL_n\to \GL(V)\]
-is polynomial in each coordinate. That is, if $V=\oplus_{i=1}^n kv_i$, then for every $1\le i,j\le n$, we have the map
-$r_{v_iv_j}:\GL_n\to k$ such that 
-\[\rho(g)\cdot v_i=\sum_{i=1}^n r_{v_iv_j}v_j.\]
+is polynomial in each coordinate. For example, the map sending 
+\[A=\begin{pmatrix}
+	a&b\\
+	c&d
+\end{pmatrix}\mapsto \begin{pmatrix}
+	a^2d-abc & acd-c^2b & 0\\
+	abd-b^2c & ad^2-bcd & 0\\
+	0 & 0 & ad-bc
+\end{pmatrix}=\rho(A)\]
+is a three-dimensional polynomial representation of $\GL_2$.
 
-A result in \cite{schur-thesis} gives us a nice simplifying observation: if $V$ is a polynomial representation,
+The block-diagonal form above demonstrates a direct sum decomposition of our representation into two parts: one two-dimensional homogeneous degree 3
+and one one-dimensional homogeneous degree 2 (in the entries of $A$). A result in \cite{schur-thesis} tells us that, in fact, this can always be done: 
+if $V$ is a polynomial representation of $\GL_n$,
 then $V$ decomposes as a direct sum of representations 
 \[V=\bigoplus_\delta V_\delta\]
 where each $V_\delta$ is a polynomial representation where the coefficient functions are \textit{homogeneous degree $\delta$}. 
 This allows us to focus our attention to the structure of these $V_\delta$ as the fundamental building blocks of the theory.
 
-One of the more surprising connections made in this theory comes from the observation that the vector space (recall $V\cong k^n$)
+The key insight made in this theory comes from the observation that the vector space (recall $V\cong k^n$)
 \[E=V^{\otimes r}\]
 is made into a $(\GL_n(k),\frakS_r)$-bimodule in a very natural way, and that this bimodule gives us a way to relate 
 $\rmod {\frakS_r}$ with (a subcategory of) $\lmod {\GL_n(k)}$ via the so-called \textbf{Schur-Weyl functor.}
@@ -112,14 +122,120 @@ under these natural monoidal structures the Schur-Weyl functor is in fact monoid
 of these groups and algebras firmly in the realm of monoidal categories, opening up the area to new questions using 
 tools from category theory.
 
-\section{Representations of \texorpdfstring{$\GL_n$}{GLn} and of \texorpdfstring{$\frakS_n$}{Sn}}
-Through the following discussion, let $\Gamma=\Gamma_k=\GL_n(k)$ for some field $k$. Let $\rho:\Gamma\to \GL(V)$ be a representation of $\Gamma.$
+\subsection{Notation and Conventions}\label{subsec:notation}
+Throughout this paper we will define $k$ to be a field (not necessarily of characteristic zero or algebraically closed unless otherwise noted).
+%Let $\Alg_k$ be the category of $k$-algebras and $\Grp$ denote the category of groups with homorphisms.
+
+We will use $\Gamma=\Gamma_k=\GL_n=\GL_n(k)$ to denote the general linear group, $\Aut_k(k^n)$. Let $\frakS_r$ denote the symmetric group on $r$ letters.
+
+When speaking of the ($k$) vector space spanned by elements $v_1,\dots,v_n$, we will use the notation 
+\[\langle v_1,\dots, v_n\rangle.\]
+
+\section{Representations of \texorpdfstring{$\Gamma$}{Gamma} and of \texorpdfstring{$\frakS_n$}{Sn}}
+We begin by detailing the theory behind the (polynomial) representations of $\GL_n$ as well as the representations of $\frakS_n$ to 
+familiarize ourselves with the classical representation theory associated to these groups.
+
+\subsection{Polynomial representations of \texorpdfstring{$\Gamma$}{Gamma}}
+Let $\Gamma$ be the affine group scheme defined in section~\ref{subsec:notation}. Then 
+\begin{defn}
+	A (finite dimensional) \textbf{representation} of $\Gamma$ is a (finite dimensional) vector space $V$ along with a map
+	\[\rho:\Gamma\to \GL(V)\eqdef\Aut_k(V)\]
+	where $\rho$ is a group homomorphism.
+\end{defn}
+\begin{rmk}
+	Often in representation theory one combines the map $\rho$ and vector space $V$ into a single object:
+	a $k\Gamma$-module. This simultaneously encodes the vector space structure (via $k$-linearity) and the action by 
+	$\Gamma$.
+\end{rmk}
+Representations of $\Gamma$ can be, in general, ``analytic.'' One can check that the map 
+\[\rho:k^\times=\GL_1(k)\to \GL(k^2)\qquad\text{via}\qquad x\mapsto\begin{pmatrix}
+	1 & \ln |x|\\ 0 & 1
+\end{pmatrix}\]
+gives a group homomorphism (and thus representation) between these two groups, but the logarithm makes this representation decidedly \textit{not algebraic.}
+To narrow our focus somewhat and ensure we stay within the realm of algebra, we make the following definition:
+\begin{defn}
+	A \textbf{polynomial representation} of $\Gamma$ is a representation $\rho$ such that the structure maps of $\rho$ 
+	are polynomials in the functions $c_{ij}:\Gamma\to k$ that extract the $(i,j)^{th}$ entry.
+\end{defn}
+\begin{rmk}
+	Recall (or learn for the first time!) that the \textit{structure maps} of a representation $(\rho,V)$ are a collection 
+	of maps $r_{ij}$ for $1\le i,j,\le n$ from $\Gamma$ to $k$ such that for all $g\in \Gamma$:
+	\[g\cdot v_i=\sum_{j=1}^n r_{ij}(g)v_j\]
+	where we have picked a basis $\{v_1,\dots,v_n\}$ for $V$. Of course changing basis may change our 
+	$r_{ij}$, but an invariant of the representation is the \textbf{span} $\langle r_{ij}\rangle$.
+\end{rmk}
+\begin{rmk}
+	If all $r_{ij}$ are homogeneous polynomials of the same degree, we say that $\rho$ is a \textbf{homogeneous polynomial representation} of $\Gamma$.
+\end{rmk}
+It is the \textit{polynomial} representations that we will concern ourselves with in the following section. To further 
+simplify the situation, we will use a nice structure result:
+\begin{thm}[{\cite[pp.7-10]{schur-thesis}}]
+	Every polynomial representation $V$ decomposes as a direct sum 
+	\[V\cong\bigoplus_{\delta\in\bbN}V_\delta\]
+	where $V_\delta$ is a \textit{homogeneous} polynomial representation of degree $\delta.$
+\end{thm}
+\begin{prf}
+	We recreate the argument in Schur's thesis, translated from German to English.
+\end{prf}
+
+\subsection{Representations of \texorpdfstring{$\frakS_n$}{Sn}}
+
+\subsection{Explicit Examples: \texorpdfstring{$S_\bbC(2,2)$}{S(2,2)} and \texorpdfstring{$\frakS_2$}{S2}}
+To demonstrate the theory developed above, we begin a computation (in a simple case) of the isomorphism classes of irreducible 
+representations of both $S_\bbC(2,2)$ and $\frakS_2$.
+
+\subsubsection*{The symmetric group on two letters}
+The representation theory (over $k=\bbC$) of $\frakS_2$ is as simple as it comes: of course $\frakS_2\cong \bbZ/2\bbZ$ and we know that 
+there are $|G|$ nonisomorphic irreducible representations of an abelian group $G$ over $\bbC$. Since we are talking about a symmetric group, 
+we can realize these as the trivial and sign representations, represented by the Young diagrams:
+\[\ytableausetup{smalltableaux,centertableaux}\ydiagram{2}\quad\text{and}\quad\ydiagram{1,1}\]
+
+As submodules of the regular representation $k\frakS_2= k e\oplus k(1\,2)$, we can construct these as $\langle e+(1\, 2)\rangle$ (trivial representation) and $\langle e-(1\,2)\rangle$ (sign representation).
+
+\subsubsection*{The Schur algebra \texorpdfstring{$S_\bbC(2,2)$}}
+Since $\ch\bbC=0$, (by e.g. \cite{schur-thesis}) we know immediately that $S_\bbC(2,2)$ is semisimple, so it suffices to identify the irreducible submodules therein.
+Now we know 
+\[S=S_\bbC(2,2)\cong \bbC^2\otimes\bbC^2\]
+so $\dim_\bbC S=4.$ The theory outlined above give us that isomorphism types of irreducible modules are in bijection with partitions of 2 into two parts, meaning 
+we have two isomorphism types: one corresponding to $\lambda_1=(1,1)$ and one corresponding to $\lambda_2=(2,1)$. 
+
+Using the construction of $D_{\lambda,\bbC}$ from above, we can compute these two irreducible modules explicitly:
+
+\begin{ex}[$\mathbf{\lambda_1=(1,1)}$]
+ In this case our shape is $(1,1)$, corresponding to the Young diagram 
+\[\ydiagram{1,1}\]
+and then $D_{\lambda_1,\bbC}$ is spanned by the element
+\[(T_l:T_{(2,1)})=\left(\ytableaushort{1,2}:\ytableaushort{2,1}\right)=c_{12}c_{21}-c_{11}c_{22}=c_{(1,2),(2,1)}-c_{(1,2),(1,2)}\in A_\bbC(2,2)\]
+since all other bideterminants of this shape are zero or linearly dependent. Thus this is a one-dimensional irreducible representation.
+\end{ex}
+\begin{ex}[$\mathbf{\lambda_2=(2,0)}$]
+Now our shape is $(2,0)$, corresponding to the diagram
+\[\ydiagram{2}.\]
+The bideterminants here are 
+\begin{align*}
+	(T_l:T_{(1,1)})=\big(\ytableaushort{1 1}:\ytableaushort{1 1}\big)=c_{11}^2\\
+	(T_l:T_{(1,2)})=(T_l:T_{(2,1)})=c_{11}c_{12}\\
+	(T_l:T_{(2,2)})=c_{12}^2
+\end{align*}
+So we have a three-dimensional irreducible representation spanned by $\langle c_{11}^2,c_{11}c_{12},c_{12}^2\rangle$.
+\end{ex}
+Since these are the only two Young diagrams of size two, these examples form a complete list of isomorphism classes of irreducible representations of $S_\bbC(2,2)$.
+
+If we prefer instead to recognize our irreducibles as submodules of $E^{\otimes 2}$ (giving us a more obvious action by our algebras), 
+we can use the short exact sequence 
+\[0\to N\hookrightarrow E^{\otimes 2}\twoheadrightarrow D_{\lambda,\bbC}\to 0\]
+to define the $n=\ker\pi$, where $\pi$ is defined to be the map in REFERENCE HERE. Then we can compute the orthogonal complement to $N$ to get $V_{\lambda,\bbC}$.
+We can compute:
+\[V_{\lambda_1,\bbC}=\langle e_1\otimes e_2-e_2\otimes e_1\rangle\]
+and
+\[V_{\lambda_2,\bbC}=\langle e_1\otimes e_1, \,e_1\otimes e_2+e_2\otimes e_1, \,e_2\otimes e_2\rangle\]
+where $\{e_1,e_2\}$ is a basis for $E\cong k^2$.
 
 \section{The Schur-Weyl Functor}
-From the discussion in the last section it is evident that the combinatorics behind the representation theory of $S(n,r)$ and $\frakS(r)$ have some intersections
+From the discussion in the last section it is evident that the combinatorics behind the representation theory of $S(n,r)$ and $\frakS_r$ have some intersections
 in their use of Young tableaux and this connection is more than superficial. In fact, there is a functor relating the representations
 of these two objects in the following way:
-\subsection{Construction of the functor}
+\subsection{Construction of the functor \texorpdfstring{$\calF$}{F}}
 
 Let $V\in M_k(n,r)$ be a $S(n,r)$-representation and select any weight $\alpha\in\Lambda(n,r)$. Then the weight space 
 \[V^\alpha=\xi_\alpha V\]
@@ -169,15 +285,15 @@ Using this result, we prove a more obviously useful statement:
 	and extending $k$-linearly.
 
 	This is a homomorphism since 
-	\[\varphi(\xi_{u\pi,u}\xi_{u\sigma,u})=\varphi(\xi_{u\pi\sigma,u})=\pi\sigma\]
-	and it is bijective since it is bijective on the respective bases.
+	\[\varphi(\xi_{u\pi,u}\xi_{u\sigma,u})=\varphi(\xi_{u\pi\sigma,u})=\pi\sigma=\varphi(\xi_{u\pi,u})\varphi(\xi_{u\sigma,u})\]
+	and it is bijective since it is bijective on the respective bases and is thus bijective as a linear map.
 \end{prf}
 The upshot of these lemmas is that one can define the functor 
 \[\calF:M_k(n,r)\to \Rep(\frakS_r)\]
-via the map that sends any representation $V$ to its $\omega$ weight space.
+via the map that sends any representation $V$ to its $\omega$ weight space $V^\omega\in \lmod {S(\omega)}\simeq \Rep(\frakS_r)$.
 
 
-\subsection{}
+\subsection{Properties of \texorpdfstring{$\calF$}{F}}
 
 \section{Strict Polynomial Functors}
 
