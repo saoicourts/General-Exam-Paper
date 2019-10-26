@@ -2,8 +2,9 @@
 
 \usepackage{setspace}
 
-\usepackage{graphicx, color, fancyhdr, tikz-cd, mdframed, enumitem, framed, adjustbox, bbm, upgreek, xcolor, manfnt}
+\usepackage{graphicx, color, fancyhdr, tikz-cd, enumitem, framed, adjustbox, bbm, upgreek, xcolor, manfnt}
 \usepackage[framed,thmmarks]{ntheorem}
+\usepackage[framemethod=tikz]{mdframed}
 \usepackage{hyperref}
 \hypersetup{
 	colorlinks = true,
@@ -32,6 +33,28 @@
 \theoremheaderfont{\normalfont\bfseries} 
 \def\theoremframecommand{\colorbox[rgb]{0.9,1,.8}}
 \newshadedtheorem{defn}[thm]{Definition}
+
+%Set apart my theorems and lemmas and such
+\surroundwithmdframed[outerlinewidth=0.4pt,
+  innerlinewidth=0.5pt,
+  middlelinewidth=1pt,
+  middlelinecolor=white,
+  topline=false,bottomline=false,rightline=false,leftmargin=2em]{thm}
+\surroundwithmdframed[outerlinewidth=0.4pt,
+  innerlinewidth=0.5pt,
+  middlelinewidth=1pt,
+  middlelinecolor=white,
+  topline=false,bottomline=false,rightline=false,leftmargin=2em]{lem}
+\surroundwithmdframed[outerlinewidth=0.4pt,
+  innerlinewidth=0.5pt,
+  middlelinewidth=1pt,
+  middlelinecolor=white,
+  topline=false,bottomline=false,rightline=false,leftmargin=2em]{cor}
+  \surroundwithmdframed[outerlinewidth=0.4pt,
+  innerlinewidth=0.5pt,
+  middlelinewidth=1pt,
+  middlelinecolor=white,
+  topline=false,bottomline=false,rightline=false,leftmargin=2em]{prop}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%% Customize Below %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -65,7 +88,9 @@
 	extends meaningfully to pathologies that arise in positive characteristic.
 \end{abstract}
 
+\newpage
 \renewcommand{\baselinestretch}{0.75}\normalsize
+\setcounter{tocdepth}{3}
 \tableofcontents
 \renewcommand{\baselinestretch}{1.0}\normalsize
 
@@ -131,6 +156,13 @@ We will use $\Gamma=\Gamma_k=\GL_n=\GL_n(k)$ to denote the general linear group,
 When speaking of the ($k$) vector space spanned by elements $v_1,\dots,v_n$, we will use the notation 
 \[\langle v_1,\dots, v_n\rangle.\]
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
 \section{Representations of \texorpdfstring{$\Gamma$}{Gamma} and of \texorpdfstring{$\frakS_n$}{Sn}}
 We begin by detailing the theory behind the (polynomial) representations of $\GL_n$ as well as the representations of $\frakS_n$ to 
 familiarize ourselves with the classical representation theory associated to these groups.
@@ -153,7 +185,7 @@ Representations of $\Gamma$ can be, in general, ``analytic.'' One can check that
 \end{pmatrix}\]
 gives a group homomorphism (and thus representation) between these two groups, but the logarithm makes this representation decidedly \textit{not algebraic.}
 To narrow our focus somewhat and ensure we stay within the realm of algebra, we make the following definition:
-\begin{defn}
+\begin{defn}\label{def:poly-rep}
 	A \textbf{polynomial representation} of $\Gamma$ is a representation $\rho$ such that the structure maps of $\rho$ 
 	are polynomials in the functions $c_{ij}:\Gamma\to k$ that extract the $(i,j)^{th}$ entry.
 \end{defn}
@@ -167,24 +199,337 @@ To narrow our focus somewhat and ensure we stay within the realm of algebra, we 
 \begin{rmk}
 	If all $r_{ij}$ are homogeneous polynomials of the same degree, we say that $\rho$ is a \textbf{homogeneous polynomial representation} of $\Gamma$.
 \end{rmk}
-It is the \textit{polynomial} representations that we will concern ourselves with in the following section. To further 
-simplify the situation, we will use a nice structure result:
-\begin{thm}[{\cite[pp.7-10]{schur-thesis}}]
-	Every polynomial representation $V$ decomposes as a direct sum 
+\begin{defn}\label{def:Mnr}
+	Let $M_k(n)=M(n)$ be the collection of all polynomial representations of $\GL_n$ and let $M_k(n,r)=M(n,r)$ 
+	be the collection of all degree $r$ polynomial representations of $\GL_n$.
+
+	Generally speaking, we will identify both of these with an appropriate subcategory of $\lmod{k\Gamma}$.
+\end{defn}
+It is the \textit{polynomial} representations that we will concern ourselves with in the following sections. 
+
+\subsubsection{Reducing scope}
+Using some of our familiar friends from representation theory (as well as some clever twists), 
+we can simplify this picture considerably by proving the following structural result:
+\begin{thm}[{\cite[pp.7-10]{schur-thesis}}]\label{thm:decomp}
+	Every polynomial representation $V$ over an infinite field $k$ decomposes as a direct sum 
 	\[V\cong\bigoplus_{\delta\in\bbN}V_\delta\]
 	where $V_\delta$ is a \textit{homogeneous} polynomial representation of degree $\delta.$
 \end{thm}
+Clearly, then, it suffices to understand the \textit{homogeneous degree $r$} polynomial representations of $\Gamma$ if we are looking
+to understand the larger structure.
+
+\brk
+
+We begin with a useful lemma extracted from a proof in \cite{schur-thesis} echoing the general theory of 
+orthogonal decomposition of Artinian algebras.
+\begin{lem}\label{lem:orth-decomp}
+	Let $C_0,\dots,C_m\in M_n(k)$ be mutually orthogonal idempotent matrices that sum to the identity. That is, 
+	\[I_n=\sum_i C_i\quad\text{and}\quad C_iC_j=\delta_{ij}C_i\]
+	for all $0\le i,j\le m$. Then there exists an invertible matrix $P$ such that for some positive integers $d_0,\dots,d_m$ with $\sum_k d_k=n$ and for all $i$,
+	\[P^{-1}C_iP=\begin{pmatrix}
+		\mathbf{0}_{N_i} & &\\
+		& I_{d_i} & \\
+		& & \mathbf{0}_{M_i}
+	\end{pmatrix}\]
+	Where $N_i=\sum_{0\le j<i}d_j$ and $M_i=n-d_i-N_i$
+\end{lem}
+\begin{prf}[of lem~\ref{lem:orth-decomp}]
+	We set $S_k=\{C_0,C_1,\dots,C_k\}$ and we proceed by induction on $k$. When $k=0$, $S_k=\{C_0\}$. Now since 
+	$C_0^2=C_0$, we get that 1 and 0 are the only eigenvalues of $C_0$, so there is an $r\times r$ matrix $P_0$ 
+	and a positive integer $d_0$ such that
+	\[P_0^{-1}C_0P_0=\begin{pmatrix}
+		I_{d_0} & \\
+			& \mathbf{0}_{n-d_0}
+	\end{pmatrix}.\]
+	which establishes the base case.
+
+	Now assume that we have a matrix $P_{k-1}$ such that this property holds for all elements of $S_{k-1}$.
+	Define, for each $0\le i\le k$, 
+	\[C_i'\eqdef P^{-1}_{k-1}C_iP_{k-1}\]
+	and since the $C_k$ is assumed to be orthogonal to all other $C_i$,
+	\[C_k'=\begin{pmatrix}
+		\mathbf{0}_{N_k} & \\
+		& D_k
+	\end{pmatrix}\]
+	for some $D_k$.
+
+	Now by properties of block diagonal matrices, we have 
+	\[D_k^2=D_k\]
+	so the eigenvalues of $D_k$ are again one and zero. Thus there is an invertible $Q\in \GL_{n-N_k}$ such that 
+	\[Q^{-1}D_kQ=\begin{pmatrix}I_{d_k} &\\ & \mathbf{0}_{M_k}\end{pmatrix}\]
+	and so by setting
+	\[P_k\eqdef P_{k-1}\begin{pmatrix}I_{N_k} &\\ & Q\end{pmatrix}\]
+	we can define
+	\[C''_i\eqdef P_k^{-1}C_i P_k=\begin{pmatrix}I_{N_k} &\\ & Q\end{pmatrix}^{-1}C'\begin{pmatrix}I_{N_k} &\\ & Q\end{pmatrix}\]
+	for $0\le i\le k$, we see immediately that $C_i'=C_i''$ for $0\le i<k$ and furthermore 
+	\[C_k''=\begin{pmatrix}
+		\mathbf{0}_{N_k} & \\
+		& Q^{-1}D_kQ
+	\end{pmatrix}=\begin{pmatrix}
+		\mathbf{0}_{N_k} & &\\
+		& I_{d_k} & \\
+		& & \mathbf{0}_{M_k}
+	\end{pmatrix}\]
+	completing the inductive step. This this result holds for all $S_i$ and in particular for $S_m$, so the result is proven.
+\end{prf}
+As well as another result on a special class of commuting block diagonal matrices:
+\begin{lem}\label{lem:block-diag}
+	Let $k$ be an infinite field and let $A$ be a block diagonal matrix over $k$ of the form
+	\[A=\operatorname{diag}(x^mI_{d_m},x^{m-1}I_{d_{m-1}},\dots,I_{d_0})\]
+	where $d_i$ is (clearly) the dimension of the $(m-i)^{th}$ block and let $B$ be any matrix that commutes with $A$
+	for every choice of $x\in k$. Then $B$ is block diagonal of the same shape as $A$. 
+\end{lem}
+\begin{prf}[of lem~\ref{lem:block-diag}]
+	We proceed by comparing the entries in $AB$ and $BA$: notice that 
+	\[(AB)_{ij}=\sum_k A_{ik}B_{kj}=A_{ii}B_{ij}=x^aB_{ij}\]
+	and 
+	\[(BA)_{ij}=\sum_k B_{ik}A_{kj}=B_{ij}A_{jj}=x^bB_{ij}.\]
+	We will show that if the $(i,j)^{th}$ postion is not in one of the blocks of $A$, then it is zero.
+
+	But if $(i,j)$ is not in one of the blocks of $A$, then the nonzero element in the $i^{th}$ row and the nonzero element in 
+	the $j^{th}$ column ($x^a$ and $x^b$ in the above equations) are not the same! Since $x$ is arbitrary, this forces $B_{ij}=0$,
+	so $B$ is block diagonal with blocks the same as $A$.
+\end{prf}
+\begin{rmk}
+	Notice that in the above proof we used implicitly that there is an $x\in k$ such that for all $a,b$
+	\[x^a=x^b\quad\Rightarrow\quad a=b\]
+	which is true if (and only if!) $k$ is infinite. This is because any such $x$ must be a root of $x^n=x$ for some $n$, which 
+	has finitely many roots over any field (but every element in $\bbF_p$ satisfies $x^p=x$).
+\end{rmk}
+
+And finally using these two lemmas allows us to prove our main result:
+\begin{prf}[of thm~\ref{thm:decomp}]
+	We recreate the argument in Schur's thesis, translated from German and reinterpreted in more modern parlance. 
+	
+	Let $(\rho,V)$ be a polynomial representation of $\Gamma$ with $\dim_k V=r$. Then let $x\in k^\times$ be arbitrary (thought of as an indeterminate)
+	and consider the matrix $xI_n\in\Gamma$. The image of this matrix under $\rho$ is a matrix 
+	\[\rho(A)=\begin{pmatrix}
+		p_{11}(x) & \cdots & p_{1r}(x)\\
+		\vdots & \ddots & \vdots\\
+		p_{r1}(x) & \cdots & p_{rr}(x)
+	\end{pmatrix}\]
+	where each $p_{ij}$ is a polynomial in $x$. Let $m=\max_{i,j}\deg p_{ij}$, and this gives us a decomposition 
+	\[\rho(A)=x^m C_0+x^{m-1}C_1+\cdots+ xC_{m-1}+C_m\]
+	where each $C_i$ is an $r\times r$ matrix.
+
+	Let $y$ be another indeterminate and $B=yI_n$. By virtue of being a representation of $\Gamma$, we get 
+	\[\rho(A)\rho(B)=\rho(xI_n)\rho(yI_n)=\rho(xyI_n)=\rho(AB)\]
+	and using this setup we prove the following result: 
+	\[\text{For all $0\le i,j\le m$, with the $C_l$ as above,}\quad C_iC_j=\delta_{ij}C_i\]
+	That this is true can be established by comparing coefficients in the equation
+	\begin{align*}
+		\rho(AB)&=\rho(A)\rho(B)\\
+		C_0(xy)^m+\cdots+C_i(xy)^{m-i}+\cdots+C_m&=C_0^2x^my^m+\cdots+C_iC_jx^{m-i}y^{m-j}+\cdots+C_m^2
+	\end{align*}
+	Indeed, we immediately get that $C_i=C_i^2$ and furthermore the coefficients on $x^iy^j$ when $i\ne j$ give us
+	\[0=C_{m-i}C_{m-j}.\]
+	
+	Thus we have shown that the $C_i$ form a set of orthogonal idempotent matrices and evaluating our original equation at $x=1$,
+	we get (since $\rho$ is a homomorphism)
+	\[I_r=1C_0+\cdots+1C_m=\sum C_i\]
+	so the result from lemma~\ref{lem:orth-decomp} applies: we get a matrix $P$ such that 
+	\[P^{-1}\rho(xI_n)P=\begin{pmatrix}
+		x^mI_{d_0} & & & &\\
+		& x^{m-1}I_{d_1} & & &\\
+		& & \ddots & &\\
+		& & & xI_{d_{m-1}} & \\
+		& & & & I_{d_m}
+	\end{pmatrix}\]
+	Now let $\rho'(g)=P^{-1}\rho (g)P$ for all $g\in\Gamma$. This is a representation of $\Gamma$ since it it differs from $\rho$ by 
+	an automorphism of $\GL(V)$. Since matrix multiplication is an algebraic operation, $\rho'$ is still a polynomial representation of $\Gamma$. 
+	But notice that for all $g\in\Gamma$
+	\[\rho'(g)\rho'(xI_n)=\rho'(xg)=\rho'(xI_n)\rho'(g)\]
+	Then lemma \ref{lem:orth-decomp} gives us that $\rho'(g)$ decomposes in the same way for all $g\in \Gamma$, so 
+	we know that $\rho'$ decomposes as a direct sum of representations 
+	\[\rho'=\sum_{i=0}^m \rho'_i\]
+	where for each $i$ and $\lambda\in k$,
+	\[\rho'_i(\lambda g)=\rho_i'(\lambda I_{d_i})\rho_i'(g)=\lambda^i\rho'_i(g)\]
+	so each $\rho_i'$ is a homogeneous degree $i$ polynomial representation of $\Gamma$.
+
+	But of course the decomposition of a representation is independent of choice of basis,
+	so we get a decomposition of $\rho$ into homogenous pieces, as desired.
+\end{prf}
+
+\subsubsection{Monomials and multi-indices}
+All of the discussion up to this point has revolved around polynomials in $n^2$ variables, which quickly gets unwieldy unless one 
+uses some better notation. To that end, 
+\begin{defn}
+	An $(n,r)$-\textbf{multi-index} $i$ is an $r$-tuple $(i_1,\dots,i_r)$ where each $i_j\in\underline n\eqdef\{1,\dots,n\}$.
+	The collection of all $(n,r)$-multi-indices is denoted $I(n,r)$.
+\end{defn}
+\begin{rmk}
+	One can also think of an element $i\in I(n,r)$ as a (set) map 
+	\[i:\underline r\to\underline n.\]
+\end{rmk}
+The idea here is to associate to each monomial in a polynomial ring in many variables a tuple indicating its multidegree. That is we think of 
+\[(i_1,\dots,i_r)\quad\leftrightsquigarrow\quad x_{i_1}\cdots x{i_r}\]
+as corresponding to the same object. Which is wonderful except for one small flaw: polynomials are commutative 
+and multi-indices (as we have defined them) aren't! For example, in $I(3,4)$,
+\[(2,2,1,3)\quad\leftrightsquigarrow\quad x_1x_2^2x_3\quad\leftrightsquigarrow\quad (3,2,1,2).\]
+
+To handle this disparity, we define an equivalence relation on $I(n,r)$ where we say that $i\sim j$ if they are in the 
+same orbit under the natural $\frakS_r$ action. That is, if there exists $\sigma\in\frakS_r$ such that
+\[(i_1,\dots,i_r)=(j_{\sigma(1)},\dots,j_{\sigma(r)})\]
+
+In the context of polynomial representations of $\Gamma$, we want to consider polynomials in the coordinate functions $c_{ij}$,
+so as a matter of notation if $i,j\in I(n,r)$, let $c_{i,j}$ denote the monomial 
+\[c_{i,j}=c_{i_1j_1}\cdots c_{i_rj_r}.\]
+Again, we want to take into account that we can permute the order on the right hand side, but now we need that $i_k$ and $j_k$ 
+remain linked to the same function. To deal with this, we define an equivalence relation $\sim$ on $I(n,r)\times I(n,r)$ such that 
+\[(a,b)\sim (c,d)\]
+if there exists a $\sigma\in\frakS_r$ such that 
+\[(a_1,\dots,a_r)=(b_{\sigma(1)},\dots,b_{\sigma(r)})\quad\text{and}\quad(c_1,\dots,c_r)=(d_{\sigma(1)},\dots,d_{\sigma(r)}).\]
+The upshot of this work is that it gives us a bijection between (total) degree $r$ monomials in the $c_{ij}$ and the set
+\[I(n,r)\times I(n,r)/\sim\]
+
+\subsubsection{\texorpdfstring{$A_k(n,r)$}{Ak(n,r)}}
+Notice that if $V\in M(n,r)$, each of its structure maps are homogeneous degree $r$ polynomials. As the first object of study, consider 
+\begin{defn}
+	Let $A_k(n,r)=A(n.r)$ denote the collection of all homogeneous degree $r$ polynomials in the 
+	coordinate functions $c_{ij}:\Gamma\to k$.
+\end{defn}
+It is not too hard to see that 
+\begin{prop}
+	$A_k(n,r)$ is spanned by the elements 
+	\[\{c_{i,j}|(i,j)\in I(n,r)\times I(n,r)\}\]
+\end{prop}
+however it takes a short argument to see 
+\begin{lem}
+	The dimension of $A_k(n,r)$ over $k$ is $\binom{n^2+r-1}{n^2-1}=\binom{n^2+r-1}{r}$.
+\end{lem}
 \begin{prf}
-	We recreate the argument in Schur's thesis, translated from German to English.
+	The following is a ``stars and bars'' argument that is pervasive in combinatorics. See for example \cite{stanley} if unfamiliar with these techniques.
+	
+	Fix an ordering of the $c_{ij}$ (say the dictionary order)
+	and relabel them $\{\gamma_1,\dots,\gamma_{m}\}$ (here $m=n^2$) according to this order. Then the degree $r$ monomials are in bijection with $m$-tuples $(a_1,\dots,a_{m})\in\bbN^m$ such that $\sum_i a_i=r$ via the map which sends 
+	\[(a_1,\dots,a_{m})\mapsto \gamma_1^{a_1}\cdots\gamma_{m}^{a_{m}}.\]
+
+	But choosing such an element is the same as inserting $m-1$ bars into a line of $r$ stars (that is an ordered partition of $r$ into $m$ parts, 
+	where parts are allowed to be zero). But this is equivalent to choosing $m-1$ bars in a field of $m+r-1$ symbols. This is just 
+	\[\binom{m+r-1}{m-1}\]
+	and a well-known identity for binomial coefficients gets us the final equality.
+\end{prf}
+\begin{ex}
+	In case the reader is unfamiliar with this kind of reasoning, consider the case when $n=5$ and $r=4$. Then the partition $(1,0,0,2,1)$ corresponding to 
+	$\gamma_1\gamma_4^2\gamma_5$ corresponds to the stars-and-bars diagram 
+	\begin{center}
+		$\ast|||\ast\ast|\ast$
+	\end{center}
+	where there are $m+r-1=8$ symbols, $r=4$ of which are stars.
+\end{ex}
+
+\subsubsection{A dip into affine group schemes and category theory}
+$A(n,r)$ lies within $k^\Gamma=k(\Gamma)$, the $k$-algebra of functions $\Gamma\to k$, which has the structure of a Hopf algebra induced from the group 
+structure on $\Gamma$. More precisely, the functor $\GL_n:\Alg_k\to \Grp$ that assigns to every $k$-algebra $A$ the group $\GL_n(A)$ is representable. In other words, 
+\[\GL_n(-)\simeq \Hom_{\Alg_k}(R,-)\]
+where $R\cong k[x_{ij}|1\le i,j\le n]_{\det}$.
+
+The anti-equivalence of the categories of affine group schemes over $k$ and finite dimensional commutative $k$-Hopf algebras follows from Yoneda lemma 
+(c.f. \cite[chp. 1]{waterhouse}), and along with this equivalence comes a way to translate the group structure on $\Gamma$ 
+into a coalgebra structure on $R$: we have maps $\mu,\epsilon$, the multiplication and unit maps on $\Gamma$ satisfying the diagrams 
+\begin{center}
+	\begin{tikzcd}
+		\Gamma\times\Gamma\times\Gamma\ar[r,"\mu\times\id"]\ar[d,"\id\times\mu"] & \Gamma\times\Gamma\ar[d,"\mu"]\\
+		\Gamma\times\Gamma\ar[r,"\mu"] & \Gamma
+	\end{tikzcd}
+	\quad \begin{tikzcd}
+		\ast\times G\ar[r,"\epsilon\times\id"] &G\times G\ar[d,"\mu"]& G\times \ast\ar[l,"\id\times\epsilon",swap]\\
+		& G\ar[ur,leftrightarrow,"\sim"]\ar[swap,ul,leftrightarrow,"\sim"] &
+	\end{tikzcd}
+\end{center}
+(where $\ast$ is the trivial group) giving us associativity and identity. Yoneda gives us that the maps between functors (group schemes!)
+\[\mu:\Gamma\times\Gamma\to \Gamma\quad\text{and}\quad \epsilon:\ast\to\Gamma\]
+give rise to maps in $\Alg_k$:
+\[\Delta\eqdef\mu^\ast:R\to R\otimes_k R\quad\text{and}\quad \varepsilon\eqdef\epsilon^\ast: R\to k\]
+satisfying diagrams 
+\begin{center}
+	\begin{tikzcd}
+		R\otimes R\otimes R & R\otimes R\ar[l,"\Delta\otimes\id",swap]\\
+		R\otimes R\ar[u,"\id\otimes \Delta"] & R\ar[u,"\Delta"]\ar[l,"\Delta"]
+	\end{tikzcd}
+	\quad\begin{tikzcd}
+		k\otimes R\ar[dr,"\sim",leftrightarrow,swap] & R\otimes R\ar[l,"\varepsilon\otimes \id",swap]\ar[r,"\id\otimes\varepsilon"] & R\otimes k\ar[dl,"\sim",leftrightarrow]\\
+		& R\ar[u,"\Delta"] &
+	\end{tikzcd}
+\end{center}
+\begin{prop}
+	The maps $\Delta$ and $\varepsilon$ give $R$ a coalgebra structure. In coordinates, if $1\le i,j\le n$,
+	\[\Delta(c_{ij})=\sum_k c_{ik}\otimes c_{kj}\quad\text{and}\quad \varepsilon(c_{ij})=\delta_{ij}\]
+\end{prop}
+In fact, as mentioned before, $R$ becomes a bialgebra (a Hopf algebra even, although we won't need the antipode here). This means that 
+$\Delta$ and $\varepsilon$ are algebra morphisms for the natural algebra structure given by multiplication $m$ on $R$. In diagrams:
+\begin{center}
+	\begin{tikzcd}
+		R^{\otimes 4}\ar[r,"\id\otimes\tau\otimes 1"] & R^{\otimes4}\ar[r,"m\otimes m"]  & R\otimes R\\
+		R\otimes R\ar[u,"\Delta\otimes \Delta"]\ar[rr,"m"] & & R\ar[u,"\Delta"]
+	\end{tikzcd}
+	\quad\begin{tikzcd}
+		R\otimes R\ar[r,"m"]\ar[d,"\varepsilon\otimes\varepsilon"] & R\ar[d,"\varepsilon"]\\
+		k\otimes k\ar[r,"m"] & k
+	\end{tikzcd}
+\end{center}
+where $\tau:R\otimes R\to R\otimes R$ is the twist map $a\otimes b\mapsto b\otimes a$. 
+Chasing an element through the diagram on the left, we get
+\[\tilde m\circ (\Delta\otimes \Delta)(c_{ij}\otimes c_{ab})=\sum_{1\le k,l\le n}c_{ik}c_{al}\otimes c_{kj}c_{lb}=\Delta(c_{ij}{c_{ab}})\]
+or using our multi-index notation,
+\[\Delta(c_{(i,a),(j,b)})=\sum_{(k,l)\in I(n,2)}c_{(i,a),(k,l)}\otimes c_{(k,l),(j,b)}.\]
+
+Written more simply, the fact that $\Delta$ is an algebra morphism can be written 
+\[\Delta(a\cdot b)=\Delta(a)\ast\Delta(b)\]
+under suitable definitions of $\cdot$ and $\ast$. In a way that can be made precise, this means in particular that 
+\[\Delta(a\cdot b\cdot c)=\Delta(a)\ast\Delta(b\cdot c)=\Delta(a)\ast\Delta(b)\ast\Delta(c)\]
+and so on (since multiplication everywhere is associative) and therefore we can define this for arbitrary monomials and extend $k$-linearly: 
+\begin{prop}
+	If $i,j\in A(n,r)$, then 
+	\[\Delta(c_{i,j})=\sum_{k\in I(n,r)}c_{i,k}\otimes c_{k,j}\quad\text{and}\quad \varepsilon(c_{i.j})=\delta_{i,j}\]
+\end{prop}
+One can easily see that degree is preserved by $\Delta$, meaning that 
+\begin{prop}
+	$\Delta$ and $\varepsilon$ descend to a coalgebra structure on $A(n,r)$. That is, $A(n,r)$ is a ($k$-)coalgebra.
+\end{prop}
+
+\subsubsection{The Schur Algebra}
+Finally we get to the actual object of study:
+\begin{defn}
+	A \textbf{Schur algebra} is an element of the two-parameter family $\{S(n,r)\}=\{S_k(n,r)\}$ where $n$ and $r$ are any positive integers.
+	As a set, $S(n,r)$ is the linear dual of $A(n,r)$:
+	\[S(n,r)=A(n,r)^\ast=\Hom_k(A(n,r),k)\] 
+
+	Let $\xi_{i,j}$ denote the element dual to $c_{i.j}\in A(n,r)$. In other words:
+	\[\xi_{(a,b)}(c_{i,j})=\begin{cases}
+		1, & (a,b)\sim(i,j)\\
+		0, & \text{otherwise}
+	\end{cases}\]
+\end{defn}
+
+\begin{lem}
+	The coalgebra structure $(\Delta,\varepsilon)$ on $A(n,r)$ define an algebra structure on $S(n,r)$.
+\end{lem}
+\begin{prf}
+	Since $k$ is an initial object in $\Alg_k$, there is a unique map $u:k\hookrightarrow S(n,r)$ sending $1$ to the constant one function $\1$, which is our unit map.
+	Define multiplication $(\cdot)$ in $S(n,r)$ as follows: if $f,g\in S(n,r)$ then for any $x\in A(n,r)$ define 
+	\[(f\cdot g)(x)=m_k\circ (f\otimes g)\circ \Delta(x)=\sum f(x_{(1)})g(x_{(2)})\]
+	where $m_k:k\otimes k\to k$ denotes multiplication in $k$ and $\Delta(x)=\sum x_{(1)}\otimes x_{(2)}$ in Sweedler notation.
+
+	Then we must just confirm that these maps satisfy the properties of a $k$-algebra. $(\cdot)$ is $k$-bilinear because (for instance)
+	\begin{align*}
+		((af+bg)\cdot h)(x)&=\sum (af+bg)(x_{(1)})\otimes h(x_{(2)})\\
+		&=\sum a(f(x_{(1)})\otimes h(x_{(2)}))+b(g(x_{(1)})\otimes h(x_{(2)}))\\
+		&= a\sum f(x_{(1)})\otimes h(x_{(2)})+ b\sum g(x_{(1)})\otimes h(x_{(2)})\\
+		&=(a(f\cdot h)+b(g\cdot h))(x).
+	\end{align*}
+	
+	It suffices to show that the unit $\1$ acts as it should on the spanning set $\xi_{i,j}$ for a basis element $c_{a,b}$:
+	\[(\1\cdot \xi_{i,j})(c_{a,b})=\sum_{k=1}^n 1\cdot \xi_{i,j}(c_{k,b})\]
 \end{prf}
 
 \subsection{Representations of \texorpdfstring{$\frakS_n$}{Sn}}
 
-\subsection{Explicit Examples: \texorpdfstring{$S_\bbC(2,2)$}{S(2,2)} and \texorpdfstring{$\frakS_2$}{S2}}
+\subsection{Explicit Examples}
 To demonstrate the theory developed above, we begin a computation (in a simple case) of the isomorphism classes of irreducible 
 representations of both $S_\bbC(2,2)$ and $\frakS_2$.
 
-\subsubsection*{The symmetric group on two letters}
+\subsubsection{The symmetric group on two letters}
 The representation theory (over $k=\bbC$) of $\frakS_2$ is as simple as it comes: of course $\frakS_2\cong \bbZ/2\bbZ$ and we know that 
 there are $|G|$ nonisomorphic irreducible representations of an abelian group $G$ over $\bbC$. Since we are talking about a symmetric group, 
 we can realize these as the trivial and sign representations, represented by the Young diagrams:
@@ -192,7 +537,7 @@ we can realize these as the trivial and sign representations, represented by the
 
 As submodules of the regular representation $k\frakS_2= k e\oplus k(1\,2)$, we can construct these as $\langle e+(1\, 2)\rangle$ (trivial representation) and $\langle e-(1\,2)\rangle$ (sign representation).
 
-\subsubsection*{The Schur algebra \texorpdfstring{$S_\bbC(2,2)$}}
+\subsubsection{The Schur algebra \texorpdfstring{$S_\bbC(2,2)$}{S(2,2)}}
 Since $\ch\bbC=0$, (by e.g. \cite{schur-thesis}) we know immediately that $S_\bbC(2,2)$ is semisimple, so it suffices to identify the irreducible submodules therein.
 Now we know 
 \[S=S_\bbC(2,2)\cong \bbC^2\otimes\bbC^2\]
@@ -231,6 +576,16 @@ and
 \[V_{\lambda_2,\bbC}=\langle e_1\otimes e_1, \,e_1\otimes e_2+e_2\otimes e_1, \,e_2\otimes e_2\rangle\]
 where $\{e_1,e_2\}$ is a basis for $E\cong k^2$.
 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newpage
 \section{The Schur-Weyl Functor}
 From the discussion in the last section it is evident that the combinatorics behind the representation theory of $S(n,r)$ and $\frakS_r$ have some intersections
 in their use of Young tableaux and this connection is more than superficial. In fact, there is a functor relating the representations
@@ -295,7 +650,22 @@ via the map that sends any representation $V$ to its $\omega$ weight space $V^\o
 
 \subsection{Properties of \texorpdfstring{$\calF$}{F}}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 \section{Strict Polynomial Functors}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Questions and Extensions}
 
