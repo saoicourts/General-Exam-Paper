@@ -350,7 +350,7 @@ And finally using these two lemmas allows us to prove our main result:
 	so we get a decomposition of $\rho$ into homogenous pieces, as desired.
 \end{prf}
 
-\subsubsection{Monomials and multi-indices}
+\subsubsection{Monomials and multi-indices}\label{subsubsec:indices}
 All of the discussion up to this point has revolved around polynomials in $n^2$ variables, which quickly gets unwieldy unless one 
 uses some better notation. To that end, 
 \begin{defn}
@@ -506,7 +506,8 @@ Finally we get to the actual object of study:
 	The coalgebra structure $(\Delta,\varepsilon)$ on $A(n,r)$ define an algebra structure on $S(n,r)$.
 \end{lem}
 \begin{prf}
-	Since $k$ is an initial object in $\Alg_k$, there is a unique map $u:k\hookrightarrow S(n,r)$ sending $1$ to the constant one function $\1$, which is our unit map.
+	Since $k$ is an initial object in $\Alg_k$, there is a unique map $u:k\hookrightarrow S(n,r)$ sending $1$ to the unit function $\1$, which is given by 
+	\[\1(c_{i,j})=c_{i,j}(I_n)=\delta_{i,j}\]
 	Define multiplication $(\cdot)$ in $S(n,r)$ as follows: if $f,g\in S(n,r)$ then for any $x\in A(n,r)$ define 
 	\[(f\cdot g)(x)=m_k\circ (f\otimes g)\circ \Delta(x)=\sum f(x_{(1)})g(x_{(2)})\]
 	where $m_k:k\otimes k\to k$ denotes multiplication in $k$ and $\Delta(x)=\sum x_{(1)}\otimes x_{(2)}$ in Sweedler notation.
@@ -519,9 +520,259 @@ Finally we get to the actual object of study:
 		&=(a(f\cdot h)+b(g\cdot h))(x).
 	\end{align*}
 	
-	It suffices to show that the unit $\1$ acts as it should on the spanning set $\xi_{i,j}$ for a basis element $c_{a,b}$:
-	\[(\1\cdot \xi_{i,j})(c_{a,b})=\sum_{k=1}^n 1\cdot \xi_{i,j}(c_{k,b})\]
+	By $k$-linearity, it suffices to show that the unit $\1$ acts as it should on the spanning set $\xi_{i,j}$ for a basis element $c_{a,b}$:
+	\[(\1\cdot \xi_{i,j})(c_{a,b})=\sum_{k=1}^n \1(c_{a,k})\cdot\xi_{i,j}=\1(c_{a,a})\cdot\xi_{i,j}(c_{a,b})=\xi_{i,j}(c_{a,b})\]
+	and a similar identity holds on the right.
+
+	Then it remains to show that this multiplication is associative. Again by linearity it suffices to check that this works on the spanning set $\{c_{i,j}\}$:
+	\begin{align*}
+		((\alpha\cdot \beta)\cdot\gamma)(c_{i,j})&=\sum_{k\in I(n,r)}(\alpha\cdot\beta)(c_{i,k})\gamma(c_{k,j})\\
+		&=\sum_k\left(\sum_{l\in I(n,r)}\alpha(c_{i,l})\beta(c_{l,k})\right)\gamma(c_{k,j})\\
+		&=\sum_l\alpha(c_{i,l})\left(\sum_k \beta(c_{l,k})\gamma(c_{k,j})\right)\\
+		&=\sum_l\alpha(c_{i,l})(\beta\cdot\gamma)(c_{l,j})\\
+		&=(\alpha\cdot(\beta\cdot\gamma))(c_{i,j}).
+	\end{align*}
+
+	Thus since we have $k$-linear maps $\1$ and $m=(\cdot)$ satisfying the usual identity and associativity diagrams, $S(n,k)$ is a $k$-algebra 
+	with $\1$ and $m$ as its unit and multiplication.
 \end{prf}
+
+Why have we done all this work to construct Schur algebras, one may ask? Well the idea is that there is a map
+\[e:k\Gamma\to S(n,r)\]
+where it sends 
+\[\sum_i k_i g_i\mapsto \sum_i k_i e_{g_i}\]
+where $e_g$ is the ``evaluation at $g$'' map--that is, for all $x\in A(n,r)$,
+\[e_g(x)=x(g).\]
+\begin{lem}\label{lem:e-surj}
+	The map $e:k\Gamma\to S(n,r)$ is surjective.
+\end{lem}
+\begin{prf}
+	Let $\xi$ be any element orthogonal to $W=\Im e$, if one exists. Say this element is $\sum_{i,j}a_{i,j}\xi_{i,j}$.
+	But then the element $c=\sum a_{i,j}c_{i,j}$ is zero on every element in the image of $e$. In other words, for all $\kappa\in k\Gamma$,
+	\[c(\kappa)=e_\kappa(c)=0.\]
+	
+	But the only function in $k^\Gamma$ that is zero on all of $\Gamma$ is the zero function. Thus $\xi$ is zero, so $W=S(n,r)$
+\end{prf}
+
+In this way, $e$ induces a map between categories
+\[f:\lmod{S_k(n,r)}\to M_k(n,r)\]
+where $f(V)=V$ as far as underlying sets are concerned, but we are given a new action: 
+for any $\sum k_i g_i\in k\Gamma$ and $c\in V\in \lmod{S(n,r)}$,
+\[\left(\sum k_i g_i\right)\cdot v=\left(\sum k_i e_{g_i}\right)\cdot v.\]
+Notice that 
+\begin{lem}
+	$f$ as above defines a functor that sends any $\alpha:V\to W\in \lmod{S(n,r)}$
+	to the map that is identical as a map of sets. 
+\end{lem}
+\begin{prf}
+	Since we are working in a concrete category\footnote{There is a faithful functor to $\Set$; equivalently, any morphism is determined by where it sends the ``set of elements'' comprising the object.}, 
+	and since the $V$ and $f(V)$ are identical as sets and since any morphism is sent to the same map on underlying sets, commutativity of 
+	the functorality diagram 
+	\begin{center}
+		\begin{tikzcd}
+			V\ar[r,"\alpha"]\ar[d,"f"] & W\ar[d,"f"]\\
+			f(V)=V\ar[r,"f(\alpha)=\alpha"] & f(W)=W
+		\end{tikzcd}
+	\end{center}
+	is trivial to check. It remains only to check that $f(\alpha):V\to W$ is a morphism in $M(n,r)$, so that this diagram makes sense.
+
+	To check this, notice that for any $v\in V\in M(n,r)$ and $g\in k\Gamma$,
+	\[f(\alpha)(g\cdot v)=\alpha(e_g\cdot v)=e_g\cdot \alpha(v)=g\cdot f(\alpha)(v)\]
+	so $f$ is a functor.
+\end{prf}
+The upshot here is 
+\begin{thm}
+	The functor $f$ above is an equivalence of categories.
+\end{thm}
+\begin{prf}
+	That $f$ is faithful is easy enough to see since $f$ is the identity functor on the level of underlying sets. Let $g:V\to W$ be a morphism in 
+	$M(n,r)$ and consider the same (set) map in $\tilde g\in\lmod{S(n,r)}$. For any $\xi\in S(n,r)$, let $\kappa\in k\Gamma$ be an element such that $e_\kappa=\xi$
+	(which exists due to lem~\ref{lem:e-surj}).
+	Then 
+	\[\tilde g(\xi\cdot v)=g(\kappa\cdot v)=\kappa\cdot g(v)=\xi\cdot \tilde g(v)\]
+	But then $f(\tilde g)=g$, so $f$ is full.
+
+	It remains to see that $f$ is essentially surjective. But again this is not too hard to see since for any $V\in M(n,r)$ the same object setwise with the action given by 
+	\[\xi\cdot v=e_\kappa\cdot v\]
+	(where again $\kappa$ was chosen using lem~\ref{lem:e-surj}) maps to $V\in M(n,r)$ and we are done.
+\end{prf}
+\begin{rmk}
+	Actually, the above proof can be modified slightly to show that $f$ has a functorial inverse--that is, $f$ is an \textit{isomorphism of categories}.
+	Since we are only interested in representations up to isomorphism, however, equivalence is just as good.
+\end{rmk}
+\begin{rmk}
+	Using this equivalence, we identify $\lmod{S(n,r)}$ with $M(n,r)$ whenever it suits us.
+\end{rmk}
+
+One of a representation theorist's favorite kinds of results follows:
+\begin{cor}
+	If $\ch k=0$, the algebra $S(n,r)$ is semisimple.
+\end{cor}
+\begin{prf}
+	$k\Gamma$ is semisimple since $\ch k=0$, so every element in $\lmod{k\Gamma}$ splits into a direct sum of simple modules. But the irreducible objects in 
+	$M(n,r)$ and those in $\lmod{S(n,r)}$ are the same and decompositons in one category pull back to the other, so every element in $\lmod{S(n,k)}$ is also completely reducible.
+\end{prf}
+
+\subsubsection{Weights and Characters}
+The discussion in section~\ref{subsubsec:indices} highlights an important idea: while we care about the \textit{quantities} in which each $c_{ij}$ occurs 
+in a monomial, we are not particularly interested in the \textit{order}. Sometimes it is easier, then, to simply regard these as weak compositions:
+\begin{defn}
+	Let $n$ and $r$ be integers as usual. Then denote by $[a_1,\dots,a_n]$ the \textbf{weight} corresponding to 
+	$(i_1,\dots,i_r)\in I(n,r)$ where for each $i$,
+	\[a_i=\#\{k\in\underline r| i_k=i\}\]
+	Denote by $\Lambda(n,r)$ the collection of all weights. 
+\end{defn}
+\begin{rmk}
+	Another way to realize $\Lambda(n,r)$ is in the presentation 
+	\[\Lambda(n,r)=\left\{[a_1,\dots,a_n]\left|\sum_i a_i=r\right.\right\}\]
+	Yet another is to think of $\Lambda(n,r)$ as the set of $\frakS_r$ orbits in $I(n,r)$ (where now two objects 
+	are distinguished only if their ``contents'' vary).
+\end{rmk}
+Recall that we had that $\xi_{i,j}(c_{a,b})=1$ if and only if $(i,j)\sim(a,b)$. Because of this, it makes sense (if $\alpha$ is the 
+weight of $i$) to write 
+\[\xi_{\alpha}\eqdef \xi_{\alpha,\alpha}\eqdef \xi_{i,i}\]
+since the action is the same irrespective of the choice of representative $i$ of $\alpha.$
+
+Notice that the weights admit a $\frakS_n$ action 
+\[\sigma\cdot [a_1,\dots,a_n]=[a_{\sigma(1)},\dots,a_{\sigma(n)}]\]
+then 
+\begin{defn}
+	$\Lambda_+(n,r)$ is the orbit space of $\Lambda(n,r)$ under the above $\frakS(n)$ action.
+\end{defn}
+\begin{rmk}
+	The above are called the \textbf{dominant weights} in $M(n,r)$. Since each orbit $\alpha$ contains an element $[a_1,\dots,a_n]\in\alpha$ such that 
+	\[a_1\ge a_2\ge\cdots\ge a_n\]
+	we will often identify weights with their weakly-decreasing representative.
+
+	Sometimes we will refer to the dominant weight representing the orbit of $i\in I(n,r)$ as the \textbf{shape of $i$.}
+\end{rmk}
+
+The theory of weights in representations of $\Gamma$ closely mirrors similar decompositions in other 
+Artinian algebras: first we identify a family of (mutually orthogonal) idempotents:
+\begin{lem}
+	For $\alpha\in\Lambda(n,r)$ and $i,j\in I(n,r)$,
+	\[\xi_\alpha\xi_{i,j}=\begin{cases}
+		\xi_{i,j}, & i\in\alpha\\
+		0, &\text{otherwise}
+	\end{cases}\quad\text{and}\quad\xi_{i,j}\xi_\alpha=\begin{cases}
+		\xi_{i,j}, & j\in\alpha\\
+		0, &\text{otherwise}
+	\end{cases}\]
+\end{lem}
+\begin{prf}
+	We can compute the image of these on the $c_{a,b}\in A(n,r)$:
+	\begin{align*}
+		\xi_\alpha\cdot \xi_{i,j}(c_{a,b})&=\sum_k \xi_\alpha(c_{a,k})\xi_{i,j}(c_{k,b})\\
+		&= \xi_\alpha(c_{a,a})\xi_{i,j}(c_{a,b})
+	\end{align*}
+	where above we used that $\xi_{\alpha}(c_{i,j})=0$ unless $i=j$. But 
+	\[\xi_\alpha(c_{a,a})=\begin{cases}
+		1, & a\in\alpha\\ 0, & \text{otherwise}
+	\end{cases}\]
+	so 
+	\[\xi_\alpha\cdot \xi_{i,j}(c_{a,b})=\begin{cases}
+		\xi_{i,j}(c_{a,b}),& a\in\alpha\\ 0,& \text{otherwise}
+	\end{cases}\]
+	but in the case where $a\in\alpha$ and $\xi_{i,j}(c_{a,b})\ne 0$, this implies that $i\sim a$, so $i\in \alpha$. So finally,
+	\[\xi_\alpha\cdot \xi_{i,j}(c_{a,b})=\begin{cases}
+		\xi_{i,j}(c_{a,b}),& i\in\alpha\\ 0,& \text{otherwise}
+	\end{cases}\]
+	and since this holds for any $c_{a,b}$, the left-hand side is proven. A symmetric argument goes through for the right-hand side.
+\end{prf}
+
+For the next step, we decompose the identity into a sum of these idempotents:
+\begin{lem}\label{lem:decomp-one}
+	We have the decomposition 
+	\[\1 = \sum_{\alpha\in\lambda(n,r)} \xi_\alpha.\]
+\end{lem}
+\begin{prf}
+	On the one hand, for any $c_{a,b}\in A(n,r)$, $\1(c_{a,b})=\delta_{a,b}$. On the other hand, for any $\alpha$,
+	\[\xi_\alpha(c_{a,b})=0\]
+	when $a\ne b$ \textit{or when $a\notin \alpha$}. 
+	
+	Therefore when $a=b$, there is precisely one $\alpha$ (the orbit of $a=b$)
+	such that $\xi_\alpha(c_{a,b})=1$, so putting this all together,
+	\[\sum_{\alpha\in\Lambda(n,r)}\xi_\alpha(c_{a,b})=\delta_{a,b}\]
+	whence these two functions are equal.
+\end{prf}
+Using lemma~\ref{lem:decomp-one}, we can then decompose any $V\in M(n,r)$ into weight spaces:
+\[V=\1\cdot V=\sum_{\alpha\in\Lambda(n,r)}\xi_\alpha V\]
+which we will denote 
+\[\xi_\alpha V=V^\alpha.\]
+
+\begin{defn}
+	The \textbf{formal character} of a representation $V\in M(n,r)$ is a polynomial 
+	\[\Phi_V(X_1,\dots,X_n)=\sum_{\alpha\in\Lambda(n,r)}(\dim V^\alpha)X_1^{\alpha_1}\cdots X_n^{\alpha_n}=\sum_{\lambda\in\Lambda_+(n,r)}(\dim V^\alpha)m_\alpha(X_1,\dots,X_n)\]
+	where $m_\alpha$ is the \textit{monomial symmetric polynomial}
+	\[m_\alpha(X_1,\dots,X_n)=\sum_{\sigma\in\frakS_n}X_{\sigma(1)}^{\alpha_1}\cdots X_{\sigma(n)}^{\alpha_n}.\]
+\end{defn}
+
+\subsubsection{Irreducible Representations}
+The irreducible representations in $M(n,r)$ are given by a couple of results by some of the big names in representation theory: the original proof for $k=\bbC$ was proven in \cite[p.37]{schur-thesis} and then 
+generalized in a later paper by Weyl \cite{weyl} and in work by Chevalley\footnote{Green \cite{green} mentions a paper by Serre: \textit{Groupes de Grothendieck des Sch\'emas en Groupes R\'eductifs D\'eploy\'es} \cite{serre-chevalley}, which 
+makes mention to Chevalley's contributions in proving the existence of modules with prescribed characters.}:
+\begin{thm}
+	Fix the usual lexicographical ordering on monomials in $k[X_1,\dots,X_n]$. Let $n$ and $r$ be given integers with $n\ge 1$ and $r\ge 0$ Let $k$ be an infinite field. Then 
+	\begin{enumerate}
+		\item For each $\lambda\in\Lambda_+(n,r)$, there exists an (absolutely) irreducible module $F_{\lambda,k}$
+		in $M_k(n,r)$ whose character $\Phi_{\lambda,k}$ has leading term $X_1^{\lambda_1}\cdots X_n^{\lambda_n}$.
+		\item Every irreducible $V\in M_k(n,r)$ is isomorphic to $F_{\lambda,k}$ for exactly one $\lambda\in \Lambda_+(n,r)$.
+	\end{enumerate}
+\end{thm}
+So then the problem of classifying the simple modules (the ``basic building blocks'' in the semisimple case) is completely solved for infinite fields.
+It remains to demonstrate a way to construct $F_{\lambda,k}$.
+\begin{defn}
+	Fix some $\lambda\in \Lambda_+(n,r)$. Notice that this is a partition of $n$, and therefore corresponds to a Young diagram. Fix any labeling $1,\dots,r$ of the boxes in the 
+	Young diagram corresponding to $\lambda$. Let $T$ denote the diagram for $\lambda$ along with this labeling.
+	
+	Let $i:\underline r\to\underline n$ be any map. Then denote by $T_i$ the \textbf{$\lambda$-tableau}, which is $T$ with the $k^{th}$ entry consisting of $i(k)\in\underline r$.
+\end{defn}
+\begin{rmk}
+	This notation varies slightly (but not in spirit) from the notation in Green's book. He denotes the Young diagram by $[\lambda]$ and lets $T^\lambda$ be 
+	the labelling of the boxes in $[\lambda]$--a bijection $[\lambda]\to\underline r$.
+\end{rmk}
+\begin{ex}
+	Let $\lambda=(3,1,1)\in\Lambda_+(3,5)$. Thus $T$ is of shape 
+	\[\ytableausetup{smalltableaux,centertableaux}\ydiagram{3,1,1}\]
+	Then if we fix the left-to-right/top-to-bottom ordering of the boxes in $T$ and let $i:\{1,2,3,4,5\}\to\{1,2,3\}$
+	be given by $(2,1,3,3,2)$, we get the $\lambda$-tableau 
+	\[T_i=\ytableaushort{2 1 3, 3, 2}\]
+\end{ex}
+
+The core tool in constructing (a basis for) the irreducible modules is in the following definiton:
+\begin{defn}
+	Let $\lambda\in\Lambda_+(n,r)$ be some shape with a fixed labeling and let $i,j:\underline r\to\underline n$. Then the \textbf{bideterminant of $T_i$ and $T_j$}
+	is 
+	\[(T_i:T_j)=\sum_{\sigma\in C(T)}\operatorname{sgn}(\sigma)c_{i,j\sigma}\in A_k(n,r)\]
+	where $C(T)$ is the column stabilizer of $T$.
+\end{defn}
+This definition can be a bit difficult to unpack, so we give some examples:
+\begin{ex}
+	\begin{enumerate}
+		\item \[\ytableausetup{nosmalltableaux}\left(\ytableaushort{1 2,3}:\ytableaushort{3 1,2}\right)=\left|\begin{array}{cc}
+			c_{13} & c_{12}\\ c_{33} & c_{32}
+		\end{array}\right|c_{21}=(c_{13}c_{32}-c_{12}c_{33})c_{2,1}=c_{(1,2,3),(3,1,2)}-c_{(1,2,3),(2,1,3)}\]
+		\item \[\left(\begin{ytableau} a_1& a_2& a_3&\none[\dots] &a_n\end{ytableau}:
+		\begin{ytableau} b_1& b_2& b_3&\none[\dots]&b_n\end{ytableau}\right)=c_{a_1b_1}\cdots c_{a_nb_n}\]
+		\item \[\left(\begin{ytableau}a_1\\ a_2\\\none[\vdots]\\a_n\end{ytableau}:\begin{ytableau}b_1\\ b_2\\\none[\vdots]\\b_n\end{ytableau}\right)=
+			\left|\begin{array}{ccc}c_{a_1b_1} & \cdots & c_{a_1b_n}\\
+			\vdots & \ddots & \vdots\\
+			c_{a_nb_1} & \cdots & c_{a_nb_n}
+			\end{array}\right|\]
+	\end{enumerate}
+\end{ex}
+
+In the following, let $l:\underline r\to\underline n$ be $(1,\dots,1,2,\dots,2,3,\dots)$ such that for any shape $\lambda$ the 
+tableau $T_l$ is 
+\[\begin{ytableau}
+	1 & 1 &\none[\dots] &\none[\dots] &1\\
+	2 & 2 &\none[\dots] &2\\
+	\none[\vdots]\\
+	k
+\end{ytableau}\ytableausetup{smalltableaux}\]
+with $i$ in every box on the $i^{th}$ row from the top.
+
+
 
 \subsection{Representations of \texorpdfstring{$\frakS_n$}{Sn}}
 
@@ -533,7 +784,7 @@ representations of both $S_\bbC(2,2)$ and $\frakS_2$.
 The representation theory (over $k=\bbC$) of $\frakS_2$ is as simple as it comes: of course $\frakS_2\cong \bbZ/2\bbZ$ and we know that 
 there are $|G|$ nonisomorphic irreducible representations of an abelian group $G$ over $\bbC$. Since we are talking about a symmetric group, 
 we can realize these as the trivial and sign representations, represented by the Young diagrams:
-\[\ytableausetup{smalltableaux,centertableaux}\ydiagram{2}\quad\text{and}\quad\ydiagram{1,1}\]
+\[\ydiagram{2}\quad\text{and}\quad\ydiagram{1,1}\]
 
 As submodules of the regular representation $k\frakS_2= k e\oplus k(1\,2)$, we can construct these as $\langle e+(1\, 2)\rangle$ (trivial representation) and $\langle e-(1\,2)\rangle$ (sign representation).
 
