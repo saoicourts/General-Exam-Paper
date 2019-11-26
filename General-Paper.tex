@@ -410,7 +410,7 @@ however it takes a short argument to see
 	and a well-known identity for binomial coefficients gets us the final equality.
 \end{prf}
 \begin{ex}
-	In case the reader is unfamiliar with this kind of reasoning, consider the case when $n=5$ and $r=4$. Then the partition $(1,0,0,2,1)$ corresponding to 
+	In case the reader is unfamiliar with this kind of reasoning, consider the case when $n=5$ and $r=4$. Then the composition $(1,0,0,2,1)$ corresponding to 
 	$\gamma_1\gamma_4^2\gamma_5$ corresponds to the stars-and-bars diagram 
 	\begin{center}
 		$\ast|||\ast\ast|\ast$
@@ -695,10 +695,12 @@ For the next step, we decompose the identity into a sum of these idempotents:
 	\[\sum_{\alpha\in\Lambda(n,r)}\xi_\alpha(c_{a,b})=\delta_{a,b}\]
 	whence these two functions are equal.
 \end{prf}
+\begin{rmk}\label{rmk-weight-spaces}
 Using lemma~\ref{lem:decomp-one}, we can then decompose any $V\in M(n,r)$ into weight spaces:
 \[V=\1\cdot V=\sum_{\alpha\in\Lambda(n,r)}\xi_\alpha V\]
 which we will denote 
 \[\xi_\alpha V=V^\alpha.\]
+\end{rmk}
 
 \begin{defn}
 	The \textbf{formal character} of a representation $V\in M(n,r)$ is a polynomial 
@@ -722,7 +724,7 @@ makes mention to Chevalley's contributions in proving the existence of modules w
 So then the problem of classifying the simple modules (the ``basic building blocks'' in the semisimple case) is completely solved for infinite fields.
 It remains to demonstrate a way to construct $F_{\lambda,k}$.
 \begin{defn}
-	Fix some $\lambda\in \Lambda_+(n,r)$. Notice that this is a partition of $n$, and therefore corresponds to a Young diagram. Fix any labeling $1,\dots,r$ of the boxes in the 
+	Fix some $\lambda\in \Lambda_+(n,r)$. Notice that this corresponds to a Young diagram with $r$ boxes. Fix any labeling $1,\dots,r$ of the boxes in the 
 	Young diagram corresponding to $\lambda$. Let $T$ denote the diagram for $\lambda$ along with this labeling.
 	
 	Let $i:\underline r\to\underline n$ be any map. Then denote by $T_i$ the \textbf{$\lambda$-tableau}, which is $T$ with the $k^{th}$ entry consisting of $i(k)\in\underline r$.
@@ -749,12 +751,12 @@ The core tool in constructing (a basis for) the irreducible modules is in the fo
 This definition can be a bit difficult to unpack, so we give some examples:
 \begin{ex}
 	\begin{enumerate}
-		\item \[\ytableausetup{nosmalltableaux}\left(\ytableaushort{1 2,3}:\ytableaushort{3 1,2}\right)=\left|\begin{array}{cc}
+		\item $\lambda=(2,1,0)\in \Lambda_+(3,3)$\[\ytableausetup{nosmalltableaux}\left(\ytableaushort{1 2,3}:\ytableaushort{3 1,2}\right)=\left|\begin{array}{cc}
 			c_{13} & c_{12}\\ c_{33} & c_{32}
 		\end{array}\right|c_{21}=(c_{13}c_{32}-c_{12}c_{33})c_{2,1}=c_{(1,2,3),(3,1,2)}-c_{(1,2,3),(2,1,3)}\]
-		\item \[\left(\begin{ytableau} a_1& a_2& a_3&\none[\dots] &a_n\end{ytableau}:
+		\item $\lambda=(n,0,\dots,0)\in\Lambda_+(m,n)$\[\left(\begin{ytableau} a_1& a_2& a_3&\none[\dots] &a_n\end{ytableau}:
 		\begin{ytableau} b_1& b_2& b_3&\none[\dots]&b_n\end{ytableau}\right)=c_{a_1b_1}\cdots c_{a_nb_n}\]
-		\item \[\left(\begin{ytableau}a_1\\ a_2\\\none[\vdots]\\a_n\end{ytableau}:\begin{ytableau}b_1\\ b_2\\\none[\vdots]\\b_n\end{ytableau}\right)=
+		\item $\lambda=(1,\dots,1,0,\dots)\in\Lambda_+(m,n)$ where $n\ge m$ \[\left(\begin{ytableau}a_1\\ a_2\\\none[\vdots]\\a_n\end{ytableau}:\begin{ytableau}b_1\\ b_2\\\none[\vdots]\\b_n\end{ytableau}\right)=
 			\left|\begin{array}{ccc}c_{a_1b_1} & \cdots & c_{a_1b_n}\\
 			\vdots & \ddots & \vdots\\
 			c_{a_nb_1} & \cdots & c_{a_nb_n}
@@ -763,7 +765,7 @@ This definition can be a bit difficult to unpack, so we give some examples:
 \end{ex}
 
 In the following, let $l:\underline r\to\underline n$ be $(1,\dots,1,2,\dots,2,3,\dots)$ such that for any shape $\lambda$ the 
-tableau $T_l$ is 
+$\lambda$-tableau $T_l$ is 
 \[\begin{ytableau}
 	1 & 1 &\none[\dots] &\none[\dots] &1\\
 	2 & 2 &\none[\dots] &2\\
@@ -792,7 +794,7 @@ As submodules of the regular representation $k\frakS_2= k e\oplus k(1\,2)$, we c
 Since $\ch\bbC=0$, (by e.g. \cite{schur-thesis}) we know immediately that $S_\bbC(2,2)$ is semisimple, so it suffices to identify the irreducible submodules therein.
 Now we know 
 \[S=S_\bbC(2,2)\cong \bbC^2\otimes\bbC^2\]
-so $\dim_\bbC S=4.$ The theory outlined above give us that isomorphism types of irreducible modules are in bijection with partitions of 2 into two parts, meaning 
+so $\dim_\bbC S=4.$ The theory outlined above give us that isomorphism types of irreducible modules are in bijection with compositions of 2 of length 2, meaning 
 we have two isomorphism types: one corresponding to $\lambda_1=(1,1)$ and one corresponding to $\lambda_2=(2,1)$. 
 
 Using the construction of $D_{\lambda,\bbC}$ from above, we can compute these two irreducible modules explicitly:
@@ -843,7 +845,7 @@ in their use of Young tableaux and this connection is more than superficial. In 
 of these two objects in the following way:
 \subsection{Construction of the functor \texorpdfstring{$\calF$}{F}}
 
-Let $V\in M_k(n,r)$ be a $S(n,r)$-representation and select any weight $\alpha\in\Lambda(n,r)$. Then the weight space 
+Let $V\in M_k(n,r)$ be a $S(n,r)$-representation and select any weight $\alpha\in\Lambda(n,r)$. Then the weight space (cf. rmk~\ref{rmk-weight-spaces})
 \[V^\alpha=\xi_\alpha V\]
 becomes a $S(\alpha)\eqdef\xi_\alpha S(n,r)\xi_\alpha$-module using the action from $S(n,r)$. Now if we allow $r\le n$ and let
 \[\omega=(1,\dots,1,0,\dots,0)\in\Lambda(n,r)\]
@@ -898,6 +900,34 @@ The upshot of these lemmas is that one can define the functor
 \[\calF:M_k(n,r)\to \Rep(\frakS_r)\]
 via the map that sends any representation $V$ to its $\omega$ weight space $V^\omega\in \lmod {S(\omega)}\simeq \Rep(\frakS_r)$.
 
+\subsection{The general theory}
+The idea of the Schur functor fits into a larger context: Let $S$ be a $k$-algebra and let $M\in\lmod S$. Furthermore, let $e\in S$ be a (nonzero)
+idempotent. Then one can define a functor 
+\[\calF:\lmod S\to\lmod {eSe}\quad\text{via}\quad V\mapsto eV.\]
+An important property of this functor is 
+\begin{prop}
+	The image of an irreducible $S$ module under the functor $\calF$ above is zero or irreducible.
+\end{prop}
+\begin{prf}
+	Let $e\in S$ be the idempotent in the discussion above and let $W\subseteq eV$ be any nonzero $eSe$-submodule.
+	Then notice that $eW$ is a nonzero $S$-module contained in $e^2V=eV$, so $eW=eV$.
+	But since $eW\subseteq W$, this forces $W=eV$, so $\calF(V)$ is irreducible.
+\end{prf}
+
+Next, a discussion in Green \cite[p. 56]{green} gives us a natural thought process to follow in constructing a partial inverse to this functor. 
+Let $\calG:\lmod{eSe}\to\lmod S$ be an extension of scalars: specifically, if $M\in\lmod{eSe}$, then 
+\[\tilde\calG(M)=Se\otimes_{eSe}M.\]
+This is clearly functorial and furthermore satisfies the property that 
+\[\calF\circ\tilde\calG(M)=\calF(Se\otimes_{eSe}M)=e(Se\otimes_{eSe}M)=eSe\otimes_{eSe} M\cong e\otimes_{eSe}M\cong M\]
+so it is a right inverse (up to isomorphism) to $\calF$---a good candidate for our purposes. 
+
+What we are really looking for, however, is a functor that sends irreducible modules to irreducibles. It can be shown that $\tilde G$ 
+\textit{does not} satisfy this property, so we define 
+\begin{defn}
+	If $M\in\lmod S$ and $e\in S$ is an idempotent, denote by $M_{(e)}$ the largest $S$-submodule of $(1-e)M$.
+\end{defn}
+\noindent which enables us to define the functor 
+\[\calG:\lmod{eSe}\to \lmod S\quad\text{via}\quad M\mapsto \tilde\calG(M)/\tilde\calG(M)_{(e)}\]
 
 \subsection{Properties of \texorpdfstring{$\calF$}{F}}
 
