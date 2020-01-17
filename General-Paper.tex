@@ -19,6 +19,9 @@
 \usepackage[T1]{fontenc}
 \usepackage[urw-garamond]{mathdesign}
 \usepackage{garamondx}
+\let\mathcal\relax
+\newcommand{\mathcal}[1]{\text{\usefont{OMS}{cmsy}{m}{n}#1}}
+
 \usepackage{ytableau}
 
 %Replacement for the old geometry package
@@ -896,7 +899,7 @@ Using this result, we prove a more obviously useful statement:
 	\[\varphi(\xi_{u\pi,u}\xi_{u\sigma,u})=\varphi(\xi_{u\pi\sigma,u})=\pi\sigma=\varphi(\xi_{u\pi,u})\varphi(\xi_{u\sigma,u})\]
 	and it is bijective since it is bijective on the respective bases and is thus bijective as a linear map.
 \end{prf}
-The upshot of these lemmas is that one can define the functor 
+The upshot of these lemmas is that one can define the \textbf{Schur-Weyl functor} 
 \[\calF:M_k(n,r)\to \Rep(\frakS_r)\]
 via the map that sends any representation $V$ to its $\omega$ weight space $V^\omega\in \lmod {S(\omega)}\simeq \Rep(\frakS_r)$.
 
@@ -905,7 +908,7 @@ The idea of the Schur functor fits into a larger context: Let $S$ be a $k$-algeb
 idempotent. Then one can define a functor 
 \[\calF:\lmod S\to\lmod {eSe}\quad\text{via}\quad V\mapsto eV.\]
 An important property of this functor is 
-\begin{prop}
+\begin{prop}\label{prop:F-irred}
 	The image of an irreducible $S$ module under the functor $\calF$ above is zero or irreducible.
 \end{prop}
 \begin{prf}
@@ -920,6 +923,9 @@ Let $\calG:\lmod{eSe}\to\lmod S$ be an extension of scalars: specifically, if $M
 This is clearly functorial and furthermore satisfies the property that 
 \[\calF\circ\tilde\calG(M)=\calF(Se\otimes_{eSe}M)=e(Se\otimes_{eSe}M)=eSe\otimes_{eSe} M\cong e\otimes_{eSe}M\cong M\]
 so it is a right inverse (up to isomorphism) to $\calF$---a good candidate for our purposes. 
+\begin{rmk}
+	It is easy to prove the fact, which I glossed over above, that $M\cong e\otimes M$ via the $eSe$-isomorphism $m\mapsto e\otimes m$.
+\end{rmk}
 
 What we are really looking for, however, is a functor that sends irreducible modules to irreducibles. It can be shown that $\tilde G$ 
 \textit{does not} satisfy this property, so we define 
@@ -927,9 +933,48 @@ What we are really looking for, however, is a functor that sends irreducible mod
 	If $M\in\lmod S$ and $e\in S$ is an idempotent, denote by $M_{(e)}$ the largest $S$-submodule of $(1-e)M$.
 \end{defn}
 \noindent which enables us to define the functor 
-\[\calG:\lmod{eSe}\to \lmod S\quad\text{via}\quad M\mapsto \tilde\calG(M)/\tilde\calG(M)_{(e)}\]
+\[\calG:\lmod{eSe}\to \lmod S\quad\text{via}\quad M\mapsto \tilde\calG(M)/\tilde\calG(M)_{(e)}.\]
+This leads to the result:
+\begin{prop}
+	If $M\in \lmod{eSe}$ is irreducible, then so is $\calG(M)$.
+\end{prop}
+\begin{prf}
+	Let $W'$ be an $S$-module such that 
+	\[\tilde\calG(M)_{(e)}\subseteq W'\subseteq W\eqdef\tilde\calG(M)\]
+	(that is, that $W$ corresponds to a submodule in $\calG(M)$). Then consider multiplying everything by $e$ above:
+	we get
+	\[e\tilde\calG(M)=0\subseteq eW'\subseteq eW=e(Se\otimes M)=e\otimes eSeM\cong M\]
+	which, by the irreducibility of $M$, forces either $eW'=0$ (in which case $W'\subseteq\tilde\calG(M)_{(e)}$ and we are done)
+	or else $eW'=eW$.
 
-\subsection{Properties of \texorpdfstring{$\calF$}{F}}
+	In this latter case, we find 
+	\[W'\supseteq SeW'=S(eW)=S(eSe\otimes_{eSe} M)= Se\otimes eSe M\cong W.\]
+	Thus we can conclude that $W'=W$, so $\calG(M)$ has no nontrivial proper submodules, so it is simple.
+\end{prf}
+
+\subsection{Properties of \texorpdfstring{$\calF$ and $\calG$}{F and G}}
+Returning to the specific case of $S=S(n,r)$ and $eSe\cong\frakS_r$, the theory developed in the last part
+gives us a pair of functors
+\[\calF:M(n,r)\to \lmod{\frakS_r}\qquad, \calG:\lmod{\frakS_r}\to M(n,r),\]
+each of which preserve irreducibility. We also have that
+\begin{prop}
+	If $M\in M(n,r)$ is irredicible and if $eM\ne 0$, then $\calG\circ\calF(M)=\calG(eM)\cong M.$
+\end{prop}
+\begin{prf}
+	Notice by prop.~\ref{prop:F-irred} and the following discussion that $eM$ is irreducible and (by assumption) nonzero, so
+	\[\calF\circ\calG(eM)\cong eM\]
+	and since 
+	\[0\ne eM\subseteq M\]
+	and $M$ is irreducible, $eM=M$.
+\end{prf}
+This leads us to the following realization:
+\begin{cor}
+	If $\{M_\alpha\}_{\alpha\in\calI}$ is a complete collection of irreducible modules over $S(n,r)$,
+	then there exists a subset $\calJ\subseteq\calI$ such that $\{\calF(M_\alpha)\}_{\alpha\in\calJ}$
+	is a complete (and irredunant) set of irreducible $\frakS_r$-modules.
+
+	Furthermore, any index $j\in\calJ$ satisfies $\calG\circ\calF(M_j)\cong M_j$.
+\end{cor}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -941,6 +986,36 @@ What we are really looking for, however, is a functor that sends irreducible mod
 
 \section{Strict Polynomial Functors}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{The (Balmer) Spectrum of a Tensor Triangulated Category}
+In Paul Balmer's 2005 paper \cite{balmer-spc}, he developed a general framework for understanding the structure of certain 
+kinds of categories that arose from the original constructions in algebraic geometry. Serving as a source of inspiration for Balmer, in \cite{friedlander-pevtsova-pi} Friedlander and Pevtsova proved
+that the projective geometry of the cohomology ring of a finite group scheme can be recovered by looking at ``ideals'' in the category $\stmod G$ 
+of stable $G$ modules.
+
+Using this as a springboard, Balmer ported the definitions of ideals and prime ideals to tensor-triangulated categories (see below)
+and proved a broader result that gives some tools for better analyzing familes of representaitons of finite groups (among other things).
+\subsection{Some Motivation}
+Let $\calC$ be a symmetric tensor (i.e. monoidal) category with tensor product $\otimes$ and unit object $\1$. After giving some 
+thought to the matter, one realizes that a ring is given by putting a ``compatible'' monoidal structure on top of an abelian group,
+and to that end, one may consider the case when $\calC$ is also additive. 
+
+This perspective gives us an interesting analogy between (unital, commutative) rings in algebra and category theory. Since every 
+triangulated category is also additive, we can further specify that $\calC$ be triangulated:
+\begin{defn}
+	A \textbf{tensor-triangulated} category $\calC$ is a moniodal category (with $\otimes$ and $\1$) and a triangulated category with 
+	distinguished triangles $\calT$ comprised of objects in $\calC$ and shift functor $(-)[1]:\calC\to \calC$ such that:
+	\begin{itemize}
+		\item $-\otimes-$ is a triangulated (exact) functor in each entry.
+		\item 
+	\end{itemize}
+\end{defn}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
