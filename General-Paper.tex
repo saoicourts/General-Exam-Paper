@@ -6,6 +6,7 @@
 \usepackage[framed,thmmarks]{ntheorem}
 \usepackage[framemethod=tikz]{mdframed}
 \usepackage{hyperref}
+
 \hypersetup{
 	colorlinks = true,
 	linkcolor = [rgb]{0,0,0.5},
@@ -22,7 +23,10 @@
 \let\mathcal\relax
 \newcommand{\mathcal}[1]{\text{\usefont{OMS}{cmsy}{m}{n}#1}}
 
+%Document-Specific includes
 \usepackage{ytableau}
+\usepackage{mathtools}
+\usepackage{scalerel}
 
 %Replacement for the old geometry package
 \usepackage{fullpage}
@@ -73,7 +77,8 @@
 %\allowdisplaybreaks
 
 % Document-Specific Macros
-
+\newcommand*{\ttc}{{\large $\triangle$}\kern-0.86em\raisebox{0.3ex}{$\scaleobj{0.78}\otimes$}\hspace{1ex}}
+\DeclareMathOperator{\Spc}{Spc}
 
 \begin{document}
 %make the title page
@@ -99,7 +104,7 @@
 
 \newpage
 \section{Introduction}
-\subsection{Schur and Polynomial Representations}
+\subsection{Issai Schur and polynomial representations}
 The story of this project (more-or-less) begins with Schur's doctoral thesis \cite{schur-thesis} in which he defined
 polynomial representations of $\GL_n$---a theory which he developed more completely in his later paper \textit{\"Uber die 
 rationalen Darstellungen der allgemeinen linearen Gruppe}\footnote{English: \textit{On the rational representations of the general linear group}}
@@ -130,7 +135,7 @@ The key insight made in this theory comes from the observation that the vector s
 is made into a $(\GL_n(k),\frakS_r)$-bimodule in a very natural way, and that this bimodule gives us a way to relate 
 $\rmod {\frakS_r}$ with (a subcategory of) $\lmod {\GL_n(k)}$ via the so-called \textbf{Schur-Weyl functor.}
 
-\subsection{The Schur-Weyl Functor}
+\subsection{The Schur-Weyl functor}
 Clearly a connection between representations of two groups that are so ubiquitous in group theory and math in general 
 is a stunning observation, and much effort has been expended since the late 20th century to study this functor and its 
 properties---especially in how it relates the representation theory of these two groups. 
@@ -150,7 +155,7 @@ under these natural monoidal structures the Schur-Weyl functor is in fact monoid
 of these groups and algebras firmly in the realm of monoidal categories, opening up the area to new questions using 
 tools from category theory.
 
-\subsection{Notation and Conventions}\label{subsec:notation}
+\subsection{Notation and conventions}\label{subsec:notation}
 Throughout this paper we will define $k$ to be a field (not necessarily of characteristic zero or algebraically closed unless otherwise noted).
 %Let $\Alg_k$ be the category of $k$-algebras and $\Grp$ denote the category of groups with homorphisms.
 
@@ -491,7 +496,7 @@ One can easily see that degree is preserved by $\Delta$, meaning that
 	$\Delta$ and $\varepsilon$ descend to a coalgebra structure on $A(n,r)$. That is, $A(n,r)$ is a ($k$-)coalgebra.
 \end{prop}
 
-\subsubsection{The Schur Algebra}
+\subsubsection{The Schur algebra}
 Finally we get to the actual object of study:
 \begin{defn}
 	A \textbf{Schur algebra} is an element of the two-parameter family $\{S(n,r)\}=\{S_k(n,r)\}$ where $n$ and $r$ are any positive integers.
@@ -616,7 +621,7 @@ One of a representation theorist's favorite kinds of results follows:
 	$M(n,r)$ and those in $\lmod{S(n,r)}$ are the same and decompositons in one category pull back to the other, so every element in $\lmod{S(n,k)}$ is also completely reducible.
 \end{prf}
 
-\subsubsection{Weights and Characters}
+\subsubsection{Weights and characters}
 The discussion in section~\ref{subsubsec:indices} highlights an important idea: while we care about the \textit{quantities} in which each $c_{ij}$ occurs 
 in a monomial, we are not particularly interested in the \textit{order}. Sometimes it is easier, then, to simply regard these as weak compositions:
 \begin{defn}
@@ -712,7 +717,7 @@ which we will denote
 	\[m_\alpha(X_1,\dots,X_n)=\sum_{\sigma\in\frakS_n}X_{\sigma(1)}^{\alpha_1}\cdots X_{\sigma(n)}^{\alpha_n}.\]
 \end{defn}
 
-\subsubsection{Irreducible Representations}
+\subsubsection{Irreducible representations}
 The irreducible representations in $M(n,r)$ are given by a couple of results by some of the big names in representation theory: the original proof for $k=\bbC$ was proven in \cite[p.37]{schur-thesis} and then 
 generalized in a later paper by Weyl \cite{weyl} and in work by Chevalley\footnote{Green \cite{green} mentions a paper by Serre: \textit{Groupes de Grothendieck des Sch\'emas en Groupes R\'eductifs D\'eploy\'es} \cite{serre-chevalley}, which 
 makes mention to Chevalley's contributions in proving the existence of modules with prescribed characters.}:
@@ -939,23 +944,23 @@ This leads to the result:
 	If $M\in \lmod{eSe}$ is irreducible, then so is $\calG(M)$.
 \end{prop}
 \begin{prf}
-	Let $W'$ be an $S$-module such that 
-	\[\tilde\calG(M)_{(e)}\subseteq W'\subseteq W\eqdef\tilde\calG(M)\]
-	(that is, that $W$ corresponds to a submodule in $\calG(M)$). Then consider multiplying everything by $e$ above:
+	Let $W$ be an $S$-module such that 
+	\[\tilde\calG(M)_{(e)}\subseteq W\subseteq \tilde\calG(M)\]
+	Then consider multiplying by $e$ in the above inculsions:
 	we get
-	\[e\tilde\calG(M)=0\subseteq eW'\subseteq eW=e(Se\otimes M)=e\otimes eSeM\cong M\]
-	which, by the irreducibility of $M$, forces either $eW'=0$ (in which case $W'\subseteq\tilde\calG(M)_{(e)}$ and we are done)
-	or else $eW'=eW$.
+	\[0=e\tilde\calG(M)_{(e)}\subseteq eW\subseteq e\tilde \calG(M)=\calF\circ\tilde\calG(M)\simeq M\]
+	which, by the irreducibility of $M$, forces either $eW=0$ (in which case $W\subseteq\tilde\calG(M)_{(e)}$ and we are done)
+	or else $eW=e\tilde\calG(M)$.
 
 	In this latter case, we find 
-	\[W'\supseteq SeW'=S(eW)=S(eSe\otimes_{eSe} M)= Se\otimes eSe M\cong W.\]
-	Thus we can conclude that $W'=W$, so $\calG(M)$ has no nontrivial proper submodules, so it is simple.
+	\[\tilde\calG(M)= Se\otimes M\simeq Se\otimes eSeM=S(eSe\otimes M)=S(e\tilde\calG(M))=SeW\subseteq W\]
+	Thus we can conclude that $W=\tilde\calG(M)$, so $\calG(M)$ has no nontrivial proper submodules, so it is simple.
 \end{prf}
 
 \subsection{Properties of \texorpdfstring{$\calF$ and $\calG$}{F and G}}
 Returning to the specific case of $S=S(n,r)$ and $eSe\cong\frakS_r$, the theory developed in the last part
 gives us a pair of functors
-\[\calF:M(n,r)\to \lmod{\frakS_r}\qquad, \calG:\lmod{\frakS_r}\to M(n,r),\]
+\[\calF:M(n,r)\to \lmod{\frakS_r},\qquad \calG:\lmod{\frakS_r}\to M(n,r),\]
 each of which preserve irreducibility. We also have that
 \begin{prop}
 	If $M\in M(n,r)$ is irredicible and if $eM\ne 0$, then $\calG\circ\calF(M)=\calG(eM)\cong M.$
@@ -984,8 +989,27 @@ This leads us to the following realization:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\section{Strict Polynomial Functors}
+\section{Strict polynomial functors}
+The theory of strict polynomial functors has its genesis in the idea of \textit{polynomial maps between vector spaces},
+or equivalently the rational maps between the schemes they represent. The category of vector spaces with these polynomial maps---and 
+more specifically, the representaion category associated to it---gives the category $\Rep \Gamma^d_k$ of strict polynomial functors. 
 
+Originally definied by Friedlander and Suslin in \cite{friedlander-suslin}, the authors there showed that 
+the category $\lmod{S(n,r)}$ is equivalent to this category, introducing the language of polynomial functors as 
+a way to understand the structure of representations of the Schur algebras. 
+
+This process was carried out by Krause \cite{krause-strict-poly-func} and his students Aquilino and Reischuk \cite{aquilino-reischuk}.
+In the former, Krause identifies projective generators $\Gamma^{d,V}$ for $\Rep\Gamma^d_k$ and defines the tensor product 
+by defining it for projectives and taking the appropriate colimits. In the latter paper, the construction 
+is further elucidated and it is proven that the Schur-Weyl functor $\calF$ is monoidal.
+
+\subsection{Polynomial maps}
+
+\subsection{The categories \texorpdfstring{$\Gamma^dP_k$}{GdPk} and \texorpdfstring{$\Rep \Gamma^d_k$}{Rep Gdk}}
+
+\subsection{Monoidicity of \texorpdfstring{$\calF$}{F}}
+
+\subsection{A dictionary}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -993,7 +1017,19 @@ This leads us to the following realization:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{The (Balmer) Spectrum of a Tensor Triangulated Category}
+\section{Tensor products in the derived category \texorpdfstring{$\Db(S(n,r))$}{DbS(n,r)}}
+
+\subsection{Derived categories}
+
+\subsection{Compatibility of monoidal structures}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{The (Balmer) spectrum of a tensor triangulated category}
 In Paul Balmer's 2005 paper \cite{balmer-spc}, he developed a general framework for understanding the structure of certain 
 kinds of categories that arose from the original constructions in algebraic geometry. Serving as a source of inspiration for Balmer, in \cite{friedlander-pevtsova-pi} Friedlander and Pevtsova proved
 that the projective geometry of the cohomology ring of a finite group scheme can be recovered by looking at ``ideals'' in the category $\stmod G$ 
@@ -1001,29 +1037,95 @@ of stable $G$ modules.
 
 Using this as a springboard, Balmer ported the definitions of ideals and prime ideals to tensor-triangulated categories (see below)
 and proved a broader result that gives some tools for better analyzing familes of representaitons of finite groups (among other things).
-\subsection{Some Motivation}
-Let $\calC$ be a symmetric tensor (i.e. monoidal) category with tensor product $\otimes$ and unit object $\1$. After giving some 
+\subsection{Some motivation and a definition}
+Let $\calC$ be a symmetric monoidal (i.e. tensor) category with tensor product $\otimes$ and unit object $\1$. After giving some 
 thought to the matter, one realizes that a ring is given by putting a ``compatible'' monoidal structure on top of an abelian group,
 and to that end, one may consider the case when $\calC$ is also additive. 
 
 This perspective gives us an interesting analogy between (unital, commutative) rings in algebra and category theory. Since every 
 triangulated category is also additive, we can further specify that $\calC$ be triangulated:
 \begin{defn}
-	A \textbf{tensor-triangulated} category $\calC$ is a moniodal category (with $\otimes$ and $\1$) and a triangulated category with 
-	distinguished triangles $\calT$ comprised of objects in $\calC$ and shift functor $(-)[1]:\calC\to \calC$ such that:
+	A \textbf{tensor-triangulated} category $\calC$ is both a moniodal category and a triangulated category such that 
+	the monoidal structure preserves the triangluated structure. 
+
+	As a reminder, such a category is equipped with a tensor product $-\otimes -:\calC\times\calC\to \calC$ and unit object $\1$, along with
+	a collecton distinguished triangles $\calT$ comprised of objects in $\calC$ and shift functor (an auto-equivalence) $(-)[1]:\calC\to \calC$ such that:
+	$-\otimes-$ is a triangulated (or exact) functor in each entry (it takes $\calT$ to itself).
+\end{defn}
+
+\subsubsection{Aside: Why triangulation?}
+Look into and figure out why we need stability here to make sense of things.
+
+\subsection{Construction of the spectrum}
+Once the appropriate context is identified (which is the real ingenuity of Balmer's paper), the construction 
+very closely mirrors the construction seen in elementary algebraic geometry:
+\begin{defn}
+	Let $\calC$ be a tensor-triangulated category (TTC). Then a \textbf{(thick tensor) ideal} $I\subseteq \calC$ is a full triangulated subcategory 
+	with the following conditons:
 	\begin{itemize}
-		\item $-\otimes-$ is a triangulated (exact) functor in each entry.
-		\item 
+		\item \textit{(2-of-3 rule/Triangulation)} If $A,B,$ and $C\in\calC$ are objects that fit into a distinguished triangle
+		\[A\to B\to C\to A[1]\]
+		in $\calC$, and if any two of the three are objects in $I$, then so is the third.
+		\item \textit{(Thickness)} If $A\in I$ is an object that splits as $A\cong B\oplus C$ in $\calC$, then both $A$ and $B$ belong to $I$.
+		\item \textit{(Tensor Ideal)} If $A\in I$ and $B\in \calC$ then $A\otimes B=B\otimes A\in I$.
 	\end{itemize}
 \end{defn}
 
+\begin{rmk}
+	The first condition just ensures that our ideals respect the triangulated structure (and thus stability) in the parent category $\calC$. 
+	The final condition is the most direct analog of an ideal and is central in the analogy between this theory and classical AG.
+\end{rmk}
+From here the rest of the picture is relatively straightforward:
+\begin{defn}
+	Let $\calC$ be a TTC as before. Then an ideal $I\subseteq\calC$ is called a \textbf{prime ideal}
+	if, whenever $A\otimes B\in I$ for some $A,B\in \calC$, either $A$ or $B$ is in $I$.
+
+	We call the collection of all primes the \textbf{spectrum} of $\calC$ and write 
+	$\operatorname{Spc}(\calC)$.
+\end{defn}
+
+Here the construction varies slightly from the traditional construction of $\Spec$: we define 
+\[Z(S)\eqdef\{\calP\in\Spc(\calC)|S\cap\calP=\varnothing\}\]
+and define sets (for any $S\subseteq\calC$ and $A\in \calC$):
+\[U(S)\eqdef \Spc(\calC)\setminus Z(S)=\{\calP\in\Spc(\calC)|S\cap \calP\ne\varnothing\}\]
+and
+\[\supp(A)\eqdef Z(\{A\})=\{\calP\in\Spc\calC|A\notin \calP\}\]
+
+A routine check of the axioms shows us
+\begin{lem}[2.6 of \cite{balmer-spc}]
+	The sets $U(S)$ for all $S\subseteq\calC$ form a basis for a topology on $\Spc\calC$.
+\end{lem}
+which we call the \textbf{Zariski topology}, giving $\Spc\calC$ the structure of a topological space.
+
+\subsection{As a locally-ringed space}
+The above discussion mentions how we can construct a topological space from the set of prime thick tensor ideals 
+in a TTC, but there is even more we can get: the structure of a locally-ringed space. 
+
+To get this, we need to define the structure sheaf:
+\begin{defn}
+	Let $\calC$ be a tensor-triangulated category and let $\Spc\calC$ be the construction discussed above. Then the structure sheaf on $\Spc\calC$ is given by the 
+	sheafification $\O_\calC$ of the presheaf 
+	\[\tilde\O_\calC:\operatorname{Open}(\Spc\calC)\op\to \Ring\]
+	given by 
+	\[\tilde\O_\calC(U)\eqdef \End_{\calC/\calC_Z}(\1_U)\]
+	where $U\subseteq\Spc\calC$ is an open set and $\calC_Z$ is the thick tensor ideal in $\calC$ supported 
+	on $Z=\Spc\calC\setminus U$.
+\end{defn}
+
+\begin{rmk}
+	That $\calC_Z$ is a thick tensor ideal requires some work, but it follows from work that Balmer does to 
+	define a support data $(X,\sigma)$ on a tensor-triangulated category and showing that for any subset $Y\subset X$ of 
+	its associated topological space, the following set 
+	\[\{A\in\calC|\sigma(A)\subseteq Y\}\]
+	is a thick tensor ideal of $\calC$ (c.f. lem.~3.4).
+\end{rmk}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Questions and Extensions}
+\section{Questions and extensions}
 
 \section*{Acknowledgements}
 \label{sec:ack}
@@ -1036,7 +1138,8 @@ My thanks also to my loving partner, who stands besides me in good times and in 
 I need someone to spew math at (or a shoulder to cry on).
 
 Finally, thank you to my friends and colleagues in the University of Washington math department for many fruitful conversations 
-and for helping me to foster my natural mathematical curiosity into a raging fire.
+and inspiration for ideas to investigate along the way. In particular I am indebted to (in no particular order) Thomas Carr, Sean Griffin, Sam Roven, and Cody Tipton
+for all their help and support.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%  Bibliography %%%%%%%%%%%%%
