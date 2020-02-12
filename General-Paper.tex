@@ -1005,39 +1005,47 @@ by defining it for projectives and taking the appropriate colimits. In the latte
 is further elucidated and it is proven that the Schur-Weyl functor $\calF$ is monoidal.
 
 \subsection{Polynomial maps}
-Let $V,W$ be (finite dimensional) vector spaces over a field $k$. There are many equivalent formulations of polynomial maps between such spaces, 
+Let $V,W$ be vector spaces over a field $k$. There are many equivalent formulations of polynomial maps between such spaces, 
 but one that this author of this paper finds particulaly motivating is the following:
-\begin{defn}
+\begin{defn}\label{defn:poly-maps}
 	Let $V,W$ be as above. Then the set of \textbf{polynomial maps from $V$ to $W$} is defined to be 
 	\[\Hom_\text{Pol}(V,W)\eqdef \Hom_{\Sch/k}(V,W).\]
 \end{defn}
 
 To make sense of this definition, one recalls that every $V\in\Vectk$ corresponds to an affine $k$-scheme 
-$\Spec S^\ast(V^\vee)=V\otimes_k-$ (which we, through an abuse of notation, denote again $V$) represented by the symmetric algebra of the dual of $V$. Thus the polynomial maps
-are precisely the ones considers between these objects in their algebro-geometric realizations.
+$\Spec S^\ast(V^\vee)=V\otimes_k-$ (which we, through an abuse of notation, again denote $V$) represented by the symmetric algebra of the dual of $V$. Thus the polynomial maps
+are precisely the rational maps one considers between these objects in their algebro-geometric realizations.
 
-\begin{rmk}
+\begin{rmk}denote 
 	In Friedlander and Suslin's original paper, they define these maps abstractly as $S^\ast(V^\vee)\otimes W$. That this 
-	agrees with our definition follows from the following series of isomorphisms:
+	agrees with our definition (assuming that $V$ and $W$ are finite dimensional) follows from the following series of isomorphisms:
 	\begin{align*}
 		\Hom_\text{Pol}(V,W)&\eqdef\Hom_{\Sch/k}(V,W)\\
 		&\simeq\Hom_{\Alg_k}(S^\ast(W^\vee),S^\ast(V^\vee))\\
 		&\simeq\Hom_{\Alg_k}(W^\vee,S^\ast(V^\vee))\\
 		&\simeq W\otimes S^\ast(V^\vee)
 	\end{align*}
-	where we used above properties of affine schemes and standard facts of linear algebra as well as the fact that 
+	where we used above properties of affine schemes and standard facts of the linear algebra of finite dimensional vector spaces as well as the fact that 
 	a map from $S^\ast(V)$ is determined uniquely by its images on $V$.
 \end{rmk}
-The upshot to Friedlander and Suslin's definition is it avoids problems that arise in the case of infinite-dimensional 
-vector spaces as well as enabling us to make more simple the following:
+For reasons that will become apparent shortly, it is easier to use the above remarks to define a 
+polynomial map in the following way:
+\begin{defn}
+	If $V,W\in\Vectk$ are finite dimensional, a \textbf{polynomial map $f:V\to W$} can be alternatively defined as an element 
+	\[f\in W\otimes S^\ast(V^\vee)\cong\Hom_{\Sch/k}(V,W)\]
+	through the identifications above.
+\end{defn}
+
+The upshot to this seemingly more \textit{ad hoc} definition is that, while it introduces the restriction of finite dimensionality (which will suffice for our 
+definitions anyways), it enables us to make more simple the following idea:
 \begin{defn}\label{def:homog-poly-map}
 	Let $V$ and $W$ be vector spaces. Then a map $f\in \Hom_\text{Pol}(V,W)$ is called \textbf{homogeneous degree $d$} if 
 	it corresponds (under the isomorphisms above) to an element 
 	\[\hat f\in W\otimes S^d(V^\vee).\]
 \end{defn}
 This is clearly a tangible and sensible way to define a degree $d$ map and it is less obvious how to define a property 
-on the map of corresponding varieties that achieves the same goal. We will see in the next subsection a way to narrow our focus using 
-the algebro-geometric viewpoint. For now,
+on the map of corresponding varieties that achieves the same goal. We will see in the next subsection other ways to define this 
+notion that may appeal more to representation theorists.
 \begin{ex}
 	Here are some examples of polynomial maps:
 	\begin{itemize}
@@ -1052,7 +1060,7 @@ the algebro-geometric viewpoint. For now,
 	\end{itemize}
 \end{ex}
 
-\subsection{The categories \texorpdfstring{$\Gamma^dP_k$}{GdPk} and \texorpdfstring{$\Rep \Gamma^d_k$}{Rep Gdk}}
+\subsection{The categories \texorpdfstring{$\calP_k$}{Pk} and \texorpdfstring{$\Rep \Gamma^d_k$}{Rep Gdk}}
 Before we define these categories we should describe the objects in question!
 \begin{defn}
 	A \textbf{strict polynomial functor} is a functor $T:\Vect_k\to \Vect_k$ such that for any $V,W\in\Vect_k$,
@@ -1062,7 +1070,7 @@ Before we define these categories we should describe the objects in question!
 	\[T_{V,W}\in\Hom_\text{Pol}\big(\Hom_k(V,W), \Hom_k(T(V),T(W))\big)\]
 \end{defn}
 
-Earlier I promised that we would have a more natural interpretation of the homogeneous degree 
+Earlier I promised that we would have a more representation-theoretic interpretation of the homogeneous degree 
 of a strict polynomial functor. I am nothing if I am not true to my word:
 \begin{lem}[Lem. 2.2 in \cite{friedlander-suslin}]
 	Let $T$ be a strict polynomial functor and let $n\ge 0$ be an integer. Then the following conditions are equivalent:
@@ -1076,54 +1084,34 @@ of a strict polynomial functor. I am nothing if I am not true to my word:
 		is homogeneous of degree $n$ (in the sense of \ref{def:homog-poly-map}).
 	\end{enumerate}
 \end{lem}
-
-This gives us a way to measure the degree of a strict polynomial functor by looking at the representation theory of our 
-functor under the natural action by $\Gm$ on vector spaces (by scaling). That this corresponds with our original notion of degree 
-for polynomial maps is as follows:
-\begin{lem}
-	If $f\in\Hom_{\text{Pol}}(V,W)$ is a map homogeneous of degree $n$ (using defn.~\ref{def:homog-poly-map}), then 
-	\[f(\lambda \cdot v)=\lambda^n f(v)\]
-	for all $\lambda\in k$ and $v\in V$.
-\end{lem}
 \begin{prf}
-	It is important that one identify the actions on everything here first so that we can make the proper identifications. $V$
-	has a natural $k^\times$ action by scaling and this extends to an action on $V^\vee$ by 
-	\[(\lambda\cdot f)(v)=f(\lambda v)\]
-	and to a basis for $S^d(V^\vee)$ by
-	\begin{align*}
-		\lambda\cdot \left(\sum_{\sigma\in\frakS_d}x_{i_{\sigma(1)}}\otimes\cdots\otimes x_{i_{\sigma(d)}}\right)(v)&=\left(\sum_{\sigma\in\frakS_d}x_{i_{\sigma(1)}}\otimes\cdots\otimes x_{i_{\sigma(d)}}\right)(\lambda v)\\
-		&=\sum_{\sigma\in\frakS_d}x_{i_{\sigma(1)}}(\lambda v)\otimes\cdots\otimes x_{i_{\sigma(d)}}(\lambda v)\\
-		&=\lambda^d\sum_{\sigma\in\frakS_d}x_{i_{\sigma(1)}}\otimes\cdots\otimes x_{i_{\sigma(d)}}
-	\end{align*}
-	whence the action on $S^d(V^\vee)$ as a whole is simply 
-	\[(\lambda\cdot f)(v)=\lambda^df(v)\]
-	which extends linearly to an action of $k^\times$ on all of $S^\ast(V^\vee)$.
-
-	Now by our previous definition of degree, we said a homogeneous degree $n$ polynomial map $V\to W$ was an element 
-	of $W\otimes S^n(V^\vee)$. We need to translate this into an honest map of schemes and show that 
-	the action described above has the desired effect. If our map is given by the element $\sum_i w_i\otimes f_i$,
-	we get our map of representing algebras
-	\[f^\ast:S^\ast(W^\vee)\to S^\ast(V^\vee) \quad\text{sending}\quad \rho\mapsto \sum_i\rho(w_i)f_i.\]
-	
-	{\color{red} This proof needs to be overhauled. I am not even sure this is exactly what I should be proving.
-	I may need to go over it again with a fine-toothed comb to trace the actions through exactly. Eventually we will need to 
-	extend fields but that should be easy.}
+	\color{red} Spell this out. 
 \end{prf}
 
-From this, we see that our notions of degrees agree and we can continue on to define 
 \begin{defn}
 	The category $\calP_d$ is the full subcategory 
 	\[\calP_d\subset\Func(\Vectk,\Vectk)\]
 	whose objects are the \textbf{strict polynomial functors of degree $d$.}
 \end{defn}
 
-As with any $k$-linear category, we can also define the \textbf{$k$-linear representation category}
-\[\Rep\Gamma^d_k\eqdef \Func_k(\Gamma^dP_k,\Vectk),\]
-and with this category we can finally connect things to our discussion in section 2:
 \begin{thm}
-	The map 
-	\[\]
+	The map
+	\[\Psi:\calP_d\to \lmod {S(n,d)}\]
+	given by evaluation at $k^n$:
+	\[T\mapsto T(k^n)\]
+	is an equivalence of categories.
 \end{thm}
+\begin{prf}
+	\color{red} refactor the proof from Friedlander and Suslin.
+\end{prf}
+
+\subsubsection{Yet another category}
+Just when you thought you had enough categories to work in, Krause developed a new category that more succinctly captures
+the stucture of homogeneous degree $d$ polynomial maps: there the author changes the domain of these functors 
+to encode the desired properties automatically.
+\begin{defn}
+	Let $k$ be any commutative ring. Then $P_k\subset \Vect_k$ is the full subcategory of finitely-generated projective $k$-modules.
+\end{defn}
 
 \subsection{Monoidicity of \texorpdfstring{$\calF$}{F}}
 
@@ -1256,8 +1244,8 @@ I extend my most heartfelt thanks to my advisor, Julia Pevtsova, who not only he
 for this project, but also introduced me to many of the classical ideas found in this paper (some times more than once). 
 Her knowledge and understanding while I learned this subject has been absolutely invaluable to me.
 
-My thanks also to my loving partner, who stands besides me in good times and in bad and always patiently humors me when 
-I need someone to spew math at (or a shoulder to cry on).
+My thanks also to my loving partner Allison, who stands beside me in good times and in bad and always patiently humors me when 
+I need someone to listen to my inane ramblings.
 
 Finally, thank you to my friends and colleagues in the University of Washington math department for many fruitful conversations 
 and inspiration for ideas to investigate along the way. In particular I am indebted to (in no particular order) Thomas Carr, Sean Griffin, Sam Roven, and Cody Tipton
