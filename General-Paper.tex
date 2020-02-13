@@ -43,25 +43,30 @@
 
 %Set apart my theorems and lemmas and such
 \surroundwithmdframed[outerlinewidth=0.4pt,
-  innerlinewidth=0.5pt,
+  innerlinewidth=0pt,
   middlelinewidth=1pt,
   middlelinecolor=white,
   topline=false,bottomline=false,rightline=false,leftmargin=2em]{thm}
 \surroundwithmdframed[outerlinewidth=0.4pt,
-  innerlinewidth=0.5pt,
+  innerlinewidth=0pt,
   middlelinewidth=1pt,
   middlelinecolor=white,
   topline=false,bottomline=false,rightline=false,leftmargin=2em]{lem}
 \surroundwithmdframed[outerlinewidth=0.4pt,
-  innerlinewidth=0.5pt,
+  innerlinewidth=0pt,
   middlelinewidth=1pt,
   middlelinecolor=white,
   topline=false,bottomline=false,rightline=false,leftmargin=2em]{cor}
   \surroundwithmdframed[outerlinewidth=0.4pt,
-  innerlinewidth=0.5pt,
+  innerlinewidth=0pt,
   middlelinewidth=1pt,
   middlelinecolor=white,
   topline=false,bottomline=false,rightline=false,leftmargin=2em]{prop}
+  \surroundwithmdframed[outerlinewidth=0.4pt,
+  innerlinewidth=0,
+  middlelinewidth=1pt,
+  middlelinecolor=white,
+  topline=false,bottomline=false,rightline=false,leftmargin=2em]{rmk}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%% Customize Below %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -83,8 +88,8 @@
 \begin{document}
 %make the title page
 \title{General Exam Paper \vspace{-1ex}}
-\author{Nico Courts}
-\date{Winter 2019}
+\author{Nico Courts\footnote{University of Washington, Seattle. Email: ncourts@uw.edu}}
+\date{Exam Presentation: March 10th, 2020}
 \maketitle
 
 \begin{abstract}
@@ -94,6 +99,8 @@
 	and his students Aquilino and Reischuk on this functor and the fact that it is monoidal under reasonably natural monoidal structures on 
 	the categories in question. Finally we ask some questions about whether the monoidal structure on strict polynomial functors 
 	extends meaningfully to pathologies that arise in positive characteristic.
+
+	{\footnotesize An up-to-date version of this paper can be downloaded at the following link: \url{https://github.com/NicoCourts/General-Exam-Paper/raw/master/General-Paper.pdf}}
 \end{abstract}
 
 \newpage
@@ -164,6 +171,8 @@ We will use $\Gamma=\Gamma_k=\GL_n=\GL_n(k)$ to denote the general linear group,
 When speaking of the ($k$) vector space spanned by elements $v_1,\dots,v_n$, we will use the notation 
 \[\langle v_1,\dots, v_n\rangle.\]
 
+{\color{red} When the rest of the paper is finished, the intro will be rewritten to reflect the actual content.}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -225,8 +234,6 @@ we can simplify this picture considerably by proving the following structural re
 \end{thm}
 Clearly, then, it suffices to understand the \textit{homogeneous degree $r$} polynomial representations of $\Gamma$ if we are looking
 to understand the larger structure.
-
-\brk
 
 We begin with a useful lemma extracted from a proof in \cite{schur-thesis} echoing the general theory of 
 orthogonal decomposition of Artinian algebras.
@@ -370,7 +377,7 @@ uses some better notation. To that end,
 	\[i:\underline r\to\underline n.\]
 \end{rmk}
 The idea here is to associate to each monomial in a polynomial ring in many variables a tuple indicating its multidegree. That is we think of 
-\[(i_1,\dots,i_r)\quad\leftrightsquigarrow\quad x_{i_1}\cdots x{i_r}\]
+\[(i_1,\dots,i_r)\quad\leftrightsquigarrow\quad x_{i_1}\cdots x_{i_r}\]
 as corresponding to the same object. Which is wonderful except for one small flaw: polynomials are commutative 
 and multi-indices (as we have defined them) aren't! For example, in $I(3,4)$,
 \[(2,2,1,3)\quad\leftrightsquigarrow\quad x_1x_2^2x_3\quad\leftrightsquigarrow\quad (3,2,1,2).\]
@@ -384,7 +391,7 @@ so as a matter of notation if $i,j\in I(n,r)$, let $c_{i,j}$ denote the monomial
 \[c_{i,j}=c_{i_1j_1}\cdots c_{i_rj_r}.\]
 Again, we want to take into account that we can permute the order on the right hand side, but now we need that $i_k$ and $j_k$ 
 remain linked to the same function. To deal with this, we define an equivalence relation $\sim$ on $I(n,r)\times I(n,r)$ such that 
-\[(a,b)\sim (c,d)\]
+\[(a,c)\sim (b,d)\]
 if there exists a $\sigma\in\frakS_r$ such that 
 \[(a_1,\dots,a_r)=(b_{\sigma(1)},\dots,b_{\sigma(r)})\quad\text{and}\quad(c_1,\dots,c_r)=(d_{\sigma(1)},\dots,d_{\sigma(r)}).\]
 The upshot of this work is that it gives us a bijection between (total) degree $r$ monomials in the $c_{ij}$ and the set
@@ -500,7 +507,7 @@ One can easily see that degree is preserved by $\Delta$, meaning that
 
 \subsubsection{The Schur algebra}
 Finally we get to the actual object of study:
-\begin{defn}
+\begin{defn}\label{def:schur-alg}
 	A \textbf{Schur algebra} is an element of the two-parameter family $\{S(n,r)\}=\{S_k(n,r)\}$ where $n$ and $r$ are any positive integers.
 	As a set, $S(n,r)$ is the linear dual of $A(n,r)$:
 	\[S(n,r)=A(n,r)^\ast=\Hom_k(A(n,r),k)\] 
@@ -561,7 +568,7 @@ where $e_g$ is the ``evaluation at $g$'' map--that is, for all $x\in A(n,r)$,
 	But then the element $c=\sum a_{i,j}c_{i,j}$ is zero on every element in the image of $e$. In other words, for all $\kappa\in k\Gamma$,
 	\[c(\kappa)=e_\kappa(c)=0.\]
 	
-	But the only function in $k^\Gamma$ that is zero on all of $\Gamma$ is the zero function. Thus $\xi$ is zero, so $W=S(n,r)$
+	But the only function in $k^\Gamma$ that is zero on all of $\Gamma$ is the zero function. Thus $c=0$, whence its coefficients $a_{i,j}$ are zero. So $\xi$ is zero, so $W=S(n,r)$
 \end{prf}
 
 In this way, $e$ induces a map between categories
@@ -615,7 +622,7 @@ The upshot here is
 \end{rmk}
 
 One of a representation theorist's favorite kinds of results follows:
-\begin{cor}
+\begin{cor}\label{cor:semisimple}
 	If $\ch k=0$, the algebra $S(n,r)$ is semisimple.
 \end{cor}
 \begin{prf}
@@ -634,11 +641,13 @@ in a monomial, we are not particularly interested in the \textit{order}. Sometim
 \end{defn}
 \begin{rmk}
 	Another way to realize $\Lambda(n,r)$ is in the presentation 
-	\[\Lambda(n,r)=\left\{[a_1,\dots,a_n]\left|\sum_i a_i=r\right.\right\}\]
+	\[\Lambda(n,r)=\left\{[a_1,\dots,a_n]\left|\sum_i a_i=r\right.\right\},\]
+	or as the set of compositions of $r$ into $n$ parts (allowing zeros).
+	
 	Yet another is to think of $\Lambda(n,r)$ as the set of $\frakS_r$ orbits in $I(n,r)$ (where now two objects 
 	are distinguished only if their ``contents'' vary).
 \end{rmk}
-Recall that we had that $\xi_{i,j}(c_{a,b})=1$ if and only if $(i,j)\sim(a,b)$. Because of this, it makes sense (if $\alpha$ is the 
+Recall (c.f. \ref{def:schur-alg}) that we had that $\xi_{i,j}(c_{a,b})=1$ if and only if $(i,j)\sim(a,b)$. Because of this, it makes sense (if $\alpha$ is the 
 weight of $i$) to write 
 \[\xi_{\alpha}\eqdef \xi_{\alpha,\alpha}\eqdef \xi_{i,i}\]
 since the action is the same irrespective of the choice of representative $i$ of $\alpha.$
@@ -722,8 +731,8 @@ which we will denote
 \subsubsection{Irreducible representations}
 The irreducible representations in $M(n,r)$ are given by a couple of results by some of the big names in representation theory: the original proof for $k=\bbC$ was proven in \cite[p.37]{schur-thesis} and then 
 generalized in a later paper by Weyl \cite{weyl} and in work by Chevalley\footnote{Green \cite{green} mentions a paper by Serre: \textit{Groupes de Grothendieck des Sch\'emas en Groupes R\'eductifs D\'eploy\'es} \cite{serre-chevalley}, which 
-makes mention to Chevalley's contributions in proving the existence of modules with prescribed characters.}:
-\begin{thm}
+makes mention to Chevalley's contributions in proving the existence of modules with prescribed characters. This author was unable to find Chevalley's work.}:
+\begin{thm}\label{thm:irreps}
 	Fix the usual lexicographical ordering on monomials in $k[X_1,\dots,X_n]$. Let $n$ and $r$ be given integers with $n\ge 1$ and $r\ge 0$ Let $k$ be an infinite field. Then 
 	\begin{enumerate}
 		\item For each $\lambda\in\Lambda_+(n,r)$, there exists an (absolutely) irreducible module $F_{\lambda,k}$
@@ -784,8 +793,25 @@ $\lambda$-tableau $T_l$ is
 \end{ytableau}\ytableausetup{smalltableaux}\]
 with $i$ in every box on the $i^{th}$ row from the top.
 
-{\color{red} Need to finish constructing the $D_{\lambda,k}$ and $V_{\lambda,k}$ here so we have tangible irreducibles.}
+\begin{defn}
+	Define, for every shape $\lambda\in\Lambda_+(n,r)$, the module
+	\[D_{\lambda,k}=\langle(T_l:T_i)\rangle_{i\in I(n,r)}\]
+	where $l$ is the filling defined above.
+\end{defn}
+According to \cite{green}, these modules were originally called ``Weyl modules'', while he (and we)
+reserve this name for the contravariant dual of these objects. To construct them, define the map 
+\begin{equation}\label{eqn:pimap}
+	\pi:E^{\otimes r}\to D_{\lambda, k},
+\end{equation}
+\begin{defn}
+	Given a shape $\lambda$, the \textbf{Weyl module of shape $\lambda$ over $k$} is 
+	$V_{\lambda, k}\eqdef N^\perp$ where 
+	\[N\eqdef\ker\pi\hookrightarrow E^{\otimes r}\to D_{\lambda,k}\]
+\end{defn}
 
+We are finally in good shape to compute the irreducible modules promised to us in thm.~\ref{thm:irreps}. We define 
+\[F_{\lambda, k}=V_{\lambda,k}/V_{\lambda,k}^\text{max}\]
+where $V_{\lambda,k}^\text{max}$ is the unique maximal submodule of $V_{\lambda,k}$. It remains to show that the $F_{\lambda,k}$ are actually the 
 
 \subsection{Representations of \texorpdfstring{$\frakS_n$}{Sn}}
 {\color{red}Spell out the basics of the representation theory for $\frakS_n$ over $\bbC$. Fulton and Harris is a good reference here.}
@@ -803,8 +829,8 @@ we can realize these as the trivial and sign representations, represented by the
 As submodules of the regular representation $k\frakS_2= k e\oplus k(1\,2)$, we can construct these as $\langle e+(1\, 2)\rangle$ (trivial representation) and $\langle e-(1\,2)\rangle$ (sign representation).
 
 \subsubsection{The Schur algebra \texorpdfstring{$S_\bbC(2,2)$}{S(2,2)}}
-Since $\ch\bbC=0$, (by e.g. \cite{schur-thesis}) we know immediately that $S_\bbC(2,2)$ is semisimple, so it suffices to identify the irreducible submodules therein.
-Now we know 
+Since $\ch\bbC=0$ corollary~\ref{cor:semisimple} implies that $S_\bbC(2,2)$ is semisimple, so it suffices to identify the irreducible submodules therein.
+We know 
 \[S=S_\bbC(2,2)\cong \bbC^2\otimes\bbC^2\]
 so $\dim_\bbC S=4.$ The theory outlined above give us that isomorphism types of irreducible modules are in bijection with compositions of 2 of length 2, meaning 
 we have two isomorphism types: one corresponding to $\lambda_1=(1,1)$ and one corresponding to $\lambda_2=(2,1)$. 
@@ -834,8 +860,7 @@ Since these are the only two Young diagrams of size two, these examples form a c
 If we prefer instead to recognize our irreducibles as submodules of $E^{\otimes 2}$ (giving us a more obvious action by our algebras), 
 we can use the short exact sequence 
 \[0\to N\hookrightarrow E^{\otimes 2}\twoheadrightarrow D_{\lambda,\bbC}\to 0\]
-to define the $N=\ker\pi$, where $\pi$ is defined to be the map taking 
-\[e_i\otimes e_j\mapsto (T_{(1,1)}:T_{(i,j)}).\] 
+to define the $N=\ker\pi$, where $\pi$ is the map defined in equation (\ref{eqn:pimap}) above.
 Then we can compute the orthogonal complement to $N$ to get $V_{\lambda,\bbC}$.
 We can compute:
 \[V_{\lambda_1,\bbC}=\langle e_1\otimes e_2-e_2\otimes e_1\rangle\]
