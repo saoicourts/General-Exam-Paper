@@ -464,6 +464,8 @@ satisfying diagrams
 	The maps $\Delta$ and $\varepsilon$ give $R$ a coalgebra structure. In coordinates, if $1\le i,j\le n$,
 	\[\Delta(c_{ij})=\sum_k c_{ik}\otimes c_{kj}\quad\text{and}\quad \varepsilon(c_{ij})=\delta_{ij}\]
 \end{prop}
+{\color{red} Maybe spell out explicitly how to derive the coalgebra structure through the Yoneda embedding?}
+
 In fact, as mentioned before, $R$ becomes a bialgebra (a Hopf algebra even, although we won't need the antipode here). This means that 
 $\Delta$ and $\varepsilon$ are algebra morphisms for the natural algebra structure given by multiplication $m$ on $R$. In diagrams:
 \begin{center}
@@ -782,9 +784,11 @@ $\lambda$-tableau $T_l$ is
 \end{ytableau}\ytableausetup{smalltableaux}\]
 with $i$ in every box on the $i^{th}$ row from the top.
 
+{\color{red} Need to finish constructing the $D_{\lambda,k}$ and $V_{\lambda,k}$ here so we have tangible irreducibles.}
 
 
 \subsection{Representations of \texorpdfstring{$\frakS_n$}{Sn}}
+{\color{red}Spell out the basics of the representation theory for $\frakS_n$ over $\bbC$. Fulton and Harris is a good reference here.}
 
 \subsection{Explicit Examples}
 To demonstrate the theory developed above, we begin a computation (in a simple case) of the isomorphism classes of irreducible 
@@ -830,7 +834,9 @@ Since these are the only two Young diagrams of size two, these examples form a c
 If we prefer instead to recognize our irreducibles as submodules of $E^{\otimes 2}$ (giving us a more obvious action by our algebras), 
 we can use the short exact sequence 
 \[0\to N\hookrightarrow E^{\otimes 2}\twoheadrightarrow D_{\lambda,\bbC}\to 0\]
-to define the $n=\ker\pi$, where $\pi$ is defined to be the map in REFERENCE HERE. Then we can compute the orthogonal complement to $N$ to get $V_{\lambda,\bbC}$.
+to define the $N=\ker\pi$, where $\pi$ is defined to be the map taking 
+\[e_i\otimes e_j\mapsto (T_{(1,1)}:T_{(i,j)}).\] 
+Then we can compute the orthogonal complement to $N$ to get $V_{\lambda,\bbC}$.
 We can compute:
 \[V_{\lambda_1,\bbC}=\langle e_1\otimes e_2-e_2\otimes e_1\rangle\]
 and
@@ -1016,7 +1022,7 @@ To make sense of this definition, one recalls that every $V\in\Vectk$ correspond
 $\Spec S^\ast(V^\vee)=V\otimes_k-$ (which we, through an abuse of notation, again denote $V$) represented by the symmetric algebra of the dual of $V$. Thus the polynomial maps
 are precisely the rational maps one considers between these objects in their algebro-geometric realizations.
 
-\begin{rmk}denote 
+\begin{rmk}
 	In Friedlander and Suslin's original paper, they define these maps abstractly as $S^\ast(V^\vee)\otimes W$. That this 
 	agrees with our definition (assuming that $V$ and $W$ are finite dimensional) follows from the following series of isomorphisms:
 	\begin{align*}
@@ -1041,7 +1047,7 @@ definitions anyways), it enables us to make more simple the following idea:
 \begin{defn}\label{def:homog-poly-map}
 	Let $V$ and $W$ be vector spaces. Then a map $f\in \Hom_\text{Pol}(V,W)$ is called \textbf{homogeneous degree $d$} if 
 	it corresponds (under the isomorphisms above) to an element 
-	\[\hat f\in W\otimes S^d(V^\vee).\]
+	\[f\in W\otimes S^d(V^\vee).\]
 \end{defn}
 This is clearly a tangible and sensible way to define a degree $d$ map and it is less obvious how to define a property 
 on the map of corresponding varieties that achieves the same goal. We will see in the next subsection other ways to define this 
@@ -1111,11 +1117,31 @@ the stucture of homogeneous degree $d$ polynomial maps: there the author changes
 to encode the desired properties automatically.
 \begin{defn}
 	Let $k$ be any commutative ring. Then $P_k\subset \Vect_k$ is the full subcategory of finitely-generated projective $k$-modules.
+
+	Define $\Gamma^d P_k$ to be the category of \textbf{divided powers}---the objects are the same as those of $P_k$, but such that 
+	\[\Hom_{\Gamma^dP_k}(V,W)=\Gamma^d\Hom_{P_k}(V,W)\]
+	where $\Gamma^d X=(X^{\otimes d})^{\frakS_d}$ denotes the \textbf{$d^{\text{th}}$} divided powers of the $k$-module $X$.
+
+	Finally, as a matter of notation, let 
+	\[\Rep\Gamma^d_k=\Rep\Gamma^dP_k=\Func(\Gamma^dP_k,\lmod k)\]
+	which we (suggestively) call the \textbf{category of homogeneous degree $d$ strict polynomial functors.}
 \end{defn}
+\begin{rmk}
+	Of course, when $k$ is a field, we get that $P_k=\Vectk$ and an element
+	\[T\in\Rep\Gamma^d_k=\Func(\Gamma^d\Vectk,\Vectk),\]
+	is a functor that, on objects, is a map $\Vectk\to \Vectk$ and on morphisms is of the form 
+	\[T_{VW}:\Hom_{\Gamma^d\Vectk}(V,W)=\Gamma^d\Hom_k(V,W)\to \Hom_k(T(V),T(W))\]
+	which, while not exactly our definition of a polynomial map, suggests some level of similarity.
+\end{rmk}
+
+{\color{red} Finish up proving that this category is also equivalent. Maybe try to see if I can cook up an equivlence directly between $\calP_d$ and $\Rep\Gamma^d_k?$}
 
 \subsection{Monoidicity of \texorpdfstring{$\calF$}{F}}
+{\color{red} Define Henning's monoidal structure on $\Rep\Gamma^d_k$ and go through Aquilino and Reischuk's proof 
+the SW functor is monoidal under this definition.}
 
 \subsection{A dictionary}
+{\color{red} Spell out how one can translate between the three different categories: irreducibles and tensor structure.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1124,7 +1150,8 @@ to encode the desired properties automatically.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Tensor products in the derived category \texorpdfstring{$\Db(S(n,r))$}{DbS(n,r)}}
-
+{\color{red} Do some definitions here for derived category stuff and talk about how the induced tensor product from before compares with the one 
+naturally on $\Db(S(n,r))$}
 \subsection{Derived categories}
 
 \subsection{Compatibility of monoidal structures}
@@ -1160,7 +1187,7 @@ triangulated category is also additive, we can further specify that $\calC$ be t
 \end{defn}
 
 \subsubsection{Aside: Why triangulation?}
-Look into and figure out why we need stability here to make sense of things.
+{\color{red} Look into and figure out why we need stability here to make sense of things.}
 
 \subsection{Construction of the spectrum}
 Once the appropriate context is identified (which is the real ingenuity of Balmer's paper), the construction 
