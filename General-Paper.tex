@@ -808,10 +808,16 @@ reserve this name for the contravariant dual of these objects. To construct them
 	$V_{\lambda, k}\eqdef N^\perp$ where 
 	\[N\eqdef\ker\pi\hookrightarrow E^{\otimes r}\to D_{\lambda,k}\]
 \end{defn}
+\begin{lem}
+	The modules $V_{\lambda,k}$ have a unique maximal submodule $V_{\lambda,k}^{\text{max}}$
+\end{lem}
+\begin{prf}
+	{\color{red} Do this.}
+\end{prf}
 
 We are finally in good shape to compute the irreducible modules promised to us in thm.~\ref{thm:irreps}. We define 
 \[F_{\lambda, k}=V_{\lambda,k}/V_{\lambda,k}^\text{max}\]
-where $V_{\lambda,k}^\text{max}$ is the unique maximal submodule of $V_{\lambda,k}$. It remains to show that the $F_{\lambda,k}$ are actually the 
+where $V_{\lambda,k}^\text{max}$ is the unique maximal submodule of $V_{\lambda,k}$. {\color{red}It remains to show that the $F_{\lambda,k}$ have the requisite characters $\Phi_{\lambda,k}$.}
 
 \subsection{Representations of \texorpdfstring{$\frakS_n$}{Sn}}
 {\color{red}Spell out the basics of the representation theory for $\frakS_n$ over $\bbC$. Fulton and Harris is a good reference here.}
@@ -857,7 +863,7 @@ So we have a three-dimensional irreducible representation spanned by $\langle c_
 \end{ex}
 Since these are the only two Young diagrams of size two, these examples form a complete list of isomorphism classes of irreducible representations of $S_\bbC(2,2)$.
 
-If we prefer instead to recognize our irreducibles as submodules of $E^{\otimes 2}$ (giving us a more obvious action by our algebras), 
+If we prefer instead to recognize our irreducibles as submodules of $E^{\otimes 2}=(k e_1\oplus k e_2)^{\otimes 2}$ (giving us a more obvious action by our algebras), 
 we can use the short exact sequence 
 \[0\to N\hookrightarrow E^{\otimes 2}\twoheadrightarrow D_{\lambda,\bbC}\to 0\]
 to define the $N=\ker\pi$, where $\pi$ is the map defined in equation (\ref{eqn:pimap}) above.
@@ -865,8 +871,7 @@ Then we can compute the orthogonal complement to $N$ to get $V_{\lambda,\bbC}$.
 We can compute:
 \[V_{\lambda_1,\bbC}=\langle e_1\otimes e_2-e_2\otimes e_1\rangle\]
 and
-\[V_{\lambda_2,\bbC}=\langle e_1\otimes e_1, \,e_1\otimes e_2+e_2\otimes e_1, \,e_2\otimes e_2\rangle\]
-where $\{e_1,e_2\}$ is a basis for $E\cong k^2$.
+\[V_{\lambda_2,\bbC}=\langle e_1\otimes e_1, \,e_1\otimes e_2+e_2\otimes e_1, \,e_2\otimes e_2\rangle.\]
 
 
 
