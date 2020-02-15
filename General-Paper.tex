@@ -721,9 +721,9 @@ which we will denote
 \[\xi_\alpha V=V^\alpha.\]
 \end{rmk}
 
-\begin{defn}
+\begin{defn}\label{defn:character}
 	The \textbf{formal character} of a representation $V\in M(n,r)$ is a polynomial 
-	\[\Phi_V(X_1,\dots,X_n)=\sum_{\alpha\in\Lambda(n,r)}(\dim V^\alpha)X_1^{\alpha_1}\cdots X_n^{\alpha_n}=\sum_{\lambda\in\Lambda_+(n,r)}(\dim V^\alpha)m_\alpha(X_1,\dots,X_n)\]
+	\[\Phi_V(X_1,\dots,X_n)=\sum_{\alpha\in\Lambda(n,r)}(\dim V^\alpha)X_1^{\alpha_1}\cdots X_n^{\alpha_n}=\sum_{\alpha\in\Lambda_+(n,r)}(\dim V^\alpha)m_\alpha(X_1,\dots,X_n)\]
 	where $m_\alpha$ is the \textit{monomial symmetric polynomial}
 	\[m_\alpha(X_1,\dots,X_n)=\sum_{\sigma\in\frakS_n}X_{\sigma(1)}^{\alpha_1}\cdots X_{\sigma(n)}^{\alpha_n}.\]
 \end{defn}
@@ -803,28 +803,85 @@ reserve this name for the contravariant dual of these objects. To construct them
 \begin{equation}\label{eqn:pimap}
 	\pi:E^{\otimes r}\to D_{\lambda, k},
 \end{equation}
+and we get objects originally defined in Carter and Lusztig's treatment of modular representations of $\GL_n$ \cite{carter-lusztig}
+and tweaked by Green in \cite{green}:
 \begin{defn}
 	Given a shape $\lambda$, the \textbf{Weyl module of shape $\lambda$ over $k$} is 
 	$V_{\lambda, k}\eqdef N^\perp$ where 
 	\[N\eqdef\ker\pi\hookrightarrow E^{\otimes r}\to D_{\lambda,k}\]
+	and the orthogonal complement of $N$ is taken with respect to the canonical contravariant form on $E^{\otimes r}$ that has the property $\langle e_i,e_j\rangle=\delta_{ij}$.
 \end{defn}
-\begin{lem}
+
+In their original paper \cite[p.218]{carter-lusztig}, Carter and Lusztig showed that these modules are, in fact, generated as $S(n,r)$-modules by a single element:
+\begin{thm}\label{thm:weyl-basis}
+	Let $\lambda\in\Lambda_+(n,r)$ and $T$ the Young diagram corresponding to $\lambda$. Let $l$ be the labelling above. Then 
+	the element 
+	\[f_l=e_l\cdot\sum_{g\in C(T)\subset\frakS_n}\operatorname{sign}(\sigma)\sigma\]
+	generates $V_{\lambda,k}$ as a $S(n,r)$-module.
+\end{thm}
+\begin{prf}[sketch.]
+	We refer the reader to Green's \cite[p.46]{green} proof for the details, but the idea is as follows: he relies on an earlier result 
+	that the modules $D_{\lambda,k}$ have a basis consisting of the bideterminants 
+	\[(T_l:T_i)\]
+	such that $T_i$ is in ``standard form'' (meaning that it forms a valid Young tableau). One can define a nondegenerate contravariant form 
+	\[(\cdot,\cdot):V_{\lambda,l}\times D_{\lambda,k}\to k\]
+	by pulling back any element in $D_{\lambda,k}$ to a representative in $E^{\otimes r}$ under the map $\pi:E^{\otimes r}\to D_{\lambda,k}$.
+
+	Recall that $V_{\lambda,k}$ is defined as the orthogonal complement (under the canonical form $\langle\cdot,\cdot\rangle$ on $E^{\otimes r}$) of $\ker\pi.$
+	This gives us that $(\cdot,\cdot)$ is indeed well-defined. From there, Green does some computation to show that one can bootstrap the 
+	independence of the $(T_l:T_i)$ to prove that of the set
+	\[\{\xi_{jl}f_l|j\in I(n,r), T_j\text{ standard}\}\]
+	forms a $(k-)$basis for $V_{\lambda,k}$, and therefore $f_l$ generates the entire module under the $S(n,r)$ action.
+\end{prf}
+\begin{lem}\label{lem:unique-maximal-submod}
 	The modules $V_{\lambda,k}$ have a unique maximal submodule $V_{\lambda,k}^{\text{max}}$
 \end{lem}
-\begin{prf}
-	{\color{red} Do this.}
+\begin{prf}[{\cite[p.47]{green}}]
+	Begin by noticing that the weight space $V_{\lambda,k}^\lambda$ is spanned by the single element $f_l$. This is because
+	\[\xi_l\cdot\xi_{il}f_l=\delta_{il}f_l\]
+	so the only nonzero basis vector from the proof of thm.~\ref{thm:weyl-basis} is $f_l$ itself. Since $f_l$ generates 
+	all of $V_{\lambda,k}$ as an $S(n,r)$-module, however, any proper submodule $M$ of $V_{\lambda,k}$ must be contained in the 
+	complement of $V_{\lambda,k}^\lambda.$ Thus the sum of all proper submodules is contained in the complement of this 
+	weight space, and is therefore proper! This sum is our $V_{\lambda,k}^\text{max}$
 \end{prf}
 
 We are finally in good shape to compute the irreducible modules promised to us in thm.~\ref{thm:irreps}. We define 
 \[F_{\lambda, k}=V_{\lambda,k}/V_{\lambda,k}^\text{max}\]
-where $V_{\lambda,k}^\text{max}$ is the unique maximal submodule of $V_{\lambda,k}$. {\color{red}It remains to show that the $F_{\lambda,k}$ have the requisite characters $\Phi_{\lambda,k}$.}
+where $V_{\lambda,k}^\text{max}$ is the unique maximal submodule guaranteed to us by lemma~\ref{lem:unique-maximal-submod}. It remains to show 
+that the $F_{\lambda,k}$ have the requisite characters $\Phi_{\lambda,k}$. But notice that $V^\lambda_{\lambda,k}$ is one-dimensional, so 
+the character (c.f. definition \ref{defn:character}) of $V_{\lambda, k}$ is of the form 
+\[m_\lambda(X_1,\dots,X_n)+\sum_{\lambda\ne\alpha\in\Lambda_+(n,r)} \dim V_{\lambda,l}^\alpha m_\alpha(X_1,\dots,X_n)\]
+but since each $V_{\lambda,k}^\alpha$ is contained in $V_{\lambda,k}^\text{max}$, it occurs as a weight space of this maximal submodule with the 
+same multiplicity. Therefore the character of $V_{\lambda,k}^\text{max}$ is 
+\[\sum_{\lambda\ne\alpha\in\Lambda_+(n,r)} \dim V_{\lambda,l}^\alpha m_\alpha(X_1,\dots,X_n)\]
+so we can conclude that 
+\[\Phi_{V_{\lambda,k}}(X_1,\dots,X_n)=m_\lambda(X_1,\dots,X_n)=X_1^{\lambda_1}\cdots X_n^{\lambda_n}+\cdots\]
+which has leading term (under the lexicographic ordering) precisely what we wanted.
 
 \subsection{Representations of \texorpdfstring{$\frakS_n$}{Sn}}
-{\color{red}Spell out the basics of the representation theory for $\frakS_n$ over $\bbC$. Fulton and Harris is a good reference here.}
+The representation theory for $\frakS_n$ over the complex numbers is a subject that has been widely studied by representation theorists 
+and combinatorialists alike for over a century. Before we dive into specifics, we write down the idea originally worked out by Frobenius \cite{frobenius-charaktere}
+in his work in 1900 on the characters of $\frakS_n$:
+\begin{thm}
+	The conjugacy classes (and thus isomorphism classes of irreducible representations over $\bbC$) of $\frakS_n$
+	are in bijection with partitions of $n$.
+\end{thm}
+
+Let's get some sense first about how we can relate these two ideas by recalling some easy lemmas from 
+group theory. Recall that each element of $\frakS_n$ can be written 
+as a product of disjoint cycles and that this representation is unique up to reordering the cycles. We can make this 
+representation unique by writing each cycle as one starting at its least element and then ordering the cycles by these least elements. 
+For instance, the permutation (in two-line notation)
+\[\sigma=\begin{pmatrix}1&2&3&4&5&6&7&8\\ 2&1&7&5&3&8&4&6\end{pmatrix}\in\frakS_8\]
+is represented uniquely in this way as the product of cycles:
+\[\sigma=(1\,2)(3\,7\,4\,5)(6\,8).\]
+
+The next observation to recover: if $\tau,\eta\in\frakS_n$ and $\tau=(\tau_1\,\tau_2\,\cdots\,\tau_k)$ is a cycle, 
+\[\eta^{-1}\tau\eta=(\eta(\tau_1)\,\eta(\tau_2)\,\cdots\,\eta(\tau_k)).\]
 
 \subsection{Explicit Examples}
 To demonstrate the theory developed above, we begin a computation (in a simple case) of the isomorphism classes of irreducible 
-representations of both $S_\bbC(2,2)$ and $\frakS_2$.
+representations of bdefn:characteroth $S_\bbC(2,2)$ and $\frakS_2$.
 
 \subsubsection{The symmetric group on two letters}
 The representation theory (over $k=\bbC$) of $\frakS_2$ is as simple as it comes: of course $\frakS_2\cong \bbZ/2\bbZ$ and we know that 
@@ -835,7 +892,7 @@ we can realize these as the trivial and sign representations, represented by the
 As submodules of the regular representation $k\frakS_2= k e\oplus k(1\,2)$, we can construct these as $\langle e+(1\, 2)\rangle$ (trivial representation) and $\langle e-(1\,2)\rangle$ (sign representation).
 
 \subsubsection{The Schur algebra \texorpdfstring{$S_\bbC(2,2)$}{S(2,2)}}
-Since $\ch\bbC=0$ corollary~\ref{cor:semisimple} implies that $S_\bbC(2,2)$ is semisimple, so it suffices to identify the irreducible submodules therein.
+Since $\ch\bbC=0$, corollary~\ref{cor:semisimple} implies that $S_\bbC(2,2)$ is semisimple, so it suffices to identify the irreducible submodules therein.
 We know 
 \[S=S_\bbC(2,2)\cong \bbC^2\otimes\bbC^2\]
 so $\dim_\bbC S=4.$ The theory outlined above give us that isomorphism types of irreducible modules are in bijection with compositions of 2 of length 2, meaning 
@@ -1142,7 +1199,7 @@ of a strict polynomial functor. I am nothing if I am not true to my word:
 \end{prf}
 
 \subsubsection{Yet another category}
-Just when you thought you had enough categories to work in, Krause developed a new category that more succinctly captures
+Just when you thought you had enough categories to consider, Krause developed a new category that more succinctly captures
 the stucture of homogeneous degree $d$ polynomial maps: there the author changes the domain of these functors 
 to encode the desired properties automatically.
 \begin{defn}
@@ -1178,7 +1235,7 @@ the SW functor is monoidal under this definition.}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\newpage
 \section{Tensor products in the derived category \texorpdfstring{$\Db(S(n,r))$}{DbS(n,r)}}
 {\color{red} Do some definitions here for derived category stuff and talk about how the induced tensor product from before compares with the one 
 naturally on $\Db(S(n,r))$}
@@ -1191,7 +1248,7 @@ naturally on $\Db(S(n,r))$}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\newpage
 \section{The (Balmer) spectrum of a tensor triangulated category}
 In Paul Balmer's 2005 paper \cite{balmer-spc}, he developed a general framework for understanding the structure of certain 
 kinds of categories that arose from the original constructions in algebraic geometry. Serving as a source of inspiration for Balmer, in \cite{friedlander-pevtsova-pi} Friedlander and Pevtsova proved
@@ -1287,13 +1344,18 @@ To get this, we need to define the structure sheaf:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\newpage
 \section{Questions and extensions}
 \subsection*{The representation theory of \texorpdfstring{$S(n,r)$}{S(n,r)} in positive characteristic}
 
 \subsection*{Computing the spectrum of \texorpdfstring{$\Db(S(n,r))$}{DbS(n,r)}}
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
 \section*{Acknowledgements}
 \label{sec:ack}
 \addcontentsline{toc}{section}{\nameref{sec:ack}}
