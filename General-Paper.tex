@@ -184,6 +184,141 @@ When speaking of the ($k$) vector space spanned by elements $v_1,\dots,v_n$, we 
 We begin by detailing the theory behind the (polynomial) representations of $\GL_n$ as well as the representations of $\frakS_n$ to 
 familiarize ourselves with the classical representation theory associated to these groups.
 
+\subsection{Representations of \texorpdfstring{$\frakS_n$}{Sn}}
+The representation theory for $\frakS_n$ over the complex numbers is a subject that has been widely studied by representation theorists 
+and combinatorialists alike for over a century. Before we dive into specifics, we write down the idea originally worked out by Frobenius \cite{frobenius-charaktere}
+in his work in 1900 on the characters of $\frakS_n$:
+\begin{thm}\label{thm:frob-conj}
+	The conjugacy classes (and thus isomorphism classes of irreducible representations over $\bbC$) of $\frakS_n$
+	are in bijection with partitions of $n$.
+\end{thm}
+
+\begin{rmk}
+	In what follows we attempt to give a tangible, minimalistic overview of the nicest case of representations of $\frakS_n$.
+	Some of the arguments below appeal more to intuition and examples than rigor, but we feel this better prepares the reader 
+	for computations in $\frakS_n$ without being weighed down by unnecessary details. This can all be made rigorous, of course, 
+	at the expense of some clarity and conciseness. 
+\end{rmk}
+Let's get some sense first about how we can relate these two ideas by recalling some easy lemmas from 
+group theory. Recall that each element of $\frakS_n$ can be written 
+as a product of disjoint cycles and that this representation is unique up to reordering the cycles. We can make this 
+representation unique by writing each cycle as one starting at its least element and then ordering the cycles by these least elements. 
+For instance, the permutation (in two-line notation)
+\[\sigma=\begin{pmatrix}1&2&3&4&5&6&7&8\\ 2&1&7&5&3&8&4&6\end{pmatrix}\in\frakS_8\]
+is represented uniquely in this way as the product of cycles:
+\[\sigma=(1\,2)(3\,7\,4\,5)(6\,8).\]
+
+The next observation to recover: if $\tau,\eta\in\frakS_n$ and $\tau=(\tau_1\,\tau_2\,\cdots\,\tau_k)$ is a cycle, 
+\[\eta^{-1}\tau\eta=(\eta(\tau_1)\,\eta(\tau_2)\,\cdots\,\eta(\tau_k)).\]
+We can see this demonstrated in the computation
+\begin{align*}
+	(1\,3\,5)\sigma(1\,3\,5)^{-1}&=(1\,3\,5)(1\,2)(1\,5\,3)(1\,3\,5)(3\,7\,4\,5)(1\,5\,3)(1\,3\,5)(6\,8)(1\,5\,3)\\
+	&=(3\,2)(5\,7\,4\,1)(6\,8)\\
+	&=(1\,5\,7\,4)(2\,3)(6\,8)
+\end{align*}
+The important observation here is that the ``shape'' (the lengths of the cycles when written as a product of disjoint cycles) is preserved under conjugation.
+In fact,
+\begin{lem}\label{lem:conj-classes}
+	The conjugacy classes of $\frakS_n$ are in one-to-one correspondence with the partitions of $n$.
+\end{lem}
+\begin{prf}
+	Let $\scrP_n$ denote the partitions of $n$ and let $C_n$ denote the conjugacy classes in $\frakS_n$.
+	We construct the set map 
+	\[\varphi:C_n\to \scrP_n\]
+	by sending a conjugacy class to the weakly-decreasing list of cycle lengths (including trivial cycles, if necessary). For instance in $\frakS_8$,
+	\[(1\,5\,3)(2\,7)\qquad\text{cooresponds to}\qquad (3,2,1,1,1).\]
+
+	The results cited and demonstrated above shows that this map is well defined---conjugation preserves the cycle length in 
+	the disjoint cycle representation of an element. Furthermore if $p\in \scrP_n$ is a partition, the adjoint action of $\frakS_n$ on $\varphi^{-1}(p)$
+	is transitive, since if two elements have the same cycle lengths when written as disjoint cycles, we can line 
+	the cycles up according to length and act by the permutation that ``puts labels in the right place''. If we look at $\sigma$ and the 
+	element we found by conjugation above, we have 
+	\begin{align*}
+		(1\,2)(3\,7\,4\,5)(6\,8)\\
+		(3\,2)(5\,7\,4\,1)(6\,8)
+	\end{align*}
+	where we notice that $1\mapsto 3$, $3\mapsto 5$, and $5\mapsto 1$, meaning that the cycle that takes the top element to the 
+	bottom is $(1\,3\,5)$---although of course we already knew that. Another example are the elements $(1\,4\,5)$ and $(3\,2\,1)$. Here we want $1\mapsto 3$, $4\mapsto 2$ and $5\mapsto 1$.
+	Thus one element that takes the first to the second is $(5\,1\,3)(2\,4)$. This demonstrates that the action is not faithful since we could also act by $(5\,1\,3\,7)(2\,4)(6\,8)$ and get the same element. 
+	the important fact here is that $\frakS_n$ acts transitively on the elements of $1,\dots,n$, so there is always such an element.
+
+	The surjectivity of this map is clear since we can write from any partition of $n$ a product of disjoint cycles corresponding to 
+	this partition (which then must map to it) and injectivity is clear since the disjoint cycle representation is unique (up to reordering cycles, which doesn't affect the image $\varphi(x)$).
+	This proves the lemma.
+\end{prf}
+
+From here, the standard result that (again, over $\bbC$) the conjugacy classes of a group are in bijection with the irreducible representations finishes demonstrating how 
+theorem \ref{thm:frob-conj} is true. But a simple set bijection belies the depth of the connection here. 
+
+\subsubsection*{Construction of the irreducible representations}
+It is possible, through the idea of a Young symmetrizer, to directly link a Young diagram to the corresponding 
+irreducible representation. Throughout this subsection, we will be relying on facts developed in \cite{fulton-harris}, 
+although there is also a more complete combinatorial picture painted in Fulton's book \textit{Young Tableaux} \cite{fulton-tableaux}. 
+
+To begin our discussion, consider the trivial representation within the left regular representation $\bbC\frakS_n$: 
+it is a one-dimensional subspace spanned by the element 
+\[x_1=\sum_{\sigma\in\frakS_n}\sigma\]
+where you can see that this element is fixed by left multiplication, demonstrating that it has the trivial $\frakS_n$ action.
+The subspace spanned by the element 
+\[x_{-1}=\sum_{\sigma\in\frakS_n}(-1)^{\operatorname{sign}(\sigma)}\sigma\]
+is the sign representation, where an element with sign 1 acts by -1. This is because
+\[\operatorname{sign}(\tau\sigma)=\operatorname{sign}(\tau)+\operatorname{sign}(\sigma)\pmod{2}.\]
+
+It ends up that these two representations form the two ``endpoints'' of the representation theory of $\frakS_n$. The exact sense in which this is 
+true is captured through Young diagrams! For the purposes of illustration, let us return to our example above of $\frakS_8$. Here the trivial and sign representations 
+correspond (repsectively) to the tableaux
+\[\ytableausetup{smalltableaux,centertableaux}\ydiagram{8}\qquad\text{and}\qquad\ydiagram{1,1,1,1,1,1,1,1}\]
+which, in turn, correspond to partitions $(8)$ and $(1,1,1,1,1,1,1,1)$ of $8$. The way to make this connection is through the definition 
+of a \textit{Young symmetrizer:}
+\begin{defn}
+	Fix an $n\ge 1$ and let $\lambda$ be a partition of $n$. Then define two elements of $\bbC\frakS_n$, $a_\lambda$ and $b_\lambda$ in the following way:
+	\[a_\lambda=\sum_{\sigma\in R(T_\lambda)}\sigma\qquad\text{and}\qquad b_\lambda=\sum_{\sigma\in C(T_\lambda)}(-1)^{\operatorname{sign}(\sigma)}\sigma\]
+	where $T_\lambda$ is the Young diagram corresponding to $\lambda$ and given some labeling (say the canonical one that labels boxes left-to-right and top-to-bottom)
+	$R(T_\lambda)$ (resp. $C(T_\lambda)$) denote the subgroups of $\frakS_n$ stabilizing the rows (resp. columns) of $T_\lambda$ under the action of $\frakS_n$ on the labels.
+
+	Then the \textbf{Young centralizer} of $\lambda$ is 
+	\[c_\lambda=a_\lambda b_\lambda\in\bbC\frakS_n.\]
+\end{defn}
+
+The canonical fillings of the diagrams above are\footnote{Here you can see yet another connection to disjoint cycle representations. Notice, under the map 
+defined in lem.~\ref{lem:conj-classes}, that the conjugacy class corresponding to the trivial representation is the one consisting of ``long'' (length $n$) cycles. Using the 
+unique ordering on products of disjoint cycles described after the statement of thm.~\ref{thm:frob-conj}, we can identify fillings with long cycles and we see 
+that the cycle $(1\,2\,3\,4\,5\,6\,7\,8)$ is the only one in ``standard form'' in that it gives us a standard Young tableau. The complexity of the Young diagram (meaning how many 
+different standard fillings it admits) gives us some information about the dimensionality of the corresponding irreducible representation, as we will see later.}
+\[\ytableaushort{12345678}\qquad\text{and}\qquad\ytableaushort{1,2,3,4,5,6,7,8}\]
+and so since the column stabilizer of the first diagram is trivial and the row stablizer is everything,
+\[c_{(8)}=\left(\sum_{\sigma\in R(T_{(8)})}\sigma\right)\left(\sum_{\sigma\in C(T_{(8)})}(-1)^{\operatorname{sign}(\sigma)}\sigma\right)=\sum_{\sigma\in\frakS_n}\sigma=x_1\]
+and since the roles of the column and row stabilizing elements are reversed for the sign representation, we get 
+\[c_{(1,1,1,1,1,1,1,1)}=\left(\sum_{\sigma\in R(T_{(1,1,1,1,1,1,1,1)})}\sigma\right)\left(\sum_{\sigma\in C(T_{(1,1,1,1,1,1,1,1)})}(-1)^{\operatorname{sign}(\sigma)}\sigma\right)=\sum_{\sigma\in\frakS_n}(-1)^{\operatorname{sign}(\sigma)}\sigma=x_{-1}.\]
+
+That the Young symmetrizers correspond with the elements spanning the corresponding representations of is no coincidence! 
+\begin{defn}
+	The module $V_\lambda$ is a $\bbC\frakS_n$-module generated by the Young symmetrizer $c_\lambda$.
+\end{defn}
+Notice that the dimension of each $V_\lambda$ is determined by number of linearly-independent elements that lie in the orbit of $c_\lambda$. We compute another example that 
+gives a general pattern:
+\begin{ex}
+	Let $\lambda=(2,1,1)$ be the partition of $5$, so 
+	\[T_\lambda=\ydiagram{2,1,1}.\]
+	Given the canonical filling of $T_\lambda$,
+	\[\ytableaushort{12,3,4},\]
+	we have 
+	\[a_\lambda=e+(1\,2)\qquad\text{and}\qquad b_\lambda=e-(1\,3)-(1\,4)-(3\,4)+(1\,3\,4)+(1\,4\,3)\]
+	and so we can compute that the Young symmetrizer for this partition is 
+	\[c_\lambda=e-(1\,3)-(1\,4)-(3\,4)+(1\,2)+(1\,3\,4)+(1\,4\,3)-(2\,1\,4)-(1\,2)(3\,4)+(1\,3\,4\,2)+(1\,4\,3\,2)\]
+	and one can show (c.f. \cite[48]{fulton-harris}) that this is the representation $V\wedge V$ where $V$ is the standard representation 
+	(the complement of copy of the trivial representation spanned by the vector $(1,1,1,1)\in\bbC^4$ under the usual embedding of 
+	$\frakS_4$ in $\GL_4$ as permutation matrices).
+\end{ex}
+
+This completes the description of the representations of $\frakS_n$ over $\bbC$, but in fact everything we have done here holds over the splitting field 
+of $\frakS_n$, that is, the minimal field such that representations don't split further under field extension. We haven't proved here that
+\begin{enumerate}
+	\item the $V_\lambda$ are irreducible; or 
+	\item the $V_\lambda$ are pairwise nonisomorphic,
+\end{enumerate}
+but one can look up any of the standard texts (including the ones cited in this section) for more rigorous and thorough treatments of these facts.
+
 \subsection{Polynomial representations of \texorpdfstring{$\Gamma$}{Gamma}}
 Let $\Gamma$ be the affine group scheme defined in section~\ref{subsec:notation}. Then 
 \begin{defn}
@@ -437,7 +572,7 @@ however it takes a short argument to see
 $A(n,r)$ lies within $k^\Gamma=k(\Gamma)$, the $k$-algebra of functions $\Gamma\to k$, which has the structure of a Hopf algebra induced from the group 
 structure on $\Gamma$. More precisely, the functor $\GL_n:\Alg_k\to \Grp$ that assigns to every $k$-algebra $A$ the group $\GL_n(A)$ is representable. In other words, 
 \[\GL_n(-)\simeq \Hom_{\Alg_k}(R,-)\]
-where $R\cong k[x_{ij}|1\le i,j\le n]_{\det}$.
+where $R\cong k[c_{ij}|1\le i,j\le n]_{\det}$.
 
 The anti-equivalence of the categories of affine group schemes over $k$ and finite dimensional commutative $k$-Hopf algebras follows from Yoneda lemma 
 (c.f. \cite[chp. 1]{waterhouse}), and along with this equivalence comes a way to translate the group structure on $\Gamma$ 
@@ -471,8 +606,37 @@ satisfying diagrams
 	The maps $\Delta$ and $\varepsilon$ give $R$ a coalgebra structure. In coordinates, if $1\le i,j\le n$,
 	\[\Delta(c_{ij})=\sum_k c_{ik}\otimes c_{kj}\quad\text{and}\quad \varepsilon(c_{ij})=\delta_{ij}\]
 \end{prop}
-{\color{red} Maybe spell out explicitly how to derive the coalgebra structure through the Yoneda embedding?}
+\begin{rmk}
+	One can easily check that these maps make $R$ into a bialgebra by checking that $\Delta$ and $\varepsilon$ are algebra morphisms,
+	but what is not immediately obvious is why \textit{these particular maps} are the ones we use on $R$. To 
+	see this, one must dig into the Yoneda correspondence a bit to see what happens to the multiplication map.
 
+	In service of this, let's translate matrix multiplication into a statement about representable functors. We want to define $m$ as a map 
+	\[m:\Hom(R,-)\times\Hom(R,-)\to \Hom(R,-)\]
+	and to see what $m$ should do in this context, we evaluate at a $k$-algebra 
+	\[m_A:\Hom(R,A)\times\Hom(R,A)\to \Hom(R,A)\]
+	where we interpret each map $R\to A$ as a matrix with entries in $A$ by saying a map $f$ corresponds to a matrix $A_f$ such that 
+	\[(A_f)_{ij}=f(c_{ij}).\]
+
+	Then if $(f,g)\in \Hom(R,A)\times\Hom(R,A)$, we want that the algebra structure is the usual matrix multiplication, so
+	\[m_A(f,g)=A_fA_g\]
+	and by computing the $(i,j)^{th}$ entry everywhere, we get 
+	\[m_A(f,g)(c_{ij})=(A_fA_g)_{ij}=\sum_{k=1}^n(A_f)_{ik}(A_g)_{kj}=\sum_k f(c_{ik})g(c_{kj}).\]
+
+	This gives us the values of our component maps everywhere, so this defines the natural transformation $m$. Then (the proof of)
+	Yoneda tells us that we can compute the corresponding algebra morphism as 
+	\[\mu(c_{ij})=m_{R\otimes R}(\iota_l\otimes\iota_r)(c_{ij})=\sum_k \iota_l(c_{ik})\iota_r(c_{kj})=\sum_k c_{ij}\otimes c_{kj}.\]
+	Above we call $\iota_l$ (resp. $\iota_r$) to be the map $R\to R\otimes R$ which embeds $R$ into the left (resp. right) tensor factor. Notice 
+	that $\iota_l\otimes\iota_r=\id_{R\otimes R}$.
+
+	Using the same identification between maps and matrices over $A$, let $\ast:k\to A$ be the unique map sending $1_k\mapsto 1_A$. Then we want
+	\[u_A(\ast)=f:R\to A\]
+	corresponding to the identity $(n\times n)$ matrix over $A$. So 
+	\[u_A(\ast)(c_{ij})=f(c_{ij})=(I_n)_{ij}=\delta_{ij}\cdot 1_A.\]
+	Again applying Yoneda, we have 
+	\[\varepsilon(c_{ij})=u_k(\id_k)(c_{ij})=\delta_{ij}1_k\]
+	and we have our counit map.
+\end{rmk}
 In fact, as mentioned before, $R$ becomes a bialgebra (a Hopf algebra even, although we won't need the antipode here). This means that 
 $\Delta$ and $\varepsilon$ are algebra morphisms for the natural algebra structure given by multiplication $m$ on $R$. In diagrams:
 \begin{center}
@@ -754,7 +918,7 @@ It remains to demonstrate a way to construct $F_{\lambda,k}$.
 \end{rmk}
 \begin{ex}
 	Let $\lambda=(3,1,1)\in\Lambda_+(3,5)$. Thus $T$ is of shape 
-	\[\ytableausetup{smalltableaux,centertableaux}\ydiagram{3,1,1}\]
+	\[\ydiagram{3,1,1}\]
 	Then if we fix the left-to-right/top-to-bottom ordering of the boxes in $T$ and let $i:\{1,2,3,4,5\}\to\{1,2,3\}$
 	be given by $(2,1,3,3,2)$, we get the $\lambda$-tableau 
 	\[T_i=\ytableaushort{2 1 3, 3, 2}\]
@@ -858,30 +1022,10 @@ so we can conclude that
 \[\Phi_{V_{\lambda,k}}(X_1,\dots,X_n)=m_\lambda(X_1,\dots,X_n)=X_1^{\lambda_1}\cdots X_n^{\lambda_n}+\cdots\]
 which has leading term (under the lexicographic ordering) precisely what we wanted.
 
-\subsection{Representations of \texorpdfstring{$\frakS_n$}{Sn}}
-The representation theory for $\frakS_n$ over the complex numbers is a subject that has been widely studied by representation theorists 
-and combinatorialists alike for over a century. Before we dive into specifics, we write down the idea originally worked out by Frobenius \cite{frobenius-charaktere}
-in his work in 1900 on the characters of $\frakS_n$:
-\begin{thm}
-	The conjugacy classes (and thus isomorphism classes of irreducible representations over $\bbC$) of $\frakS_n$
-	are in bijection with partitions of $n$.
-\end{thm}
 
-Let's get some sense first about how we can relate these two ideas by recalling some easy lemmas from 
-group theory. Recall that each element of $\frakS_n$ can be written 
-as a product of disjoint cycles and that this representation is unique up to reordering the cycles. We can make this 
-representation unique by writing each cycle as one starting at its least element and then ordering the cycles by these least elements. 
-For instance, the permutation (in two-line notation)
-\[\sigma=\begin{pmatrix}1&2&3&4&5&6&7&8\\ 2&1&7&5&3&8&4&6\end{pmatrix}\in\frakS_8\]
-is represented uniquely in this way as the product of cycles:
-\[\sigma=(1\,2)(3\,7\,4\,5)(6\,8).\]
-
-The next observation to recover: if $\tau,\eta\in\frakS_n$ and $\tau=(\tau_1\,\tau_2\,\cdots\,\tau_k)$ is a cycle, 
-\[\eta^{-1}\tau\eta=(\eta(\tau_1)\,\eta(\tau_2)\,\cdots\,\eta(\tau_k)).\]
-
-\subsection{Explicit Examples}
+\subsection{Explicit examples for comparison}
 To demonstrate the theory developed above, we begin a computation (in a simple case) of the isomorphism classes of irreducible 
-representations of bdefn:characteroth $S_\bbC(2,2)$ and $\frakS_2$.
+representations of both $S_\bbC(2,2)$ and $\frakS_2$.
 
 \subsubsection{The symmetric group on two letters}
 The representation theory (over $k=\bbC$) of $\frakS_2$ is as simple as it comes: of course $\frakS_2\cong \bbZ/2\bbZ$ and we know that 
@@ -895,7 +1039,7 @@ As submodules of the regular representation $k\frakS_2= k e\oplus k(1\,2)$, we c
 Since $\ch\bbC=0$, corollary~\ref{cor:semisimple} implies that $S_\bbC(2,2)$ is semisimple, so it suffices to identify the irreducible submodules therein.
 We know 
 \[S=S_\bbC(2,2)\cong \bbC^2\otimes\bbC^2\]
-so $\dim_\bbC S=4.$ The theory outlined above give us that isomorphism types of irreducible modules are in bijection with compositions of 2 of length 2, meaning 
+so $\dim_\bbC S=4.$ The theory outlined above gives us that isomorphism types of irreducible modules are in bijection with compositions of 2 of length 2, meaning 
 we have two isomorphism types: one corresponding to $\lambda_1=(1,1)$ and one corresponding to $\lambda_2=(2,1)$. 
 
 Using the construction of $D_{\lambda,\bbC}$ from above, we can compute these two irreducible modules explicitly:
@@ -1074,7 +1218,33 @@ This leads us to the following realization:
 	Furthermore, any index $j\in\calJ$ satisfies $\calG\circ\calF(M_j)\cong M_j$.
 \end{cor}
 
-{\color{red} To add: prove that these are honest adjoints.}
+Whenever we have a pair of opposing functors like this, we hope that we can prove that they 
+tie the two categories together in a nice way, and in fact we can! A standard categorical fact,
+reprinted here from Emily Riehl's book, empowers us to make our last proof:
+\begin{prop}[{\cite[prop.~4.2.6]{riehl}}]
+	Given a pair of opposing functors $\calF:\calC\rightleftarrows\calD:\calG$, is an adjoint pair (with $\calF\ladjointto\calG$) if and only if 
+	there exist unit and counit maps
+	\[\eta:1_\calC\to \calG\calF\qquad\text{and}\qquad \varepsilon:\calF\calG\to 1_\calD\]
+	satisfying the \textit{triangle axioms} illustrated in figure \ref{fig:triangles}.
+\end{prop}
+\begin{figure}
+	\centering
+	\begin{tikzcd}
+		\calF\ar[r,"\calF\eta"]\ar[dr,"1_\calF",swap] & \calF\calG\calF\ar[d,"\varepsilon\calF"]\\
+		& \calF
+	\end{tikzcd}\qquad
+	\begin{tikzcd}
+		\calG\ar[r,"\eta\calG"]\ar[dr,"1_\calG",swap] & \calG\calF\calG\ar[d,"\calG\varepsilon"]\\
+		& \calG
+	\end{tikzcd}
+	\caption{The triangle axioms}
+	\label{fig:triangles}
+\end{figure}
+
+\begin{thm}
+	The functors are adjoints.
+\end{thm}
+{\color{red} Figure out what direction the adjunction goes and prove this!}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1082,7 +1252,7 @@ This leads us to the following realization:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
+\newpage
 \section{Strict polynomial functors}
 The theory of strict polynomial functors has its genesis in the idea of \textit{polynomial maps between vector spaces},
 or equivalently the rational maps between the schemes they represent. The category of vector spaces with these polynomial maps---and 
@@ -1098,6 +1268,8 @@ by defining it for projectives and taking the appropriate colimits. In the latte
 is further elucidated and it is proven that the Schur-Weyl functor $\calF$ is monoidal.
 
 \subsection{Polynomial maps}
+{\color{red} TODO: Rewrite this to account for the fact I am now using the algebraic definition of polynomial maps instead of the geometric one.}
+
 Let $V,W$ be vector spaces over a field $k$. There are many equivalent formulations of polynomial maps between such spaces, 
 but one that this author of this paper finds particulaly motivating is the following:
 \begin{defn}\label{defn:poly-maps}
