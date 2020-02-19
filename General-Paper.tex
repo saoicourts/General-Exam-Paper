@@ -1393,11 +1393,59 @@ to encode the desired properties automatically.
 	which, while not exactly our definition of a polynomial map, suggests some level of similarity.
 \end{rmk}
 
-{\color{red} Finish up proving that this category is also equivalent. Maybe try to see if I can cook up an equivlence directly between $\calP_d$ and $\Rep\Gamma^d_k?$}
+{\color{red} Finish up proving that this category is also equivalent. Maybe try to see if I can cook up an equivalence directly between $\calP_d$ and $\Rep\Gamma^d_k?$}
 
 \subsection{Monoidicity of \texorpdfstring{$\calF$}{F}}
-{\color{red} Define Henning's monoidal structure on $\Rep\Gamma^d_k$ and go through Aquilino and Reischuk's proof 
-the SW functor is monoidal under this definition.}
+One of the upshots of Krause's reformulation of strict polynomial functors is that it admits a more obvious monoidal 
+structure. His construction of the tensor product on $\Rep\Gamma_k^d$ takes the following tack: notice that the Yoneda embedding 
+is a map 
+\[y:(\Gamma^dP_k)\op\to \Rep\Gamma^d_k\]
+sending each object $V\mapsto \Hom_{\Gamma^dP_k}(V,-)$. Furthermore, the embedding $y$ is dense!
+\begin{lem}\label{lem:yoneda-dense}
+	Given a small category $\calC$, let $y$ be the Yoneda embedding 
+	\[y:(\calC)\to \Func(\calC\op,\Set)=\PreSh(\calC).\]
+	Then every element in $\PreSh(\calC)$ is (in a canonical way) a colimit of elements in the image of $y$. That is, for some collection of $C_i\in \calC$,
+	\[X=\colim_{\longrightarrow i}y(C_i)\]
+\end{lem}
+To prove this lemma, let us remind you of the construction called the \textbf{category of elements} of a functor $\calF:\calC\to \Set$. It elements are 
+pairs $(C,x)$ where $C\in\calC$ and $x\in \calF(C)$ is a point. 
+
+Morphisms between two objects
+\[f:(C,x)\to (C',y)\]
+are honest morphisms $f:C\to C'$ in $\calC$ such that the set morphism
+\[\calF(f):\calF(C)\to \calF(C')\]
+has the property that 
+\[\calF(f)(x)=y.\]
+This category gives us a way to work with elements of a category ``locally'' even if the category $\calC$ 
+is not concrete.
+
+\begin{prf}[of \ref{lem:yoneda-dense}]
+	The following proof is a specialized form of one in \textit{Sheaves in Geometry and Logic} \cite[41-43]{maclane-moerdijk}. 
+	Define the functor
+	\[R:\PreSh(\calC)\to \PreSh(\calC)\quad\text{via}\quad E\mapsto \Hom_{\hat\calC}(y(-),E).\]
+	Define also the opposing functor 
+	\[L:\PreSh(\calC)\to \PreSh(\calC)\quad\text{via}\quad F\mapsto \colim \calD_F\]
+	where $\calD_F$ is the diagram  
+	\[\scrJ\eqdef\int_\calC F\xrightarrow{\pi_\calC}\calC\xrightarrow{y}\hat\calC\]
+	(this is makes sense since $\Set$ is cocomplete).
+
+	Now we claim that $L\ladjointto R$ are a pair of adjoint functors. To prove this, it suffices to show that
+	\[\Hom_{\PreSh(\calC)}(F,R(E))\cong \Hom_{\PreSh(\calC)}(L(F),E)\]
+	for all $F,E\in\PreSh(\calC)$.
+
+	Using that $\Hom:\calC\op\times\calC\to \Set$ preserves limits in each factor,
+	\begin{align*}
+		\Hom(L(F),E)&=\Hom(\colim_{i\in\scrJ}F(i),E)\\
+		&=\lim_{i\in\scrJ}\Hom(F(i),E)
+	\end{align*}
+
+	{\color{red} One can also apparently prove this directly if specializing their proof doesn't work out.}
+\end{prf}
+
+Thus we can use this fact to describe \textbf{all} the elements in our category $\Rep \Gamma^d_k$ can be written as a colimit of 
+elements of the form 
+\[\Gamma^{d,V}\eqdef\Hom_{\Gamma^dP_k}(V,-)\]
+
 
 \subsection{A dictionary}
 {\color{red} Spell out how one can translate between the three different categories: irreducibles and tensor structure.}
@@ -1409,9 +1457,154 @@ the SW functor is monoidal under this definition.}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \section{Tensor products in the derived category \texorpdfstring{$\Db(S(n,r))$}{DbS(n,r)}}
-{\color{red} Do some definitions here for derived category stuff and talk about how the induced tensor product from before compares with the one 
-naturally on $\Db(S(n,r))$}
+(Co)homology is a powerful tool in analyzing the composition of objects and their actions. This is evidenced 
+by the sheer number of cohomology theories that are in use across many different fields. Homological computations are, 
+in their nature, lossy---one is reducing the object to its signature and then we play the game of gleaning what we can 
+from the structure that remains. 
+
+It is a well-known fact of homological algebra that the cohomology of an $R$-module is independent of 
+resolution by projective objects. Because of this fact, if we are interested in the homological properties of modules over a ring $R$,
+it isn't useful to look at the (abelian) category $\lmod R$, but rather its ``homologically-distilled'' analog,
+$\D(R)$. Throughout this section we will be relying on Weibel \cite{weibel} and his discussion on chain, homotopy, and derived categories.
+
 \subsection{Derived categories}
+In what follows, let $\calA$ denote any abelian category. If it helps, the reader can relatively safely assume that $\calA$ is $\lmod R$, the category 
+of (left) $R$-modules.\footnote{That one can do this is the subject of the \textit{Freyd-Mitchell embedding theorem}, which tells us that any small Abelian category
+can be embedded faithfully in $\lmod R$ for some ring $R$. Even if $\calA$ isn't small (a set), one can study it via this embedding by 
+restricting attention to small abelian subcategories.} Denote by $\Ch(\calA)$ (or $\Ch(R)$ when $\calA=\lmod R$) the category of chain complexes $(C_\bullet,\partial)$
+such that each $C_i\in\calA$ and $\partial\circ\partial=0$. Let $\Chb(\calA)$ denote the full subcategory of $\Ch(\calA)$ consisting of the 
+complexes that are bounded---that is, $C_i=0$ for all $i>N$ and $i<M$ for some $N,M$.
+
+Recall that a chain complex morphism\footnote{A morphism that commutes with the differential.} $f_\bullet:C_\bullet\to D_\bullet$ is a \textbf{chain nullhomotopic} in $\Ch(\calA)$ if
+there exist maps $\sigma_i:C_i\to D_{i+1}$ such that we have following (non-commuting) diagram:
+\begin{figure}[h]
+	\centering
+	\begin{tikzcd}
+		\cdots\ar[r,"\partial"] &C_{n+1}\ar[d,"f_{n+1}",swap]\ar[r,"\partial"] & C_n\ar[dl,"\sigma_n"]\ar[r,"\partial"]\ar[d,"f_n"] & C_{n-1}\ar[dl,"\sigma_{n-1}"]\ar[d,"f_{n-1}"]\ar[r,"\partial"] & \cdots\\
+		\cdots\ar[r,"\partial",swap] &D_{n+1}\ar[r,"\partial",swap] & D_n\ar[r,"\partial",swap] & D_{n-1}\ar[r,"\partial",swap] & \cdots
+	\end{tikzcd}
+\end{figure}
+
+\noindent with the condition that (for all $n$)
+\[f_n=\partial\circ\sigma_n+\sigma_{n-1}\circ \partial.\]
+\begin{defn}
+	Two chain maps $f,g:C_\bullet\to D_\bullet$ in $\Ch(\calA)$ are said to be \textbf{chain homotopic} if their difference is chain nullhomotopic. That is, if 
+	there exists maps $\sigma_i:C_i\to D_{i+1}$ such that 
+	\[f_n-g_n=\partial\circ\sigma_n+\sigma_{n-1}\circ\partial.\]
+\end{defn}
+
+A well-known lemma is the following:
+\begin{lem}
+	If $f$ and $g$ are chain homotopic maps, then they induce the same maps on (co)homology.
+\end{lem}
+
+Chain homotopies play the role of \textbf{homotopy equivalences} (keeping in mind the example of topological spaces with simplicial homology for intuition) and 
+the fact we have nontrivial homotopy equivalences is the first indication that we aren't in the right category to study homology. A natural thing to do, then, is to 
+attempt to pass to a category where we identify equivalent morphisms.
+
+\begin{defn}
+	Given the category $\Ch(\calA)$, we define the \textbf{homotopy category} $\K(\calA)$ to be the category whose objects are the 
+	same as those in $\Ch(\calA)$ and whose morphisms between any two chains $C_\bullet$ and $D_\bullet$ are 
+	\[\Hom_{\K(\calA)}(C_\bullet,D_\bullet)\eqdef \Hom_{\Ch(\calA)}(C_\bullet,D_\bullet)/H\]
+	where $H$ consists of all chain nullhomotopic maps from $C_\bullet$ to $D_\bullet$.
+\end{defn}
+
+\begin{rmk}
+	We can analogously define the category $\K^\text{b}(\calA)$ that is formed through the 
+	same process after first restricting to the subcategory $\Chb(\calA)$ of bounded chain complexes.
+\end{rmk}
+
+The upshot here is that we are now closer to our (until now only implicit) goal: to find a category that captures the information 
+in $\Ch(\calA)$ \textit{up to quasi-isomorphism.} One can show that, however, that in general there are quasi-isomoprhisms that are not 
+homotopic to the identity map! So our job is only partially complete. 
+
+A result of great importance to reaching our goal is that $\K(\calA)$ is \textit{triangulated} with distinguished triangles given by the mapping cones 
+\[A\xrightarrow{u} B\to \cone(u)\to A[1]\]
+and all triangles equivalent to them\footnote{We say a triangle $X\to Y\to Z\to X[1]$ is equivalent to a mapping cone if $X,Y,Z\in\K(\calA)$ and there exists isomorphisms (equivalently, homotopy equivalences when considered as maps in $\Ch(\calA)$)
+$f,g,h$ such that the diagram in fig.~\ref{fig:tri-equiv} commutes (for some $A,B$ and $u$):
+}
+\begin{figure}
+	\centering
+	\begin{tikzcd}
+		X\ar[r]\ar[d,"f"] & Y\ar[r]\ar[d,"g"] & Z\ar[r]\ar[d,"h"] & X[1]\ar[d,"{f[1]}"]\\
+		A\ar[r,"u"] & B\ar[r] & \cone(u)\ar[r] & A[1]
+	\end{tikzcd}
+	\caption{Equivalence of triangles in $\K(\calA)$}
+	\label{fig:tri-equiv}
+\end{figure}
+
+The importance of triangluated categories cannot be understated (it is critical, e.g. in the construction of the Balmer spectrum in sec.~\ref{sec:ttc}). Many people, including 
+Verdier (\cite{verdier-thesis}), and Neeman (\cite{neeman-duality}, \cite{neeman-book}) have put considerable time and effort into developing a 
+framework within the context of triangulated categories to enable examination and manipulation. One of the tools 
+that we will now use is \textit{Verdier localization}. It closesly mirrors the idea of localization of a ring at a multiplicative 
+subset (a parallel that will be extended further in the following section).
+
+\begin{defn}
+	Given a triangulated category $\calT$, a \textbf{multiplicative system} $S$ in $\calT$ is a collection of morphisms 
+	in $\calT$ satisfying the following properties:
+	\begin{itemize}
+		\item If $s,s'\in S$, so are $s\circ s'$ and $s'\circ s$ (whenever either of these make sense).
+		\item $\id_X\in S$ for all $X\in\calT$
+		\item (\textbf{Ore condition}) If $t\in S$ with $t:Z\to Y$ then for every $g:X\to Y$ there are maps $f$ and $s$ (with $s\in S$) such that the diagram in figure \ref{fig:fractions} commutes. The symmetric statement also holds.
+		\item (\textbf{Cancellation}) If $f,g:X\to Y$ are two morphisms, then there is an $s\in S$ with $sf=sg$ if and only if there is a $t\in S$ with $ft=gt$.
+	\end{itemize}
+\end{defn}
+\begin{figure}
+	\centering
+	\begin{tikzcd}
+		W\ar[d,"s"]\ar[r,"f"] & Z\ar[d,"t"]\\
+		X\ar[r,"g"] & Y
+	\end{tikzcd}
+	\caption{Ore condition in a multiplicative system}
+	\label{fig:fractions}
+\end{figure}
+\begin{rmk}
+	Under the foresight we will eventually be inverting the elements in $S$, the Ore condition translates into the following idea: for all $g:X\to Y$ and $t:Z\to Y$ in $S$,
+	\[t^{-1}g=fs^{-1}\]
+	for some maps $s\in S$ and $f$. This fixes the inherent noncommutativity of function composition.
+\end{rmk}
+\subsubsection*{The calculus of fractions}
+We can finally construct the Verdier localization of $\K(\calA)$ using a generalization of the calculus of 
+fractions in localization of a ring. We will call a diagram of the form 
+\[fs^{-1}:X\xleftarrow{s} X_1\xrightarrow{f} Y\]
+where $s\in S$ a \textbf{fraction} and say that two fractions $fs^{-1}$ and $gt^{-1}$ are equivalent if there exists an element $X_3$ fitting 
+into the commutative diagram below:
+\begin{center}
+	\begin{tikzcd}
+		& X_1\ar[dl,swap,"s"]\ar[dr,"f"] &\\
+		X & X_3\ar[u]\ar[l]\ar[r]\ar[d] & Y\\
+		& X_2\ar[ul,"t"]\ar[ur,"g",swap] &
+	\end{tikzcd}
+\end{center}
+
+Then from this we can define
+\begin{defn}
+	Let $\calT$ be a triangulated category and $S$ be a multiplicative system for $\calT$. Then the \textbf{Verdier localization of $\calT$ at $S$}, 
+	$\calT[S^{-1}]$ is a category whose objects are the same as those of $\calT$ and whose morphisms are equivalence classes of 
+	fractions of maps, as defined above.
+\end{defn}
+
+From this more general framework, we can very simply define the \textbf{derived category of an abelian category $\calA$}
+to be 
+\[\D(\calA)=\K(\calA)[W^{-1}]\]
+where $W$ is the collection of weak homotopy equivalences (quasi-isomorphisms). For our purposes, it will suffice 
+to restrict to the full triangulated subcategory $\K^\text{b}(\calA)$, giving us the \textbf{bounded derived category}
+\[\Db(\calA)=\K^\text{b}(\calA)[W^{-1}].\]
+
+\subsubsection*{The tensor product on \texorpdfstring{$\Db(R)$}{Db(R)}}
+In the context of $R$ (where $R$ is a $k$ algebra) modules, there is a tensor bifunctor 
+\[-\otimes_R-:\rmod R\times\lmod R\to \Vectk\]
+and since it is right exact, but not exact, we can take the left derived functor
+\[-\otimes_R^\mathbf{L}-\eqdef L^1(-\otimes_R-):\D(\rmod R)\times\D(\lmod R)\to\D(\Vectk)\]
+which we call \textbf{the derived tensor product}.
+
+More concretely, let $A,B\in\D(R)$ be two elements in the derived category of $\lmod R$. We can take a projective\footnote{Since $\Ch(R)$ has enough projectives c.f. \cite[ex. 2.2.2]{weibel}.} (\textit{a fortiori} flat)
+cover $F\twoheadrightarrow A\to 0$ and complete it to a short exact sequence 
+\[0\to K\to F\to A\to 0.\]
+Then we get the long exact sequence for left derived functors:
+\[\cdots\to K\otimes_R^\mathbf{L}B\to F\otimes_R^\mathbf{L}B\to A\otimes_R^\mathbf{L}B\to K\otimes_RB\to F\otimes_R B\to A\otimes_R B\to 0\]
+where since $F$ is flat it is $(-\otimes_RB)$-acyclic and therefore $F\otimes_R^\mathbf{L}B=0$, giving us the exact sequence 
+\[0\to A\otimes_R^\mathbf{L}B\to K\otimes_RB\to F\otimes_R B\to A\otimes_R B\to 0\]
 
 \subsection{Compatibility of monoidal structures}
 
@@ -1421,7 +1614,7 @@ naturally on $\Db(S(n,r))$}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
-\section{The (Balmer) spectrum of a tensor triangulated category}
+\section{The (Balmer) spectrum of a tensor triangulated category}\label{sec:ttc}
 In Paul Balmer's 2005 paper \cite{balmer-spc}, he developed a general framework for understanding the structure of certain 
 kinds of categories that arose from the original constructions in algebraic geometry. Serving as a source of inspiration for Balmer, in \cite{friedlander-pevtsova-pi} Friedlander and Pevtsova proved
 that the projective geometry of the cohomology ring of a finite group scheme can be recovered by looking at ``ideals'' in the category $\stmod G$ 
