@@ -17,10 +17,11 @@
 %Set the bibliography file
 \bibliography{sources}
 
+%lots of font stuff
 \usepackage[T1]{fontenc}
 \usepackage[urw-garamond]{mathdesign}
 \usepackage{garamondx}
-\let\mathcal\relax
+\let\mathcal\undefined
 \newcommand{\mathcal}[1]{\text{\usefont{OMS}{cmsy}{m}{n}#1}}
 
 %Document-Specific includes
@@ -1209,42 +1210,6 @@ each of which preserve irreducibility. We also have that
 	\[0\ne eM\subseteq M\]
 	and $M$ is irreducible, $eM=M$.
 \end{prf}
-This leads us to the following realization:
-\begin{cor}
-	If $\{M_\alpha\}_{\alpha\in\calI}$ is a complete collection of irreducible modules over $S(n,r)$,
-	then there exists a subset $\calJ\subseteq\calI$ such that $\{\calF(M_\alpha)\}_{\alpha\in\calJ}$
-	is a complete (and irredunant) set of irreducible $\frakS_r$-modules.
-
-	Furthermore, any index $j\in\calJ$ satisfies $\calG\circ\calF(M_j)\cong M_j$.
-\end{cor}
-
-Whenever we have a pair of opposing functors like this, we hope that we can prove that they 
-tie the two categories together in a nice way, and in fact we can! A standard categorical fact,
-reprinted here from Emily Riehl's book, empowers us to make our last proof:
-\begin{prop}[{\cite[prop.~4.2.6]{riehl}}]
-	Given a pair of opposing functors $\calF:\calC\rightleftarrows\calD:\calG$, is an adjoint pair (with $\calF\ladjointto\calG$) if and only if 
-	there exist unit and counit maps
-	\[\eta:1_\calC\to \calG\calF\qquad\text{and}\qquad \varepsilon:\calF\calG\to 1_\calD\]
-	satisfying the \textit{triangle axioms} illustrated in figure \ref{fig:triangles}.
-\end{prop}
-\begin{figure}
-	\centering
-	\begin{tikzcd}
-		\calF\ar[r,"\calF\eta"]\ar[dr,"1_\calF",swap] & \calF\calG\calF\ar[d,"\varepsilon\calF"]\\
-		& \calF
-	\end{tikzcd}\qquad
-	\begin{tikzcd}
-		\calG\ar[r,"\eta\calG"]\ar[dr,"1_\calG",swap] & \calG\calF\calG\ar[d,"\calG\varepsilon"]\\
-		& \calG
-	\end{tikzcd}
-	\caption{The triangle axioms}
-	\label{fig:triangles}
-\end{figure}
-
-\begin{thm}
-	The functors are adjoints.
-\end{thm}
-{\color{red} Figure out what direction the adjunction goes and prove this!}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1350,7 +1315,7 @@ of a strict polynomial functor. I am nothing if I am not true to my word:
 	\end{enumerate}
 \end{lem}
 \begin{prf}
-	\color{red} Spell this out. 
+	\color{red} sketch out ideas here. Maybe just important ones.
 \end{prf}
 
 \begin{defn}
@@ -1359,22 +1324,34 @@ of a strict polynomial functor. I am nothing if I am not true to my word:
 	whose objects are the \textbf{strict polynomial functors of degree $d$.}
 \end{defn}
 
-\begin{thm}
-	The map
+We refer the reader to \cite[Thm. 3.2]{friedlander-suslin} for a proof of the following fact:
+\begin{thm}\label{thm:FS-equiv}
+	Let $n\ge d$. Then the map
 	\[\Psi:\calP_d\to \lmod {S(n,d)}\]
 	given by evaluation at $k^n$:
 	\[T\mapsto T(k^n)\]
-	is an equivalence of categories.
+	is an equivalence of categories with quasi-inverse 
+	\[M\mapsto\Gamma^{d,n}\otimes_{S(n,d)}M\]
+	where $\Gamma^{d,n}=\Gamma^d\circ\Hom_k(k^n,-)$ (c.f. \ref{defn:div-powers} below).
 \end{thm}
-\begin{prf}
-	\color{red} refactor the proof from Friedlander and Suslin.
-\end{prf}
+
+The important idea in this proof is that, for any polynomial functor $T$ and any finite-dimensional $V,W\in\Vectk$,
+we get 
+\begin{align*}T_{VW}&\in\Hom(T(V),T(W))\otimes S^d(\Hom(V,W)^\vee)\\
+	&\cong\Hom(S^d(\Hom(V,W)^\vee)^\vee,\Hom(T(V),T(W)))\\
+	&\cong\Hom(S^d(\Hom(V,W)^\vee)^\vee\otimes T(V),T(W))
+\end{align*}
+and by using that $\Gamma^d(X)\cong S^d(X^\vee)^\vee$ and letting $V=W=k^n$, we can identify a canonical map 
+\[T_{k^n\,k^n}:\Gamma^d(\End(k^n))\otimes T(k^n)\to T(k^n)\]
+which gives us an action of $\Gamma^d(\End(k^n))$ on $T(k^n)$ and one can see without too much trouble that 
+\[\Gamma^d(\End(k^n))\cong S(n,d).\]
+The rest of the proof is showing that these maps do what we want them to do.
 
 \subsubsection{Yet another category}
 Just when you thought you had enough categories to consider, Krause developed a new category that more succinctly captures
 the stucture of homogeneous degree $d$ polynomial maps: there the author changes the domain of these functors 
 to encode the desired properties automatically.
-\begin{defn}
+\begin{defn}\label{defn:div-powers}
 	Let $k$ be any commutative ring. Then $P_k\subset \Vect_k$ is the full subcategory of finitely-generated projective $k$-modules.
 
 	Define $\Gamma^d P_k$ to be the category of \textbf{divided powers}---the objects are the same as those of $P_k$, but such that 
@@ -1390,7 +1367,9 @@ to encode the desired properties automatically.
 	\[T\in\Rep\Gamma^d_k=\Func(\Gamma^d\Vectk,\Vectk),\]
 	is a functor that, on objects, is a map $\Vectk\to \Vectk$ and on morphisms is of the form 
 	\[T_{VW}:\Hom_{\Gamma^d\Vectk}(V,W)=\Gamma^d\Hom_k(V,W)\to \Hom_k(T(V),T(W))\]
-	which, while not exactly our definition of a polynomial map, suggests some level of similarity.
+	which, leveraging $\otimes$-$\Hom$ adjunction, gives us a map 
+	\[\Gamma^d(V,W)\otimes T(V)\to T(W)\]
+	just as we got in the discussion following thm.~\ref{thm:FS-equiv}.
 \end{rmk}
 
 {\color{red} Finish up proving that this category is also equivalent. Maybe try to see if I can cook up an equivalence directly between $\calP_d$ and $\Rep\Gamma^d_k?$}
@@ -1407,45 +1386,151 @@ sending each object $V\mapsto \Hom_{\Gamma^dP_k}(V,-)$. Furthermore, the embeddi
 	Then every element in $\PreSh(\calC)$ is (in a canonical way) a colimit of elements in the image of $y$. That is, for some collection of $C_i\in \calC$,
 	\[X=\colim_{\longrightarrow i}y(C_i)\]
 \end{lem}
-To prove this lemma, let us remind you of the construction called the \textbf{category of elements} of a functor $\calF:\calC\to \Set$. It elements are 
+To prove this lemma, let us remind you of the construction called the \textbf{category of elements} of a functor $\calF:\calC\op\to \Set$. It elements are 
 pairs $(C,x)$ where $C\in\calC$ and $x\in \calF(C)$ is a point. 
 
 Morphisms between two objects
 \[f:(C,x)\to (C',y)\]
 are honest morphisms $f:C\to C'$ in $\calC$ such that the set morphism
-\[\calF(f):\calF(C)\to \calF(C')\]
+\[\calF(f):\calF(C')\to \calF(C)\]
 has the property that 
-\[\calF(f)(x)=y.\]
+\[\calF(f)(y)=x.\]
 This category gives us a way to work with elements of a category ``locally'' even if the category $\calC$ 
 is not concrete.
 
 \begin{prf}[of \ref{lem:yoneda-dense}]
-	The following proof is a specialized form of one in \textit{Sheaves in Geometry and Logic} \cite[41-43]{maclane-moerdijk}. 
+	The setup (but not the details) for following proof comes from one in \textit{Sheaves in Geometry and Logic} \cite[41-43]{maclane-moerdijk}. 
+	
 	Define the functor
 	\[R:\PreSh(\calC)\to \PreSh(\calC)\quad\text{via}\quad E\mapsto \Hom_{\hat\calC}(y(-),E).\]
 	Define also the opposing functor 
 	\[L:\PreSh(\calC)\to \PreSh(\calC)\quad\text{via}\quad F\mapsto \colim \calD_F\]
 	where $\calD_F$ is the diagram  
-	\[\scrJ\eqdef\int_\calC F\xrightarrow{\pi_\calC}\calC\xrightarrow{y}\hat\calC\]
+	\[\int_\calC F\xrightarrow{\pi_\calC}\calC\xrightarrow{y}\hat\calC\]
 	(this is makes sense since $\Set$ is cocomplete).
 
 	Now we claim that $L\ladjointto R$ are a pair of adjoint functors. To prove this, it suffices to show that
 	\[\Hom_{\PreSh(\calC)}(F,R(E))\cong \Hom_{\PreSh(\calC)}(L(F),E)\]
 	for all $F,E\in\PreSh(\calC)$.
 
-	Using that $\Hom:\calC\op\times\calC\to \Set$ preserves limits in each factor,
-	\begin{align*}
-		\Hom(L(F),E)&=\Hom(\colim_{i\in\scrJ}F(i),E)\\
-		&=\lim_{i\in\scrJ}\Hom(F(i),E)
-	\end{align*}
+	But notice that maps from the colimit of a diagram to $E$ are in bijection with cones under the diagram (i.e. cocones)
+	with nadir $E$ by the universal property of colimits! So 
+	\[\Hom(L(F),E)=\Hom(\colim\calD_F,E)=\operatorname{cocone}(\calD_F,E)\]
+	where an element of $\operatorname{cocone}(\calD_F,E)$ is a collection of maps $(\varphi_{(C,x)})_{(C,x)\in\int_\calC F}$
+	such that for all morphisms $\alpha:(C',x')\to (C,x)$ in $\int_\calC F$, the following diagram commutes 
+	\begin{center}
+		\begin{tikzcd}
+			\calD_F(C,x)\ar[rr,"\calD_F(\alpha)"]\ar[swap,dr,"\varphi_{(C,x)}"] & &\calD_F(C',y)\ar[dl,"\varphi_{(C',y)}"]\\
+			& E &
+		\end{tikzcd}
+	\end{center}
+	Using these maps, we can construct a natural transformation $\eta:F\to \Hom(y(-),E)$
+	in the following way: for each $C\in\calC$, let 
+	\[\eta_C:F(C)\to \Hom(y(C),E)\quad\text{such that}\quad \eta_C(x)=\varphi_{(C,x)}\in\Hom(y(C),E).\]
+	This assembles to an honest natural transformation since for each $C,C'\in\calC$, and morphism $f:C\to C'$, we have a diagram
+	\begin{center}
+		\begin{tikzcd}
+			F(C)\ar[r,"x\mapsto \varphi_{(C,x)}"] & \Hom(y(C),E)\\
+			F(C')\ar[u,"F(f)"]\ar[r,"x'\mapsto \varphi_{(C',x')}",swap] & \Hom(y(C'),E)\ar[u,"{\Hom(y(f),E)}",swap]
+		\end{tikzcd}
+	\end{center}
+	which commutes since (by the commutativity of the colimit diagram above),
+	\[\varphi_{(C,x)}=\varphi_{(C',x')}\circ\Hom(-,\alpha|_C)\]
+	where $\alpha|_C:C\to C'$ denotes the underlying map in $\calC$ (instead of in $\int_\calC F$). Then fixing
+	$x'\in F(C')$---and therefore $x=F(f)(x')\in F(C)$---we can see that naturality of $\eta$ means that 
+	\[\Hom(y(f),E)\circ\eta_{C'}(x')=\Hom(y(f),E)(\varphi_{(C',x')})=\varphi_{(C',x')}\circ y(f)\]
+	and (continuing in the other direction)
+	\[\eta_C\circ F(f)(x')=\varphi_{(C,x)}\]
+	must be the same. But in this case the map $f:C\to C'$ lifts to a map $\hat f:(C',x')\to (C,x)$ in $\int_\calC F$,
+	and $\hat f|_{C}=f$ we get that the equality of these two expressions is precisely the compatibility condition of the 
+	structural morphisms of the cocone.
 
-	{\color{red} One can also apparently prove this directly if specializing their proof doesn't work out.}
+	Thus we have showed that there is a well-defined map
+	\[\Psi_{E,F}:\operatorname{cocone}(\calD_F,E)\to\Hom(F,R(E))\]
+	since a natural transformation is defined by its structural maps and a cocone by its legs, this map is injective.
+	It is surjective because for every $\eta:F\to R(E)$, we can define legs for a cocone:
+	\[\varphi_{(C,x)}=\eta_C(x)\in\Hom(y(C),E)=\Hom(\calD_F(C,x),E).\]
+	
+	Next, we aim to show is natural in $F$ and $E$. If $\epsilon:E\to E'$ is a morphism, we have the diagram
+	\begin{center}
+		\begin{tikzcd}
+			\operatorname{cocone}(\calD_F,E)\ar[d,swap,"(\varphi_a)\mapsto(\epsilon\circ\varphi_a)"]\ar[r,"\Psi_{E.F}"] &\Hom(F,R(E))\ar[d,"{\Hom(F,R(\epsilon))}"] \\
+			\operatorname{cocone}(\calD_F,E')\ar[r,swap,"\Psi_{E',F}"] & \Hom(F,R(E'))
+		\end{tikzcd}
+	\end{center}
+	But tracing along the bottom left, a cocone $(\varphi_a)_a$ under $\calD_F$ with nadir $E$ maps to the cocone $(\epsilon\circ\varphi_a)_a$
+	with nadir $E'$. Under the map $\Psi_{E',F}$ just defined, this has as its image the natural transformation 
+	\[\eta:F\to \Hom(-,E')\quad\text{via}\quad \eta_{C}(x)=\varphi_{(C,x)}\circ\epsilon\in\Hom(C,E')\]
+
+	Proceeding along the top right, the same cocone with nadir $E$ is mapped to the natural transformation 
+	\[\hat\eta:F\to \Hom(-,E)\quad\text{via}\quad \hat\eta_{C}(x)=\varphi_{(C,x)}\in\Hom(C,E)\]
+	which is then mapped to $\varphi_{(C,x)}\circ\epsilon\in\Hom(C,E')$. This gives us naturality in $E$.
+
+	To show naturality in $F$, let $\beta:F\to F'$ be a natural map between presheaves. Then this induces a map 
+	\[\int_\calC\beta:\int_\calC F\to\int_\calC F'\quad\text{via}\quad (C,x)\mapsto (C,\beta_C(x))\]
+	which, in turn, induces a map between diagrams 
+	\[\calD_\beta:\calD_{F'}\to \calD_{F}\]
+	where, on points, this is the map (if $x\in F(C)$)
+	\[\left(\calD_\beta(\calD_{F'})\right)_C(C,x)=(\calD_{F'})_C(C,\beta_C(x))\]
+	which, in turn, induces the map 
+	\[\hat\beta:\operatorname{cocone}(\calD_{F'},E)\to \operatorname{cocone}(\calD_{F},E)\]
+	such that, if $(\varphi_{(C,x)})_{\int_\calC F'}$ is a cone under $\calD_{F'}$ with nadir $E$, 
+	the image $\rho=\hat\beta(\varphi_{(C,x)})$ is such that 
+	\[\rho_{(C,x)}=\varphi_{(C,\beta_C(x))}.\]
+
+	So naturality in $F$ is equivalent to the commutivity of 
+	\begin{center}
+		\begin{tikzcd}
+			\operatorname{cocone}(\calD_F,E)\ar[r,"\Psi_{E,F}"] & \Hom(F, R(E))\\
+			\operatorname{cocone}(\calD_{F'},E)\ar[u,"\hat\beta"]\ar[swap,r,"\Psi_{E,F'}"] & \Hom(F',R(E))\ar[u,"{\Hom(\beta,R(E))}",swap]
+		\end{tikzcd}
+	\end{center}
+	which follows from the statement that the two natural transformations below take the same values:
+	\[\left(\Psi_{E,F}\circ\hat\beta(\varphi_{\alpha})\right)_C(x)=\varphi_{(C,\beta_C(x))}\]
+	and
+	\[\left(\Hom(\beta,R(E))\circ\Psi_{E,F'}(\varphi_{\alpha})\right)_C(x)=(\Psi_{E,F'}(\varphi_{\alpha})\circ\beta)_C(x)=(\Psi_{E,F'}(\varphi_{(C,x)}))_C(\beta_C(x))=\varphi_{(C,\beta_C(x))}\]
+	This completes the proof that $L\ladjointto R$.
+
+	But by the Yoneda lemma, we know that 
+	\[R(E)(C)=\Hom(y(C),E)\cong E(C)\]
+	which implies that $R$ is naturally isomorphic to $\id_{\PreSh(\calC)}$. But adjoints, when they exist, 
+	are unique! Therefore $L\simeq\id_{\PreSh(\calC)}$, or in other words for all $F\in\PreSh(\calC)$,
+	\[F=\id_{\PreSh(\calC)}(F)\simeq L(F)=\colim D_F=\colim_i \Hom(-,C_i)\]
+	proving the result.
 \end{prf}
 
-Thus we can use this fact to describe \textbf{all} the elements in our category $\Rep \Gamma^d_k$ can be written as a colimit of 
+Notice that since 
+\[\Hom_\calC(-,X)=\Hom_{\calC\op}(X,-)\]
+we can replace $\calC$ with $\calC\op$ in the above argument and get that any functor in $\Func(\calC,\Set)$ is a colimit 
+of (covariant) representable functors of the form $\Hom(C_i,-)$.
+Thus \textbf{all} the elements in our category $\Rep \Gamma^d_k$ can be written as a colimit of 
 elements of the form 
 \[\Gamma^{d,V}\eqdef\Hom_{\Gamma^dP_k}(V,-)\]
 
+Let $0\to X\to Y\to Z\to 0$ be an exact sequence of elements in $\Rep\Gamma^d_k$. Then by applying $\Gamma^{d,V}$ and 
+applying the Yoneda isomorphism $\Hom(\Gamma^{d,V},X)\simeq X(V)$, we get that 
+\[0\to X(V)\to Y(V)\to Z(V)\to 0\]
+is exact whence 
+\[0\to \Hom(\Gamma^{d,V},X)\to \Hom(\Gamma^{d,V},Y)\to\Hom(\Gamma^{d,V},Z)\to 0\]
+is. This proves the fact that 
+\begin{lem}
+	For all $V\in\Gamma^dP_k$, $\Gamma^{d,V}$ is a projective object.
+\end{lem}
+
+From these reasonably simple objects, one defines (letting $\Gamma^d_k=\Rep\Gamma^d_k$ in what follows)
+\[\Gamma^{d,V}\otimes_{\Gamma^d_k}\Gamma^{d,W}\eqdef\Gamma^{d,V\otimes W}\]
+and leveraging the facts above, for each $Y\in\Gamma^dP_k$,
+\[\Gamma^{d,V}\otimes_{\Gamma^d_k} Y\eqdef\colim_{\Gamma^{d,W}\to Y}\Gamma^{d,V\otimes W}\]
+and finally for each $X\in \Gamma^dP_k$,
+\[X\otimes_{\Gamma^d_k} Y\eqdef\colim_{\Gamma^{d,V}\to X}\Gamma^{d,V}\otimes Y.\]
+
+One can similarly define internal hom:
+\[\iHom_{\Gamma^d_k}(X,Y)\eqdef \lim_{\Gamma^{d,V}\to X}\colim_{\Gamma^{d,W}\to Y}\Gamma^{d,\Hom(V,W)}\]
+which in \cite[prop 2.4]{krause-strict-poly-func} is shown to satisfy the usual adjunction:
+\begin{prop}[Krause]
+	If $X,Y,Z\in\Gamma^dP_k$, 
+	\[\Hom_{\Gamma^d_k}(X\otimes_{\Gamma^d_k} Y,Z)\cong\Hom_{\Gamma^d_k}(X,\iHom_{\Gamma^d_k}(Y,Z))\]
+\end{prop}
 
 \subsection{A dictionary}
 {\color{red} Spell out how one can translate between the three different categories: irreducibles and tensor structure.}
@@ -1630,7 +1715,7 @@ and to that end, one may consider the case when $\calC$ is also additive.
 This perspective gives us an interesting analogy between (unital, commutative) rings in algebra and category theory. Since every 
 triangulated category is also additive, we can further specify that $\calC$ be triangulated:
 \begin{defn}
-	A \textbf{tensor-triangulated} category $\calC$ is both a moniodal category and a triangulated category such that 
+	A \textbf{tensor-triangulated} category $\calC$ is both a symmetric moniodal category and a triangulated category such that 
 	the monoidal structure preserves the triangluated structure. 
 
 	As a reminder, such a category is equipped with a tensor product $-\otimes -:\calC\times\calC\to \calC$ and unit object $\1$, along with
@@ -1639,7 +1724,10 @@ triangulated category is also additive, we can further specify that $\calC$ be t
 \end{defn}
 
 \subsubsection{Aside: Why triangulation?}
-{\color{red} Look into and figure out why we need stability here to make sense of things.}
+In the construction of the spectrum, we will see that the triangulated structure isn't explicitly necessary. It appears that 
+one only needs a symmetric (or not!) monoidal category with all sums (at least if we are just relying on analogy to rings). A question, 
+which may not have an answer yet (fully or in part) is whether changing these requirements significantly changes things. For instance, 
+what happens when one tries to compute the spectrum of the abelian (symmetric monoidal) category $\Rep G$?
 
 \subsection{Construction of the spectrum}
 Once the appropriate context is identified (which is the real ingenuity of Balmer's paper), the construction 
@@ -1651,7 +1739,7 @@ very closely mirrors the construction seen in elementary algebraic geometry:
 		\item \textit{(2-of-3 rule/Triangulation)} If $A,B,$ and $C\in\calC$ are objects that fit into a distinguished triangle
 		\[A\to B\to C\to A[1]\]
 		in $\calC$, and if any two of the three are objects in $I$, then so is the third.
-		\item \textit{(Thickness)} If $A\in I$ is an object that splits as $A\cong B\oplus C$ in $\calC$, then both $A$ and $B$ belong to $I$.
+		\item \textit{(Thickness)} If $A\in I$ is an object that splits as $A\cong B\oplus C$ in $\calC$, then both $B$ and $C$ belong to $I$.
 		\item \textit{(Tensor Ideal)} If $A\in I$ and $B\in \calC$ then $A\otimes B=B\otimes A\in I$.
 	\end{itemize}
 \end{defn}
@@ -1714,6 +1802,8 @@ To get this, we need to define the structure sheaf:
 \subsection*{The representation theory of \texorpdfstring{$S(n,r)$}{S(n,r)} in positive characteristic}
 
 \subsection*{Computing the spectrum of \texorpdfstring{$\Db(S(n,r))$}{DbS(n,r)}}
+
+\subsection*{The Schur-Weyl functor and adjoints}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
