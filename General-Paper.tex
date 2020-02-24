@@ -85,6 +85,7 @@
 % Document-Specific Macros
 \newcommand*{\ttc}{{\large $\triangle$}\kern-0.86em\raisebox{0.3ex}{$\scaleobj{0.78}\otimes$}\hspace{1ex}}
 \DeclareMathOperator{\Spc}{Spc}
+\DeclareMathOperator{\Pol}{Pol}
 
 \begin{document}
 %make the title page
@@ -179,7 +180,7 @@ When speaking of the ($k$) vector space spanned by elements $v_1,\dots,v_n$, we 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newpage
-\section{Representations of \texorpdfstring{$\Gamma$}{Gamma} and of \texorpdfstring{$\frakS_n$}{Sn}}
+\section{The classical theory: Representations of \texorpdfstring{$\GL_n$}{GLn} and of \texorpdfstring{$\frakS_n$}{Sn}}
 We begin by detailing the theory behind the (polynomial) representations of $\GL_n$ as well as the representations of $\frakS_n$ to 
 familiarize ourselves with the classical representation theory associated to these groups.
 
@@ -319,60 +320,69 @@ of $\frakS_n$, that is, the minimal field such that representations don't split 
 but one can look up any of the standard texts (including the ones cited in this section) for more rigorous and thorough treatments of these facts.
 
 \subsection{Polynomial representations of \texorpdfstring{$\Gamma$}{Gamma}}
-Let $\Gamma$ be the affine group scheme defined in section~\ref{subsec:notation}. Then 
+Let $k$ be an infinite field\footnote{In some cases we will be able to allow $k$ to be a ring, but we will still need that $k$ be infinite so that 
+polynomials over it are determined by their values.} and $\Gamma$ be the affine group scheme $\GL_n$. This can be thought of as the functor 
+\[\Gamma:\Alg_k\to \Grp\quad\text{sending}\quad A\mapsto \GL_n(A).\]
+Then 
 \begin{defn}
-	A (finite dimensional) \textbf{representation} of $\Gamma$ is a (finite dimensional) vector space $V$ along with a map
-	\[\rho:\Gamma\to \GL(V)\eqdef\Aut_k(V)\]
-	where $\rho$ is a group homomorphism.
+	A (finite dimensional) \textbf{representation} of $\Gamma$ is a (finite dimensional) vector space $V$ along with a group scheme homomorphism
+	\[\rho:\Gamma\to \GL(V)\eqdef \Aut(V\otimes_k -)\]
 \end{defn}
 \begin{rmk}
-	Often in representation theory one combines the map $\rho$ and vector space $V$ into a single object:
-	a $k\Gamma$-module. This simultaneously encodes the vector space structure (via $k$-linearity) and the action by 
-	$\Gamma$.
+	Representations of (the group, which can be thought of as the $k$ points of the $k$-scheme) $\GL_n(k)$ can be, in general, ``analytic.'' One can check that the map 
+	\[\rho:k^\times=\GL_1(k)\to \GL(k^2)\qquad\text{via}\qquad x\mapsto\begin{pmatrix}
+		1 & \ln |x|\\ 0 & 1
+	\end{pmatrix}\]
+	gives a group homomorphism (and thus representation) between these two groups, but the logarithm makes this representation decidedly \textit{not algebraic.}
+
+	This leads to slightly more awkward definitions in more classical treatments of the theory (e.g. \cite{green}), where one has to 
+	specifically rule these out. The upshot to using a more algebro-geometric approach is that we start off in the world of rational maps where 
+	such a representation doesn't make sense.
 \end{rmk}
-Representations of $\Gamma$ can be, in general, ``analytic.'' One can check that the map 
-\[\rho:k^\times=\GL_1(k)\to \GL(k^2)\qquad\text{via}\qquad x\mapsto\begin{pmatrix}
-	1 & \ln |x|\\ 0 & 1
-\end{pmatrix}\]
-gives a group homomorphism (and thus representation) between these two groups, but the logarithm makes this representation decidedly \textit{not algebraic.}
-To narrow our focus somewhat and ensure we stay within the realm of algebra, we make the following definition:
+Recall that the affine group scheme $\GL_n$ is represented by the algebra 
+\[k[x_{ij}]_{\det}\]
+where $1\le i,j\le n$ and $\det$ is the polynomial corresponding to the determinant of the matrix $A=(x_{ij})$. Since $\GL_n$ is an affine scheme,
+we know that the global functions are 
+\[k[\Gamma]=k^\Gamma\cong k[x_{ij}]_{\det}\]
+where we will (for clarity) use the notation $c_{ij}:\Gamma\to k$ to denote the function corresponding to $x_{ij}$.
+
 \begin{defn}\label{def:poly-rep}
-	A \textbf{polynomial representation} of $\Gamma$ is a representation $\rho$ such that the structure maps of $\rho$ 
-	are polynomials in the functions $c_{ij}:\Gamma\to k$ that extract the $(i,j)^{th}$ entry.
+	A \textbf{polynomial representation} of $\Gamma$ is a representation $\rho:\Gamma\to \GL(V)$ (where $\dim_k V=m$) such that (on points) the structure maps (\ref{rmk:structure-maps}) of 
+	\[\rho_A:\Gamma(A)\to \GL(V)(A)\cong\GL_m(A)\] 
+	are polynomials in the functions $c_{ij}:\Gamma(A)\to A$ that extract the $(i,j)^{th}$ entry.
+
+	If all the structure maps are homogeneous of degree $r$ for some fixed $r$, we say that $\gamma$ is a \textbf{homogeneous degree $r$
+	polynomial representation of $\Gamma$.}
 \end{defn}
-\begin{rmk}
+\begin{rmk}\label{rmk:structure-maps}
 	Recall (or learn for the first time!) that the \textit{structure maps} of a representation $(\rho,V)$ are a collection 
 	of maps $r_{ij}$ for $1\le i,j,\le n$ from $\Gamma$ to $k$ such that for all $g\in \Gamma$:
 	\[g\cdot v_i=\sum_{j=1}^n r_{ij}(g)v_j\]
 	where we have picked a basis $\{v_1,\dots,v_n\}$ for $V$. Of course changing basis may change our 
-	$r_{ij}$, but an invariant of the representation is the \textbf{span} $\langle r_{ij}\rangle$.
-\end{rmk}
-\begin{rmk}
-	If all $r_{ij}$ are homogeneous polynomials of the same degree, we say that $\rho$ is a \textbf{homogeneous polynomial representation} of $\Gamma$.
+	$r_{ij}$, but their \textbf{span} $\langle r_{ij}\rangle$ is an invariant of the representation.
 \end{rmk}
 \begin{defn}\label{def:Mnr}
-	Let $M_k(n)=M(n)$ be the collection of all polynomial representations of $\GL_n$ and let $M_k(n,r)=M(n,r)$ 
-	be the collection of all degree $r$ polynomial representations of $\GL_n$.
-
-	Generally speaking, we will identify both of these with an appropriate subcategory of $\lmod{k\Gamma}$.
+	Let $\Pol_k(n)=\Pol(n)$ be the collection of all polynomial representations of $\GL_n$ and let $\Pol_k(n,r)=\Pol(n,r)$ 
+	be the collection of all homogeneous degree $r$ polynomial representations of $\GL_n$.
 \end{defn}
 It is the \textit{polynomial} representations that we will concern ourselves with in the following sections. 
 
 \subsubsection{Reducing scope}
+In what follows we (temporarily) restrict to the case of considering the $R$-points of the scheme, where $R\in\Alg_k$. 
 Using some of our familiar friends from representation theory (as well as some clever twists), 
 we can simplify this picture considerably by proving the following structural result:
 \begin{thm}[{\cite[pp.7-10]{schur-thesis}}]\label{thm:decomp}
-	Every polynomial representation $V$ over an infinite field $k$ decomposes as a direct sum 
+	Every polynomial representation $V$ of the group $\GL_n(R)$ (where $R$ is an algebra over an infinite field $k$) decomposes as a direct sum 
 	\[V\cong\bigoplus_{\delta\in\bbN}V_\delta\]
 	where $V_\delta$ is a \textit{homogeneous} polynomial representation of degree $\delta.$
 \end{thm}
-Clearly, then, it suffices to understand the \textit{homogeneous degree $r$} polynomial representations of $\Gamma$ if we are looking
+Clearly, then, it suffices to understand the \textit{homogeneous degree $r$} polynomial representations of $\Gamma(A)$ if we are looking
 to understand the larger structure.
 
 We begin with a useful lemma extracted from a proof in \cite{schur-thesis} echoing the general theory of 
 orthogonal decomposition of Artinian algebras.
 \begin{lem}\label{lem:orth-decomp}
-	Let $C_0,\dots,C_m\in M_n(k)$ be mutually orthogonal idempotent matrices that sum to the identity. That is, 
+	Let $C_0,\dots,C_m\in M_n(R)$ be mutually orthogonal idempotent matrices that sum to the identity. That is, 
 	\[I_n=\sum_i C_i\quad\text{and}\quad C_iC_j=\delta_{ij}C_i\]
 	for all $0\le i,j\le m$. Then there exists an invertible matrix $P$ such that for some positive integers $d_0,\dots,d_m$ with $\sum_k d_k=n$ and for all $i$,
 	\[P^{-1}C_iP=\begin{pmatrix}
@@ -423,7 +433,7 @@ orthogonal decomposition of Artinian algebras.
 \end{prf}
 As well as another result on a special class of commuting block diagonal matrices:
 \begin{lem}\label{lem:block-diag}
-	Let $k$ be an infinite field and let $A$ be a block diagonal matrix over $k$ of the form
+	Let $R\in\Alg_k$ ($k$ be an infinite field) and let $A$ be a block diagonal matrix over $k$ of the form
 	\[A=\operatorname{diag}(x^mI_{d_m},x^{m-1}I_{d_{m-1}},\dots,I_{d_0})\]
 	where $d_i$ is (clearly) the dimension of the $(m-i)^{th}$ block and let $B$ be any matrix that commutes with $A$
 	for every choice of $x\in k$. Then $B$ is block diagonal of the same shape as $A$. 
@@ -440,17 +450,16 @@ As well as another result on a special class of commuting block diagonal matrice
 	so $B$ is block diagonal with blocks the same as $A$.
 \end{prf}
 \begin{rmk}
-	Notice that in the above proof we used implicitly that there is an $x\in k$ such that for all $a,b$
+	Notice that in the above proof we used implicitly that there is an $x\in R$ such that for all $a,b$
 	\[x^a=x^b\quad\Rightarrow\quad a=b\]
-	which is true if (and only if!) $k$ is infinite. This is because any such $x$ must be a root of $x^n=x$ for some $n$, which 
-	has finitely many roots over any field (but every element in $\bbF_p$ satisfies $x^p=x$).
+	which is true since $k$ is infinite. This can cause a problem for finite fields since, for instance, every element in $\bbF_p$ satisfies $x^p=x$.
 \end{rmk}
 
 And finally using these two lemmas allows us to prove our main result:
 \begin{prf}[of thm~\ref{thm:decomp}]
 	We recreate the argument in Schur's thesis, translated from German and reinterpreted in more modern parlance. 
 	
-	Let $(\rho,V)$ be a polynomial representation of $\Gamma$ with $\dim_k V=r$. Then let $x\in k^\times$ be arbitrary (thought of as an indeterminate)
+	Let $(\rho,V)$ be a polynomial representation of $\GL_n(R)$ with $\dim_k V=r$. Then let $x\in R^\times$ be arbitrary (thought of as an indeterminate)
 	and consider the matrix $xI_n\in\Gamma$. The image of this matrix under $\rho$ is a matrix 
 	\[\rho(A)=\begin{pmatrix}
 		p_{11}(x) & \cdots & p_{1r}(x)\\
@@ -461,7 +470,7 @@ And finally using these two lemmas allows us to prove our main result:
 	\[\rho(A)=x^m C_0+x^{m-1}C_1+\cdots+ xC_{m-1}+C_m\]
 	where each $C_i$ is an $r\times r$ matrix.
 
-	Let $y$ be another indeterminate and $B=yI_n$. By virtue of being a representation of $\Gamma$, we get 
+	Let $y$ be another indeterminate and $B=yI_n$. By virtue of being a representation of $\GL_n(R)$, we get 
 	\[\rho(A)\rho(B)=\rho(xI_n)\rho(yI_n)=\rho(xyI_n)=\rho(AB)\]
 	and using this setup we prove the following result: 
 	\[\text{For all $0\le i,j\le m$, with the $C_l$ as above,}\quad C_iC_j=\delta_{ij}C_i\]
@@ -484,11 +493,11 @@ And finally using these two lemmas allows us to prove our main result:
 		& & & xI_{d_{m-1}} & \\
 		& & & & I_{d_m}
 	\end{pmatrix}\]
-	Now let $\rho'(g)=P^{-1}\rho (g)P$ for all $g\in\Gamma$. This is a representation of $\Gamma$ since it it differs from $\rho$ by 
-	an automorphism of $\GL(V)$. Since matrix multiplication is an algebraic operation, $\rho'$ is still a polynomial representation of $\Gamma$. 
-	But notice that for all $g\in\Gamma$
+	Now let $\rho'(g)=P^{-1}\rho (g)P$ for all $g\in\GL_n(R)$. This is a representation of $\Gamma$ since it it differs from $\rho$ by 
+	an automorphism of $\GL(V)$. Since matrix multiplication is an algebraic operation, $\rho'$ is still a polynomial representation of $\GL_n(R)$. 
+	But notice that for all $g\in\GL_n(R)$
 	\[\rho'(g)\rho'(xI_n)=\rho'(xg)=\rho'(xI_n)\rho'(g)\]
-	Then lemma \ref{lem:orth-decomp} gives us that $\rho'(g)$ decomposes in the same way for all $g\in \Gamma$, so 
+	Then lemma \ref{lem:orth-decomp} gives us that $\rho'(g)$ decomposes in the same way for all $g\in \GL_n(R)$, so 
 	we know that $\rho'$ decomposes as a direct sum of representations 
 	\[\rho'=\sum_{i=0}^m \rho'_i\]
 	where for each $i$ and $\lambda\in k$,
@@ -498,6 +507,27 @@ And finally using these two lemmas allows us to prove our main result:
 	But of course the decomposition of a representation is independent of choice of basis,
 	so we get a decomposition of $\rho$ into homogenous pieces, as desired.
 \end{prf}
+
+This is wonderful if one is just interested in the representation theory of $\GL_n(A)$ for a specific $A$, but 
+here we are interested in group \textit{scheme} representations. The result above effectively tells us how the scheme splits 
+up on points, but how about the global structure?
+
+What we need is that this splitting is functorial. That is, if $\rho:\Gamma\to\GL(V)$ is a polynomial representation, there is a subscheme $\rho_r$
+that, for all $A$, $(\rho_r)_A$ is the homogeneous degree $r$ part of $\rho_A$. Let $\rho_r$ be such a map and let $\varphi:A\to B$ be an 
+algebra morphism. Then we want that this induces a map
+\[\hat\varphi:(\rho_r)_A\to (\rho_r)_B.\]
+Fix a basis $v_1,\dots,v_n$ for $V$ and let $g\in \Gamma(A)$. Then since $(\rho_r)_A$ is homogeneous degree $r$, for all $v_i$,
+\[g\cdot_A v_i=\sum_j f_{ij}(g)v_i\]
+where the $f_{ij}$ is a homogeneous degree $r$ polynomial in the $c_{ij}$. Now if we write $(\rho_r)_A(g)=M_{g,A}=(m_{ij})_{i,j}$, this means that 
+if $\lambda\in k$,
+\[M_{\lambda g, A}=(\lambda^rm_{ij})_{i,j}=\lambda^rM_{g,A}\]
+
+The map $\hat \varphi$ is such that 
+\[\hat\varphi(M_{g,A})=(\varphi(m_{ij}))_{i,j}=M_{g,B}\]
+and so
+\[M_{\lambda g,B}=\hat\varphi(M_{\lambda g,A})=(\varphi(\lambda^r m_{ij}))_{i,j}=(\lambda^r \varphi(m_{ij}))_{i,j}=\lambda^rM_{g,B}\]
+which tells us that the map $\rho_r$ is indeed a functor $\Gamma\to\GL(V)$, so is a subgroup scheme of $\rho$.
+Thus the pointwise splitting shown above lifts to a splitting of the entire representation $\rho$.
 
 \subsubsection{Monomials and multi-indices}\label{subsubsec:indices}
 All of the discussion up to this point has revolved around polynomials in $n^2$ variables, which quickly gets unwieldy unless one 
@@ -567,15 +597,15 @@ however it takes a short argument to see
 	where there are $m+r-1=8$ symbols, $r=4$ of which are stars.
 \end{ex}
 
-\subsubsection{A dip into affine group schemes and category theory}
-$A(n,r)$ lies within $k^\Gamma=k(\Gamma)$, the $k$-algebra of functions $\Gamma\to k$, which has the structure of a Hopf algebra induced from the group 
-structure on $\Gamma$. More precisely, the functor $\GL_n:\Alg_k\to \Grp$ that assigns to every $k$-algebra $A$ the group $\GL_n(A)$ is representable. In other words, 
+\subsubsection{Hopf algebras and group schemes}
+$A(n,r)$ lies within $k^\Gamma=k[\Gamma]$, which has the structure of a Hopf algebra induced from the group 
+structure on $\Gamma$. More precisely, the functor $\Gamma:\Alg_k\to \Grp$ that assigns to every $k$-algebra $A$ the group $\GL_n(A)$ is representable. In other words, 
 \[\GL_n(-)\simeq \Hom_{\Alg_k}(R,-)\]
-where $R\cong k[c_{ij}|1\le i,j\le n]_{\det}$.
+where $R=k[\Gamma]$.
 
-The anti-equivalence of the categories of affine group schemes over $k$ and finite dimensional commutative $k$-Hopf algebras follows from Yoneda lemma 
-(c.f. \cite[chp. 1]{waterhouse}), and along with this equivalence comes a way to translate the group structure on $\Gamma$ 
-into a coalgebra structure on $R$: we have maps $\mu,\epsilon$, the multiplication and unit maps on $\Gamma$ satisfying the diagrams 
+The anti-equivalence of the categories of affine group schemes over $k$ and finite dimensional commutative $k$-Hopf algebras (of which this is a particular instance) follows from Yoneda lemma 
+(c.f. \cite[chp. 1]{waterhouse}). The resulting Hopf algebra will be (as an algebra) $R$, and along with a coalgebra structure induced the group structure on $\Gamma$: 
+we have maps $\mu,\epsilon$, the multiplication and unit maps on $\Gamma$ satisfying the diagrams 
 \begin{center}
 	\begin{tikzcd}
 		\Gamma\times\Gamma\times\Gamma\ar[r,"\mu\times\id"]\ar[d,"\id\times\mu"] & \Gamma\times\Gamma\ar[d,"\mu"]\\
@@ -586,7 +616,7 @@ into a coalgebra structure on $R$: we have maps $\mu,\epsilon$, the multiplicati
 		& G\ar[ur,leftrightarrow,"\sim"]\ar[swap,ul,leftrightarrow,"\sim"] &
 	\end{tikzcd}
 \end{center}
-(where $\ast$ is the trivial group) giving us associativity and identity. Yoneda gives us that the maps between functors (group schemes!)
+(where $\ast$ is the trivial group and initial object in the category of group schemes) giving us associativity and identity. Yoneda tells us that the maps between schemes
 \[\mu:\Gamma\times\Gamma\to \Gamma\quad\text{and}\quad \epsilon:\ast\to\Gamma\]
 give rise to maps in $\Alg_k$:
 \[\Delta\eqdef\mu^\ast:R\to R\otimes_k R\quad\text{and}\quad \varepsilon\eqdef\epsilon^\ast: R\to k\]
@@ -602,40 +632,42 @@ satisfying diagrams
 	\end{tikzcd}
 \end{center}
 \begin{prop}
-	The maps $\Delta$ and $\varepsilon$ give $R$ a coalgebra structure. In coordinates, if $1\le i,j\le n$,
+	The maps $\Delta$ and $\varepsilon$ which, in coordinates, for $1\le i,j\le n$, are
 	\[\Delta(c_{ij})=\sum_k c_{ik}\otimes c_{kj}\quad\text{and}\quad \varepsilon(c_{ij})=\delta_{ij}\]
+	give a coalgebra structure on $R$
 \end{prop}
-\begin{rmk}
-	One can easily check that these maps make $R$ into a bialgebra by checking that $\Delta$ and $\varepsilon$ are algebra morphisms,
-	but what is not immediately obvious is why \textit{these particular maps} are the ones we use on $R$. To 
-	see this, one must dig into the Yoneda correspondence a bit to see what happens to the multiplication map.
 
-	In service of this, let's translate matrix multiplication into a statement about representable functors. We want to define $m$ as a map 
-	\[m:\Hom(R,-)\times\Hom(R,-)\to \Hom(R,-)\]
-	and to see what $m$ should do in this context, we evaluate at a $k$-algebra 
-	\[m_A:\Hom(R,A)\times\Hom(R,A)\to \Hom(R,A)\]
-	where we interpret each map $R\to A$ as a matrix with entries in $A$ by saying a map $f$ corresponds to a matrix $A_f$ such that 
-	\[(A_f)_{ij}=f(c_{ij}).\]
+That these maps satisfy the diagrams above is a straightforward computation. That, furthermore, these maps make $R$ into a bialgebra amounts 
+to checking that $\Delta$ and $\varepsilon$ are algebra morphisms.
+But what is not immediately obvious is why \textit{these particular maps} are the ones we use on $R$. To 
+see this, one must dig into the Yoneda correspondence a bit to see what happens to the multiplication and unit morphisms.
 
-	Then if $(f,g)\in \Hom(R,A)\times\Hom(R,A)$, we want that the algebra structure is the usual matrix multiplication, so
-	\[m_A(f,g)=A_fA_g\]
-	and by computing the $(i,j)^{th}$ entry everywhere, we get 
-	\[m_A(f,g)(c_{ij})=(A_fA_g)_{ij}=\sum_{k=1}^n(A_f)_{ik}(A_g)_{kj}=\sum_k f(c_{ik})g(c_{kj}).\]
+In service of this, let's translate matrix multiplication into a statement about representable functors. We want to define $m$ as a map 
+\[m:\Hom(R,-)\times\Hom(R,-)\to \Hom(R,-)\]
+and to see what $m$ should do in this context, we evaluate at a $k$-algebra 
+\[m_A:\Hom(R,A)\times\Hom(R,A)\to \Hom(R,A)\]
+where we interpret each map $f:R\to A$ as a matrix with entries in $A$ by saying $f$ corresponds to a matrix $A_f$ such that 
+\[(A_f)_{ij}=f(c_{ij}).\]
 
-	This gives us the values of our component maps everywhere, so this defines the natural transformation $m$. Then (the proof of)
-	Yoneda tells us that we can compute the corresponding algebra morphism as 
-	\[\mu(c_{ij})=m_{R\otimes R}(\iota_l\otimes\iota_r)(c_{ij})=\sum_k \iota_l(c_{ik})\iota_r(c_{kj})=\sum_k c_{ij}\otimes c_{kj}.\]
-	Above we call $\iota_l$ (resp. $\iota_r$) to be the map $R\to R\otimes R$ which embeds $R$ into the left (resp. right) tensor factor. Notice 
-	that $\iota_l\otimes\iota_r=\id_{R\otimes R}$.
+Then if $(f,g)\in \Hom(R,A)\times\Hom(R,A)$, we want that the algebra structure is the usual matrix multiplication, so
+\[m_A(f,g)=A_fA_g\]
+and by computing the $(i,j)^{th}$ entry everywhere, we get 
+\[m_A(f,g)(c_{ij})=(A_fA_g)_{ij}=\sum_{k=1}^n(A_f)_{ik}(A_g)_{kj}=\sum_k f(c_{ik})g(c_{kj}).\]
 
-	Using the same identification between maps and matrices over $A$, let $\ast:k\to A$ be the unique map sending $1_k\mapsto 1_A$. Then we want
-	\[u_A(\ast)=f:R\to A\]
-	corresponding to the identity $(n\times n)$ matrix over $A$. So 
-	\[u_A(\ast)(c_{ij})=f(c_{ij})=(I_n)_{ij}=\delta_{ij}\cdot 1_A.\]
-	Again applying Yoneda, we have 
-	\[\varepsilon(c_{ij})=u_k(\id_k)(c_{ij})=\delta_{ij}1_k\]
-	and we have our counit map.
-\end{rmk}
+This gives us the values of our component maps everywhere, so this defines the natural transformation $m$. Then (the proof of)
+Yoneda tells us that we can compute the corresponding algebra morphism as 
+\[\mu(c_{ij})=m_{R\otimes R}(\iota_l\otimes\iota_r)(c_{ij})=\sum_k \iota_l(c_{ik})\iota_r(c_{kj})=\sum_k c_{ij}\otimes c_{kj}.\]
+Above we call $\iota_l$ (resp. $\iota_r$) to be the map $R\to R\otimes R$ which embeds $R$ into the left (resp. right) tensor factor. Notice 
+that $\iota_l\otimes\iota_r=\id_{R\otimes R}$.
+
+Using the same identification between maps and matrices over $A$, let $\ast:k\to A$ be the unique map sending $1_k\mapsto 1_A$. Then we want
+\[u_A(\ast)=f:R\to A\]
+corresponding to the identity $(n\times n)$ matrix over $A$. So 
+\[u_A(\ast)(c_{ij})=f(c_{ij})=(I_n)_{ij}=\delta_{ij}\cdot 1_A.\]
+Again applying Yoneda, we have 
+\[\varepsilon(c_{ij})=u_k(\id_k)(c_{ij})=\delta_{ij}1_k\]
+and we have our counit map.
+
 In fact, as mentioned before, $R$ becomes a bialgebra (a Hopf algebra even, although we won't need the antipode here). This means that 
 $\Delta$ and $\varepsilon$ are algebra morphisms for the natural algebra structure given by multiplication $m$ on $R$. In diagrams:
 \begin{center}
@@ -668,6 +700,104 @@ One can easily see that degree is preserved by $\Delta$, meaning that
 	$\Delta$ and $\varepsilon$ descend to a coalgebra structure on $A(n,r)$. That is, $A(n,r)$ is a ($k$-)coalgebra.
 \end{prop}
 
+\subsubsection{The structure maps of \texorpdfstring{$\rho$}{rho}}
+This context empowers us to better understand what is meant by the structure maps of a representation. At the moment, we 
+define a homogeneous polynomial representation by how it looks on points and simply use the fact it coalesces to a functor. 
+A natural question to ask is how the structure morphisms relate to the entries of the matrices $\rho_A(g)=M_{g,A}$.
+
+To understand the answer to this question, we need to uncover how the entries of a matrix come about. We have been thinking of an element of 
+$\Gamma(A)$ as a matrix, but what it actually is is a morphism 
+\[k[x_{ij}]_{\det}\to A\]
+and then thinking of $\Aut(V\otimes A)\cong\GL_m(A)$ in the same way, we interpret a representation 
+as a map 
+\[\rho:\Hom(k[x_{ij}]_{\det},-)\to \Hom(k[y_{kl}]_{\det},-)\]
+where $i$ and $j$ run from 1 to $n$ and $k$ and $l$ run from 1 to $m$. 
+
+Then Yoneda lemma tells us that $\rho$ corresponds to an algebra map
+\[\rho^\ast:k[y_{lk}]_{\det}\to k[x_{ij}]_{\det}\]
+This map is the one such that if $f\in\Hom(k[x_{ij}]_{\det},A)$,
+\[\rho_A(f)=f\circ\rho^\ast:k[y_{lk}]_{\det}\to k[x_{ij}]_{\det}\to A.\]
+
+What are the structure maps for this representation? We can compute for any $g\in \GL_n(A)$ (which we, though a mild
+abuse of notation, think of as a map $g:k[x_{ij}]_{\det}\to A$ where $g(x_{ij})=g_{ij}$)
+\[\rho_A(g)\cdot v_i=\rho_A(g(x_{ij}))_{i,j}v_i=((g\circ\rho^\ast)(x_{ij}))_{i,j}v_i=\sum_j g(\rho^\ast(x_{ij}))v_j\]
+from which we can see
+\begin{lem}
+	Let $\rho:\Gamma\to \GL(V)$ be a polynomial representation. Then for any $A\in\Alg_k$, the structure maps $f_{ij}$ 
+	of the group representation $\rho_A:\GL_n(A)\to \GL_m(A)$ are completely determined by $\rho^\ast$.
+\end{lem}
+
+Since any $g:k[x_{ij}]_{\det}\to A$ defining a matrix is a linear map, this implies that the homogeneous degree of 
+the structure morphisms is also due completely to $\rho^\ast$. This enables us to re-define polynomial representations 
+in the following way (compare with definition \ref{def:poly-rep}):
+\begin{defn}\label{def:poly-rep-new}
+	A finite dimensional \textbf{polynomial representation of $\Gamma$ of degree $r$} is a finite dimensional vector space $V$ 
+	over $k$ along with a scheme map $\rho:\Gamma\to \GL(V)$ such that the associated algebra map $\rho^\ast:k[\GL(V)]\to k[\Gamma]\cong k[x_{ij}]_{\det}$ is homogeneous 
+	degree $r$. In other words, the image of $\rho^\ast$ is entirely contained within the degree $r$ graded piece of $k[\Gamma]$.
+\end{defn}
+
+\begin{rmk}
+	In the following section, we freely identify $k[x_{ij}]_{\det}$ with the ring of functions on $\Gamma$, and $k[y_{lk}]_{\det}$ with 
+	the ring of functions on $\GL(V)$ (where $m=\dim V$).
+\end{rmk}
+
+\subsubsection{Comodules}
+In this section let $A=A(n,r)$, which we have just established is a coalgebra with $\Delta$ and $\varepsilon$ defined above.
+\begin{defn}
+	A (left) \textbf{$A$-comodule} is a vector space $V$ over $k$ along with a (left) \textbf{$A$-coaction} given by a ($k$-)morphism 
+	\[\phi:V\to A\otimes_k V\]
+	that is both \textbf{coassociative and counital} in the sense that the diagrams in Figure~\ref{fig:comodule} commute.
+\end{defn}
+\begin{figure}
+	\centering
+	\begin{tikzcd}
+		V\ar[r,"\phi"]\ar[d,"\phi"] & A\otimes V\ar[d,"\id\otimes\phi"]\\
+		A\otimes V\ar[r,"\Delta\otimes \id",swap] & A\otimes A\otimes V
+	\end{tikzcd}\qquad 
+	\begin{tikzcd}
+		V\ar[r,"\phi"]\ar[rd,"\sim",swap] & A\otimes V\ar[d,"\varepsilon\otimes\id"]\\
+		& k\otimes V
+	\end{tikzcd}
+	\caption{The coassociative and counital axioms}
+	\label{fig:comodule}
+\end{figure}
+
+Given two $A$-comodules $V$ and $W$, a comodule morphism $\varphi:V\to W$ is one that preserves the coaction. That is 
+\[(\id\otimes\varphi)\phi_V(v)=\phi_W(\varphi(v))\]
+for all $v\in V$.
+
+\begin{defn}
+	Let $A$ be any coalgebra. Then $\lcomod A$ denote the category of (finite-dimensional, left) $A$-comodules along with comodule morphisms.
+\end{defn}
+
+Sometimes a more useful way to think of polynomial representations is as comodules. That idea is made more formal
+in the following theorem:
+\begin{thm}
+	Every homogeneous degree $r$ polynomial representation of $\GL_n$ gives rise to an $A(n,r)$-comodule
+	in the following way: the underlying vector space is the same and the $A(n,r)$ coaction is given by 
+	\[\phi(v_i)=\sum_j\rho^\ast(y_{ij})\otimes v_j\]
+	where in the above we identify the algebra $k[y_{ij}]_{\det}$ with the ring of functions on $\GL(V)$.
+\end{thm}
+\begin{prf}
+	By definition this gives us a map into $\lcomod{k[\Gamma]}$, but we can see that the image is entirely contained within 
+	$\lcomod{A(n,r)}$ since, in light of definition \ref{def:poly-rep-new}, $\rho^\ast(y_{ij})$ is homogeneous degree $r$.
+	Then it remains to show that the given map is legitimately a coaction. We can compute (identifing the map $\varepsilon:k[\Gamma]\to k$ as the matrix $I_n$ over $k$)
+	\[(\varepsilon\otimes\id)\circ\phi(v_i)=\sum_j \varepsilon(\rho^\ast(y_{ij}))\otimes v_j=\sum_j(\varepsilon\circ\rho^\ast)(y_{ij})\otimes v_j=\sum_j\rho_k(I_n)_{ij}\otimes v_j=1_k\otimes v_i\]
+	so $\phi$ satisfies the counit identity. For coassociativity, identify the morphism $k[\Gamma]\to k[\Gamma]\otimes k[\Gamma]$ with the matrix $D$ whose entries are $\Delta(x_{ij})$. Then
+	\begin{align*}
+		(\Delta\otimes\id)\circ\phi(v_i)&=\sum_j\Delta(\rho^\ast(y_{ij}))\otimes v_j\\
+		&=\sum_j\rho(D)_{ij}\otimes v_j\\
+		&=\sum_j({\color{red}\text{MAGIC}})\otimes v_j\\
+		&=\sum_j \left(\sum_k \rho^\ast(y_{ik})\otimes\rho^\ast(y_{kj})\right)\otimes v_j\\
+		&=\sum_k \rho^\ast(y_{ik})\otimes\left(\sum_j \rho^\ast(y_{kj})\otimes v_j\right)\\
+		&=(\id\otimes\phi)\sum_k\rho^\ast(y_{ik})\otimes v_k\\
+		&=(\id\otimes\phi)\circ\phi(v_i)
+	\end{align*}
+	which shows that $\phi$ gives a $A(n,r)$-comodule structure on the underlying vector space of a representation $\rho$ of $\Gamma.$
+\end{prf}
+
+{\color{red} Still need to show that this gives an equivalence of categories. Also be sure to change all instances below of $M(n,r)$ to $\Pol(n,r)$.}
+
 \subsubsection{The Schur algebra}
 Finally we get to the actual object of study:
 \begin{defn}\label{def:schur-alg}
@@ -683,7 +813,7 @@ Finally we get to the actual object of study:
 \end{defn}
 
 \begin{lem}
-	The coalgebra structure $(\Delta,\varepsilon)$ on $A(n,r)$ define an algebra structure on $S(n,r)$.
+	The coalgebra structure $(\Delta,\varepsilon)$ on $A(n,r)$ defines an algebra structure on $S(n,r)$.
 \end{lem}
 \begin{prf}
 	Since $k$ is an initial object in $\Alg_k$, there is a unique map $u:k\hookrightarrow S(n,r)$ sending $1$ to the unit function $\1$, which is given by 
