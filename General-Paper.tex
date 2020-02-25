@@ -102,7 +102,10 @@
 	the categories in question. Finally we ask some questions about whether the monoidal structure on strict polynomial functors 
 	extends meaningfully to pathologies that arise in positive characteristic.
 
-	{\footnotesize An up-to-date version of this paper can be downloaded at the following link: \url{https://github.com/NicoCourts/General-Exam-Paper/raw/master/General-Paper.pdf}}
+	{\footnotesize The most up-to-date version of this paper can be downloaded at the following link: 
+	\begin{center}
+		\url{https://github.com/NicoCourts/General-Exam-Paper/raw/master/General-Paper.pdf}
+	\end{center}}
 \end{abstract}
 
 \newpage
@@ -720,15 +723,14 @@ This map is the one such that if $f\in\Hom(k[x_{ij}]_{\det},A)$,
 
 What are the structure maps for this representation? We can compute for any $g\in \GL_n(A)$ (which we, though a mild
 abuse of notation, think of as a map $g:k[x_{ij}]_{\det}\to A$ where $g(x_{ij})=g_{ij}$)
-\[\rho_A(g)\cdot v_i=\rho_A(g(x_{ij}))_{i,j}v_i=((g\circ\rho^\ast)(x_{ij}))_{i,j}v_i=\sum_j g(\rho^\ast(x_{ij}))v_j\]
+\[\rho_A(g)\cdot v_i=\rho_A(g(x_{ij}))_{i,j}v_i=((g\circ\rho^\ast)(y_{ij}))_{i,j}v_i=\sum_j g(\rho^\ast(y_{ij}))v_j=\sum_j\rho^\ast(y_{ij})(g)v_j\]
 from which we can see
 \begin{lem}
 	Let $\rho:\Gamma\to \GL(V)$ be a polynomial representation. Then for any $A\in\Alg_k$, the structure maps $f_{ij}$ 
-	of the group representation $\rho_A:\GL_n(A)\to \GL_m(A)$ are completely determined by $\rho^\ast$.
+	of the group representation $\rho_A:\GL_n(A)\to \GL_m(A)$ are precisely the $\rho^\ast(y_{ij})$.
 \end{lem}
 
-Since any $g:k[x_{ij}]_{\det}\to A$ defining a matrix is a linear map, this implies that the homogeneous degree of 
-the structure morphisms is also due completely to $\rho^\ast$. This enables us to re-define polynomial representations 
+This enables us to re-define polynomial representations 
 in the following way (compare with definition \ref{def:poly-rep}):
 \begin{defn}\label{def:poly-rep-new}
 	A finite dimensional \textbf{polynomial representation of $\Gamma$ of degree $r$} is a finite dimensional vector space $V$ 
@@ -772,12 +774,14 @@ for all $v\in V$.
 
 Sometimes a more useful way to think of polynomial representations is as comodules. That idea is made more formal
 in the following theorem:
-\begin{thm}
+\begin{lem}\label{lem:comod-map}
 	Every homogeneous degree $r$ polynomial representation of $\GL_n$ gives rise to an $A(n,r)$-comodule
 	in the following way: the underlying vector space is the same and the $A(n,r)$ coaction is given by 
 	\[\phi(v_i)=\sum_j\rho^\ast(y_{ij})\otimes v_j\]
-	where in the above we identify the algebra $k[y_{ij}]_{\det}$ with the ring of functions on $\GL(V)$.
-\end{thm}
+	where in the above we identify the algebra $k[y_{ij}]_{\det}$ with the ring of functions on $\GL(V)$. As a matter of notation, 
+	we call this map 
+	\[\Psi:\Pol(n,r)\to \lcomod{A(n,r)}.\]
+\end{lem}
 \begin{prf}
 	By definition this gives us a map into $\lcomod{k[\Gamma]}$, but we can see that the image is entirely contained within 
 	$\lcomod{A(n,r)}$ since, in light of definition \ref{def:poly-rep-new}, $\rho^\ast(y_{ij})$ is homogeneous degree $r$.
@@ -787,7 +791,6 @@ in the following theorem:
 	\begin{align*}
 		(\Delta\otimes\id)\circ\phi(v_i)&=\sum_j\Delta(\rho^\ast(y_{ij}))\otimes v_j\\
 		&=\sum_j\rho(D)_{ij}\otimes v_j\\
-		&=\sum_j({\color{red}\text{MAGIC}})\otimes v_j\\
 		&=\sum_j \left(\sum_k \rho^\ast(y_{ik})\otimes\rho^\ast(y_{kj})\right)\otimes v_j\\
 		&=\sum_k \rho^\ast(y_{ik})\otimes\left(\sum_j \rho^\ast(y_{kj})\otimes v_j\right)\\
 		&=(\id\otimes\phi)\sum_k\rho^\ast(y_{ik})\otimes v_k\\
@@ -795,8 +798,35 @@ in the following theorem:
 	\end{align*}
 	which shows that $\phi$ gives a $A(n,r)$-comodule structure on the underlying vector space of a representation $\rho$ of $\Gamma.$
 \end{prf}
+\begin{rmk}
+	Above we used the fact that, for all $g\in\GL_n(A)$, 
+	\[\Delta(\rho^\ast(y_{ij}))(g)=\sum_k\rho^\ast(y_{ik})\otimes\rho^\ast(y_{kj})\]
+	which is true since the map
+	\[\Delta\circ\rho^\ast:k[\GL(V)]\to k[\Gamma]\otimes k[\Gamma]\]
+	corresponds to the map 
+	\[\rho\circ m:\Gamma\times\Gamma\to \GL(V)\]
+	where, after evaluating at $A\in\Alg_k$,
+	\[(\rho\circ m)(M,N)=\rho(MN)=\rho(M)\rho_A(N)=m\circ(\rho\times\rho)(M, N)\]
+	which implies we have the equation
+	\[\Delta\circ \rho^\ast=(\rho^\ast\otimes \rho^\ast)\circ \Delta\]
+	and the equality follows.
+\end{rmk}
+The preceeding lemma is in service of reframing the problem in terms of the comodules of a nicely-behaved (e.g. finite dimensional!) coalgebra:
+\begin{lem}
+	The map $\Psi$ defined in lemma~\ref{lem:comod-map} is a functor and, furthermore, an equivalence 
+	of categories
+	\[\Psi:\Pol(n,r)\xrightarrow{\sim}\lcomod{A(n,r)}.\]
+\end{lem}
+\begin{prf}
+	Let $f:(V,\rho)\to (W,\eta)$ be a map of homogeneous degree $r$ polynomial representations of $\Gamma$. This is a linear map $f:V\to W$ 
+	satisfying the usual property that for any $A\in\Alg_k$, $a\in V\otimes A$ and $g_A\in \Gamma(A)$,
+	\[f(\rho(g_A)a)=\eta(g_A)f(a).\]
 
-{\color{red} Still need to show that this gives an equivalence of categories. Also be sure to change all instances below of $M(n,r)$ to $\Pol(n,r)$.}
+	We want to show that $f$ is a map of $A(n,r)$-comodules. Let $v_i\in V$ be a basis element as we have used before. Then if $f(v_i)=\sum_k a_{ik}w_{k}$ where $W=\langle w_k\rangle$,
+	\[\phi_W\circ f(v_i)=\phi_W\left(\sum_ka_{ik}w_k\right)=\sum_ka_{ik}\phi_W(w_k)=\sum_ka_{ik}\left(\sum_j \eta^\ast(y_{kj})\otimes w_j\right)\]
+	and on the other hand 
+	\[(\id\otimes f)\circ\phi(v_i)=(\id\otimes f)\left(\sum_j\rho^\ast(y_{ij})\otimes v_j\right)=\sum_j\rho^\ast(y_{ij})\otimes f(v_i)=\sum_j\rho^\ast(y_{ij})\otimes\left(\sum _ka_{jk}w_k\right)\]
+\end{prf}
 
 \subsubsection{The Schur algebra}
 Finally we get to the actual object of study:
@@ -2026,11 +2056,66 @@ the language of $\Spec_\text{Bal}$):
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \section{Questions and extensions}
-\subsection{The representation theory of \texorpdfstring{$S(n,r)$}{S(n,r)} in positive characteristic}
+The following are some rough outlines of research programs that we can look into moving forward. They vary in depth and difficulty and the questions 
+asked herein may not end up being the ones that are most interesting in these different areas. These do, however, provide a good starting place as we transition 
+into tackling new problems.
 
 \subsection{Computing the spectrum of \texorpdfstring{$\Db(S(n,r))$}{DbS(n,r)}}
+When one is interested in understanding the representation theory of an object, one often runs into  the problem 
+of algebras of ``wild'' representation type. These are the algebras whose isomorphism types of indecomposables are in 
+bijection with those of $k\langle x,y\rangle$. It has been shown (accurding to \cite{bensonI}) that the representation 
+theory of algebras $\Lambda$ of wild type is \textit{undecideable} in that there exists no algorithm for a Turing machine that can 
+decide the truth or falsehood of a statement about $\Lambda$ modules. 
 
-\subsection{The Schur-Weyl functor and adjoints}
+While that may seem like a dismal prospect, the (Balmer) spectrum of the derived category of Schur algebras 
+gives us a little more hope. Recall that the spectrum is comprised of prime thick tensor ideals in $\Db(S(n,r))$,
+which are triangulated subcategories that, among other properties, are closed under summands and extensions. This gives us a coarser 
+grouping of chains of $\Lambda$-modules to work with, and (hopefully!) gives us a better chance at being able to understand 
+things better.
+
+A first step would be to compute $\Db(S(n,r))$ in the ``nice'' case where our field is characteristic zero. From there, there are interesting computations to be done 
+for Schur algebras over fields of characteristic $p>0$ which could yield interesting results.
+
+\subsection{The representation theory of \texorpdfstring{$S(n,r)$}{S(n,r)} in positive characteristic}
+When we are working over an infinite field of characteristic zero, the theory of Schur algebra representations affords a relatively 
+nice, clean description. However, as is pointed out in \cite{erdmann}, the representation theory of Schur algebras in positive characteristic 
+can be fraught with troubles. For instance, $S(3,10)$ over a field of characteristic 5 has wild representation type.
+
+That such troublesome algebras exist and are so readily accessible (the above example is spanned by 66 elements) indicates that there are
+an endless supply of computational examples that one could try to understand and that could eventually lead to questions and conjectures concerning 
+the nature of the representations of algebras of wild type.
+
+\subsection{Representation theory of the \texorpdfstring{$q$}{q}-Schur algebra}
+Recall a motiviating example (c.f. \cite{majid}) of a quantum group: $\operatorname{SL}_q(2)$, so named because it is a ``$q$-analog'' of the algebra
+$\operatorname{SL}_2$. Fix some $q\in k^\times$. Then it is defined (as an algebra) as a quotient 
+\[k\langle a,b,c,d\rangle/R\]
+where $R$ is the ideal generated by the following relations:
+\[\begin{array}{ccc}
+	ca=qac & ba=qab & db=qdb\\
+	dc=qcd & bc=cb & da-ad=(q-q^{-1})bc
+\end{array}\]
+along with the ``$q$-determinant relation''
+\[ad-q^{-1}bc=1.\]
+Notice that setting $q=1$ makes $a,b,c,$ and $d$ commute, so we are left with the usual special linear group.
+
+Quantum groups and, more generally, quantum deformations of objects in commutative algebra, give mathematicians 
+a way to carefully perturb objects to open up areas of research in noncommutative algebra to the the same (or similar) techniques 
+used by commutative algebraists and algebraic geometers.\footnote{See, for instance Taft and Towber's \textit{Quantum deformation of flag schemes and Grassmann schemes. I. A q-deformation of the shape-algebra for GL(n)}
+or the second half of my notes on the Grassmannian at \href{https://github.com/NicoCourts/Grassmannian-Notes/}{https://github.com/NicoCourts/Grassmannian-Notes/} where I summarize this paper.} 
+
+The $q$-Schur algebras were developed by Dipper and James and eventually summarized very nicely in \cite{donkin-q-schur} in a manner that
+reflects the character of \cite{green} and re-derives the classical results as a degenerate case of a more complex and 
+interesting interplay between quantum $\GL_n$ and Iwahori-Hecke algebras.
+
+These algebras (and even further generalizations) are still an area of active research. The question of identifying representation 
+types of $q$-Schur algebras has been completed already by Erdmann and Nakano in \cite{erdmann-nakano}, 
+but the other questions persist. In particular, one can ask questions like:
+\begin{itemize}
+	\item What are explicit indecomposable representations and (in the finite and tame cases) how can we classify the families of indecomposable representations of these algebras?
+	\item How can we generalize the idea of Schur duality to even broader families of noncommutative quasihereditary algebras?
+\end{itemize}
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
