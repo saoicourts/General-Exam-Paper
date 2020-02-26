@@ -89,21 +89,25 @@
 
 \begin{document}
 %make the title page
-\title{General Exam Paper \vspace{-1ex}}
+\title{Schur Duality and Strict Polynomial Functors\\\vspace{1ex} \normalsize General Exam Paper}
 \author{Nico Courts\footnote{University of Washington, Seattle. Email: ncourts@uw.edu}}
-\date{Exam Presentation: March 10th, 2020}
+\date{Exam Presentation: March 10th, 2020, 10:15am, DEN 213}
 \maketitle
 
 \begin{abstract}
 	We begin by going through a considerable amount of domain knowledge concerning representations of $\GL_n$,
-	representations of $\frakS_n$, and strict polynomial functors all in service of understanding the Schur-Weyl 
-	functor that relates several of these categories. From there, we investigate recent work on the part of Krause 
-	and his students Aquilino and Reischuk on this functor and the fact that it is monoidal under reasonably natural monoidal structures on 
-	the categories in question. Finally we ask some questions about whether the monoidal structure on strict polynomial functors 
-	extends meaningfully to pathologies that arise in positive characteristic.
+	representations of $\frakS_n$, tracing the development from the classical study of group representations by Schur
+	and Weyl and the transformation of this theory in the more robust language of affine group schemes. From there,
+	the story takes on a more categorical flavor as we discuss different manifestations of polynomial representations of $\GL_n$, 
+	following the work of Friedlander and Suslin as well as Krause, Aquilino, and Reischuk. In the latter case, 
+	we show how they determined that the Schur-Weyl functor is monoidal, opening up the theory to the machinery of 
+	monoidal categories. We take some time to develop the theory of tensor triangulated geometry from Balmer as well 
+	as discuss some standard constructions necessary for the theory. We end our paper by talking about how all of this work 
+	comes together to elucidate some problems at the boundaries of modern representation theory as well as techniques with 
+	which we can solve them.\vspace{0.5in}
 
-	{\footnotesize The most up-to-date version of this paper can be downloaded at the following link: 
-	\begin{center}
+	{\begin{center}
+		\footnotesize The most up-to-date version of this paper can be downloaded at the following link:\\
 		\url{https://github.com/NicoCourts/General-Exam-Paper/raw/master/General-Paper.pdf}
 	\end{center}}
 \end{abstract}
@@ -115,12 +119,12 @@
 \newpage
 \section{Introduction}
 \subsection{Issai Schur and polynomial representations}
-The story of this project (more-or-less) begins with Schur's doctoral thesis \cite{schur-thesis} in which he defined
-polynomial representations of $\GL_n$---a theory which he developed more completely in his later paper \textit{\"Uber die 
+The story of this project (more-or-less) begins with Schur's doctoral thesis \cite{schur-thesis} in which he defines
+the polynomial representations of the group $\GL_n(k)$---a theory which he developed more completely in his later paper \textit{\"Uber die 
 rationalen Darstellungen der allgemeinen linearen Gruppe}\footnote{English: \textit{On the rational representations of the general linear group}}
-\cite{schur-rational}. In these papers, Schur develops the idea of a \textbf{polynomial representation of $\GL_n$},
+\cite{schur-rational}. In these papers, Schur develops the idea of a \textbf{polynomial representation of $\GL_n(k)$},
 meaning a (finite dimensional) representation where the coefficient functions of the representing map 
-\[\rho:\GL_n\to \GL(V)\]
+\[\rho:\GL_n(k)\to \GL_m(k)\]
 is polynomial in each coordinate. For example, the map sending 
 \[A=\begin{pmatrix}
 	a&b\\
@@ -130,20 +134,28 @@ is polynomial in each coordinate. For example, the map sending
 	abd-b^2c & ad^2-bcd & 0\\
 	0 & 0 & ad-bc
 \end{pmatrix}=\rho(A)\]
-is a three-dimensional polynomial representation of $\GL_2$.
+is a three-dimensional polynomial representation of $\GL_2(\bbR)$.
 
 The block-diagonal form above demonstrates a direct sum decomposition of our representation into two parts: one two-dimensional homogeneous degree 3
 and one one-dimensional homogeneous degree 2 (in the entries of $A$). A result in \cite{schur-thesis} tells us that, in fact, this can always be done: 
-if $V$ is a polynomial representation of $\GL_n$,
+if $V$ is a polynomial representation of $\GL_n(k)$,
 then $V$ decomposes as a direct sum of representations 
 \[V=\bigoplus_\delta V_\delta\]
 where each $V_\delta$ is a polynomial representation where the coefficient functions are \textit{homogeneous degree $\delta$}. 
 This allows us to focus our attention to the structure of these $V_\delta$ as the fundamental building blocks of the theory.
 
-The key insight made in this theory comes from the observation that the vector space (recall $V\cong k^n$)
-\[E=V^{\otimes r}\]
-is made into a $(\GL_n(k),\frakS_r)$-bimodule in a very natural way, and that this bimodule gives us a way to relate 
-$\rmod {\frakS_r}$ with (a subcategory of) $\lmod {\GL_n(k)}$ via the so-called \textbf{Schur-Weyl functor.}
+The key insight made in this theory comes from the observation that the vector space 
+\[E^{\otimes d}\eqdef (k^n)^{\otimes d}\]
+can made into a $(\GL_n(k),\frakS_d)$-bimodule in a very natural way, and that this bimodule gives us a way to relate 
+$\rmod {\frakS_d}$ with $\lmod {\GL_n(k)}$ via the so-called \textbf{Schur-Weyl functor.}
+
+\subsection{A more modern treatment: affine group schemes}
+Schur's discovery, while already interesting enough by itself, takes on a new level of depth when one puts 
+things in the right context. More modern mathematicians realized that this phenomenon is best stated as a property of \textit{affine group schemes}, rather than as groups. 
+
+When put into this context, the classification of rational representations (group scheme morphisms into $\GL(V)$) comes as given and the classification comes as a very 
+natural condition put on the corresponding map between coordinate algebras. This better motivates many of the constructions 
+that Schur made and opens up his theory to analysis using the tools of category theory and algebraic geometry.
 
 \subsection{The Schur-Weyl functor}
 Clearly a connection between representations of two groups that are so ubiquitous in group theory and math in general 
@@ -155,26 +167,29 @@ originally discussed the idea of \textbf{strict polynomial functors} and showed 
 of the Schur algebra $S(n,d)$ was equivalent to the category $\calP_d$ of homogeneous degree $d$ strict polynomial functors.
 
 In later work, Krause \cite{krause-strict-poly-func} used an alternative construction of $\calP_d$ as the category of
-of reprsentations of the $d$-divided powers of the category of finitely generated projective $k$-modules. The upshot being that 
-the latter object $\Gamma^d P_k$ has an obvious monoidal structure which $\calP_d$ inherits in a natural way. This new concrete 
-monoidal structure opens up the field to discussing several notions of duality defined in different contexts 
-and solidifying connections between them.
+of reprsentations of the $d$-divided powers of the category of finitely generated projective $k$-modules. This category is 
+denoted $\Gamma^d P_k$ (or $\Gamma^d_k$ for short) and his version of strict polynomial functors is $\Rep \Gamma^d_k$. The upshot of this defintion is that 
+the polynomial structure we desire is better encapsulated in the domain category, rather than placing awkward conditions on the functors themselves.
+This also enables Krause to define monoidal structure on $\Rep \Gamma^d_k$ using the fact that presheaves are canonical limits of representable presheaves. 
 
 Krause's students Aquilino and Reischuk, in their paper \cite{aquilino-reischuk}, prove, among other facts, that 
 under these natural monoidal structures the Schur-Weyl functor is in fact monoidal. This puts the theory of representations 
 of these groups and algebras firmly in the realm of monoidal categories, opening up the area to new questions using 
 tools from category theory.
 
+\subsection{Tools and further directions}
+Sections 5,6, and 7 are devoted to reproducing the core aspects of some tools that can be used in solving problems in representation theory
+including methods from homological algebra (the derived category) and triangulated categories (the Balmer spectrum). In fact, these two 
+tools coalesce to give a way to analyze otherwise the (sometimes unweildy) categories $\Rep S(n,r)$. We finish our discussion with some ideas 
+of how to proceed from this knowledge to solving new problems.
+
 \subsection{Notation and conventions}\label{subsec:notation}
-Throughout this paper we will define $k$ to be a field (not necessarily of characteristic zero or algebraically closed unless otherwise noted).
-%Let $\Alg_k$ be the category of $k$-algebras and $\Grp$ denote the category of groups with homorphisms.
+Throughout this paper we will define $k$ to be an infinite field (not necessarily of characteristic zero or algebraically closed unless otherwise noted).
+d%Let $\Alg_k$ be the category of $k$-algebras and $\Grp$ denote the category of groups with homorphisms.
 
-We will use $\Gamma=\Gamma_k=\GL_n=\GL_n(k)$ to denote the general linear group, $\Aut_k(k^n)$. Let $\frakS_r$ denote the symmetric group on $r$ letters.
+We will use $\Gamma=\GL_n$ to denote the affine group scheme $\Hom_{\Algk}(k[x_{ij}|1\le i,j\le n]_{\det},-)$ and $\GL_n(k)$ to denote either the $k$-points of $\GL_n$
+or the abstract group, depending on which viewpoint best suits the discussion.
 
-When speaking of the ($k$) vector space spanned by elements $v_1,\dots,v_n$, we will use the notation 
-\[\langle v_1,\dots, v_n\rangle.\]
-
-{\color{red} When the rest of the paper is finished, the intro will be rewritten to reflect the actual content.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -565,7 +580,7 @@ The upshot of this work is that it gives us a bijection between (total) degree $
 \[I(n,r)\times I(n,r)/\sim\]
 
 \subsubsection{\texorpdfstring{$A_k(n,r)$}{Ak(n,r)}}
-Notice that if $V\in M(n,r)$, each of its structure maps are homogeneous degree $r$ polynomials. As the first object of study, consider 
+Notice that if $V\in \Pol(n,r)$, each of its structure maps are homogeneous degree $r$ polynomials. As the first object of study, consider 
 \begin{defn}
 	Let $A_k(n,r)=A(n.r)$ denote the collection of all homogeneous degree $r$ polynomials in the 
 	coordinate functions $c_{ij}:\Gamma\to k$.
@@ -735,7 +750,7 @@ in the following way (compare with definition \ref{def:poly-rep}):
 \begin{defn}\label{def:poly-rep-new}
 	A finite dimensional \textbf{polynomial representation of $\Gamma$ of degree $r$} is a finite dimensional vector space $V$ 
 	over $k$ along with a scheme map $\rho:\Gamma\to \GL(V)$ such that the associated algebra map $\rho^\ast:k[\GL(V)]\to k[\Gamma]\cong k[x_{ij}]_{\det}$ is homogeneous 
-	degree $r$. In other words, the image of $\rho^\ast$ is entirely contained within the degree $r$ graded piece of $k[\Gamma]$.
+	degree $r$. In other words, the image of $\rho^\ast$ is entirely contained within the degree $r$ graded piece of $k[x_{ij}]\subseteq k[\Gamma]$.
 \end{defn}
 
 \begin{rmk}
@@ -813,20 +828,62 @@ in the following theorem:
 \end{rmk}
 The preceeding lemma is in service of reframing the problem in terms of the comodules of a nicely-behaved (e.g. finite dimensional!) coalgebra:
 \begin{lem}
-	The map $\Psi$ defined in lemma~\ref{lem:comod-map} is a functor and, furthermore, an equivalence 
-	of categories
-	\[\Psi:\Pol(n,r)\xrightarrow{\sim}\lcomod{A(n,r)}.\]
+	The map $\Psi$ defined in lemma~\ref{lem:comod-map} is a functor.
 \end{lem}
 \begin{prf}
 	Let $f:(V,\rho)\to (W,\eta)$ be a map of homogeneous degree $r$ polynomial representations of $\Gamma$. This is a linear map $f:V\to W$ 
 	satisfying the usual property that for any $A\in\Alg_k$, $a\in V\otimes A$ and $g_A\in \Gamma(A)$,
 	\[f(\rho(g_A)a)=\eta(g_A)f(a).\]
+	%This corresponds to a diagram
+	%\begin{center}
+%		\begin{tikzcd}[column sep=large]
+%			\Gamma\times V\ar[r,"{(g,v)\mapsto \rho(g)v}"]\ar[d,"\id\times f",swap] & V\ar[d,"f"]\\
+%			\Gamma\times W\ar[r,"{(g,w)\mapsto \eta(g)w}",swap] & W
+%		\end{tikzcd}
+%	\end{center}
+%	and upon evaluating at $k[\Gamma]$ the action gives us a coaction defined by (for all $v\in V$)
+%	\[\phi_\rho(v)=\rho_{k[\Gamma]}(\id_{k[\Gamma]})(1_{k[\Gamma]}\otimes v)\in k[\Gamma]\otimes V\]
 
 	We want to show that $f$ is a map of $A(n,r)$-comodules. Let $v_i\in V$ be a basis element as we have used before. Then if $f(v_i)=\sum_k a_{ik}w_{k}$ where $W=\langle w_k\rangle$,
 	\[\phi_W\circ f(v_i)=\phi_W\left(\sum_ka_{ik}w_k\right)=\sum_ka_{ik}\phi_W(w_k)=\sum_ka_{ik}\left(\sum_j \eta^\ast(y_{kj})\otimes w_j\right)\]
 	and on the other hand 
 	\[(\id\otimes f)\circ\phi(v_i)=(\id\otimes f)\left(\sum_j\rho^\ast(y_{ij})\otimes v_j\right)=\sum_j\rho^\ast(y_{ij})\otimes f(v_i)=\sum_j\rho^\ast(y_{ij})\otimes\left(\sum _ka_{jk}w_k\right)\]
+	and using the identification of 
+	\[k[\Gamma]\otimes W\cong \Hom_k(\Gamma,W)\]
+	we see the first line corresponds to the map 
+	\[g\mapsto \sum_ka_{ik}\sum_j\eta(g)_{kj}w_j=\sum_ka_{ik}\eta(g)w_k=\eta(g)f(v_i)\]
+	and the bottom line corresponds to 
+	\[g\mapsto \sum_j\rho(g)_{ij}f(v_j)=f\left(\sum_j\rho(g)_{ij}v_j\right)=f(\rho(g)v_i)\]
+	and these two values are equal by virtue of of $f$ being a $G$-module morphism.
 \end{prf}
+Finally we prove that these are the same category!
+\begin{thm}
+	The map
+	\[\Psi:\Pol(n,r)\to \lcomod{A(n,r)}\]
+	is an equivalence of categories.
+\end{thm}
+\begin{prf}
+	To prove essential surjectivity, let $V$ be an $A(n,r)$ comodule with coaction $\phi:V\to A(n,r)\otimes V$.
+	We define from this an object in $\Pol(n,r)$ via the action 
+	\[g\cdot v=(e_g\overline\otimes \id)\circ\phi(v)\]
+	where $e_g:k[\Gamma]\to k$ is evaluation at $g\in \Gamma$ and 
+	\[e_g\overline\otimes\id (f\otimes v)=f(g)v.\]
+	This defines the map 
+	\[\rho:\Gamma\to \GL(V)\quad\text{via}\quad g\mapsto (e_g\overline\otimes \id)\circ\phi\]
+	which is a representation of $\Gamma$. To check that this is homogeneous degree $r$, we just compute (where here we write $\phi(v)=\sum_i f_i\otimes v_i$)
+	\[\rho(\lambda g)(v)=(e_{\lambda g}\overline\otimes\id)\circ\left(\sum f_i\otimes v_i\right)=\sum f_i(\lambda g)v_i=\lambda^r\sum f_i(g)v_i=\lambda^r\rho(g)(v)\]
+	where we used that the $f_i$ are homogeneous degree $r$ maps.
+
+	Our category is concrete (we have a faithful functor to $\Set$) and therefore the comodule map $\Psi(f)$
+	is completely determined by its underlying map on sets. But $\Psi(f)(v)=f(v)$ after passing to sets for all $v\in V$,
+	so $\Psi$ is automatically fully faithful. 
+
+	Thus $\Psi$ is an equivalence of categories, as desired.
+\end{prf}
+\begin{rmk}
+	Actually, the above proof can be modified slightly to show that $\Psi$ has a functorial inverse--that is, $\Psi$ is an \textit{isomorphism of categories}.
+	Since we are only interested in representations up to isomorphism, however, equivalence is all we need.
+\end{rmk}
 
 \subsubsection{The Schur algebra}
 Finally we get to the actual object of study:
@@ -877,81 +934,39 @@ Finally we get to the actual object of study:
 	with $\1$ and $m$ as its unit and multiplication.
 \end{prf}
 
-Why have we done all this work to construct Schur algebras, one may ask? Well the idea is that there is a map
-\[e:k\Gamma\to S(n,r)\]
-where it sends 
-\[\sum_i k_i g_i\mapsto \sum_i k_i e_{g_i}\]
-where $e_g$ is the ``evaluation at $g$'' map--that is, for all $x\in A(n,r)$,
-\[e_g(x)=x(g).\]
-\begin{lem}\label{lem:e-surj}
-	The map $e:k\Gamma\to S(n,r)$ is surjective.
-\end{lem}
-\begin{prf}
-	Let $\xi$ be any element orthogonal to $W=\Im e$, if one exists. Say this element is $\sum_{i,j}a_{i,j}\xi_{i,j}$.
-	But then the element $c=\sum a_{i,j}c_{i,j}$ is zero on every element in the image of $e$. In other words, for all $\kappa\in k\Gamma$,
-	\[c(\kappa)=e_\kappa(c)=0.\]
-	
-	But the only function in $k^\Gamma$ that is zero on all of $\Gamma$ is the zero function. Thus $c=0$, whence its coefficients $a_{i,j}$ are zero. So $\xi$ is zero, so $W=S(n,r)$
+
+There is a standard result that says 
+\begin{prop}
+	The finite dimensional left comodules of a coalgebra $\Lambda$ are the same as finite dimensional right modules 
+	over $\Lambda^\vee=\Hom(\Lambda, k)$.
+\end{prop}
+\begin{prf}[sketch]
+	The key idea here is as follows: an right comodule over $\Lambda^\vee$ is, equivalently, a $k$-linear map 
+	\[V\otimes \Lambda^\vee\to V\]
+	satisfying the usual associativity and identity axioms.	But notice that 
+	\[\Hom(V\otimes \Lambda^\vee,V)\cong\Hom(V,\Hom(\Lambda^\vee,V))\subseteq\Hom(V,\Lambda\otimes V)\]
+	which, in turn, correspond to $\Lambda$ comodules. It remains to show that the associativity and unit axioms restrict 
+	the collection on the left in the right way to give us a map satisfying the coassociativity and counit axioms on the right.
 \end{prf}
 
-In this way, $e$ induces a map between categories
-\[f:\lmod{S_k(n,r)}\to M_k(n,r)\]
-where $f(V)=V$ as far as underlying sets are concerned, but we are given a new action: 
-for any $\sum k_i g_i\in k\Gamma$ and $c\in V\in \lmod{S(n,r)}$,
-\[\left(\sum k_i g_i\right)\cdot v=\left(\sum k_i e_{g_i}\right)\cdot v.\]
-Notice that 
-\begin{lem}
-	$f$ as above defines a functor that sends any $\alpha:V\to W\in \lmod{S(n,r)}$
-	to the map that is identical as a map of sets. 
-\end{lem}
-\begin{prf}
-	Since we are working in a concrete category\footnote{There is a faithful functor to $\Set$; equivalently, any morphism is determined by where it sends the ``set of elements'' comprising the object.}, 
-	and since the $V$ and $f(V)$ are identical as sets and since any morphism is sent to the same map on underlying sets, commutativity of 
-	the functorality diagram 
-	\begin{center}
-		\begin{tikzcd}
-			V\ar[r,"\alpha"]\ar[d,"f"] & W\ar[d,"f"]\\
-			f(V)=V\ar[r,"f(\alpha)=\alpha"] & f(W)=W
-		\end{tikzcd}
-	\end{center}
-	is trivial to check. It remains only to check that $f(\alpha):V\to W$ is a morphism in $M(n,r)$, so that this diagram makes sense.
-
-	To check this, notice that for any $v\in V\in M(n,r)$ and $g\in k\Gamma$,
-	\[f(\alpha)(g\cdot v)=\alpha(e_g\cdot v)=e_g\cdot \alpha(v)=g\cdot f(\alpha)(v)\]
-	so $f$ is a functor.
-\end{prf}
-The upshot here is 
-\begin{thm}
-	The functor $f$ above is an equivalence of categories.
-\end{thm}
-\begin{prf}
-	That $f$ is faithful is easy enough to see since $f$ is the identity functor on the level of underlying sets. Let $g:V\to W$ be a morphism in 
-	$M(n,r)$ and consider the same (set) map in $\tilde g\in\lmod{S(n,r)}$. For any $\xi\in S(n,r)$, let $\kappa\in k\Gamma$ be an element such that $e_\kappa=\xi$
-	(which exists due to lem~\ref{lem:e-surj}).
-	Then 
-	\[\tilde g(\xi\cdot v)=g(\kappa\cdot v)=\kappa\cdot g(v)=\xi\cdot \tilde g(v)\]
-	But then $f(\tilde g)=g$, so $f$ is full.
-
-	It remains to see that $f$ is essentially surjective. But again this is not too hard to see since for any $V\in M(n,r)$ the same object setwise with the action given by 
-	\[\xi\cdot v=e_\kappa\cdot v\]
-	(where again $\kappa$ was chosen using lem~\ref{lem:e-surj}) maps to $V\in M(n,r)$ and we are done.
-\end{prf}
-\begin{rmk}
-	Actually, the above proof can be modified slightly to show that $f$ has a functorial inverse--that is, $f$ is an \textit{isomorphism of categories}.
-	Since we are only interested in representations up to isomorphism, however, equivalence is just as good.
-\end{rmk}
-\begin{rmk}
-	Using this equivalence, we identify $\lmod{S(n,r)}$ with $M(n,r)$ whenever it suits us.
-\end{rmk}
-
-One of a representation theorist's favorite kinds of results follows:
-\begin{cor}\label{cor:semisimple}
-	If $\ch k=0$, the algebra $S(n,r)$ is semisimple.
+Since $S(n,r)$ is commutative ($A(n,r)$ is cocommutative), this tells us that there is an equivalence between $\lcomod{A(n,r)}$ and $\rmod{S(n,r)}\cong\lmod{S(n,r)}$, and so 
+\begin{cor}
+	The categories $\Pol(n,r)$ and $\lmod{S(n,r)}$ are equivalent.
 \end{cor}
-\begin{prf}
-	$k\Gamma$ is semisimple since $\ch k=0$, so every element in $\lmod{k\Gamma}$ splits into a direct sum of simple modules. But the irreducible objects in 
-	$M(n,r)$ and those in $\lmod{S(n,r)}$ are the same and decompositons in one category pull back to the other, so every element in $\lmod{S(n,k)}$ is also completely reducible.
-\end{prf}
+\begin{rmk}
+	Using this equivalence, we identify $\lmod{S(n,r)}$ with $\Pol(n,r)$ whenever it suits us.
+\end{rmk}
+
+The following result has been proven in many different contexts, but one source is a paper of Doty and Nakano which completely 
+categorized the semisimple Schur algebras.
+\begin{cor}[{\cite[Thm. 2]{doty-nakano}}]\label{cor:semisimple}
+	If $\ch k=p$, the algebra $S_k(n,r)$ is semisimple if and only if one of the following hold:
+	\begin{itemize}
+		\item $p=0$
+		\item $p>r$
+		\item $p=n=2$ and $r=3$
+	\end{itemize}
+\end{cor}
 
 \subsubsection{Weights and characters}
 The discussion in section~\ref{subsubsec:indices} highlights an important idea: while we care about the \textit{quantities} in which each $c_{ij}$ occurs 
@@ -982,7 +997,7 @@ then
 	$\Lambda_+(n,r)$ is the orbit space of $\Lambda(n,r)$ under the above $\frakS(n)$ action.
 \end{defn}
 \begin{rmk}
-	The above are called the \textbf{dominant weights} in $M(n,r)$. Since each orbit $\alpha$ contains an element $[a_1,\dots,a_n]\in\alpha$ such that 
+	The above are called the \textbf{dominant weights} in $\Pol(n,r)$. Since each orbit $\alpha$ contains an element $[a_1,\dots,a_n]\in\alpha$ such that 
 	\[a_1\ge a_2\ge\cdots\ge a_n\]
 	we will often identify weights with their weakly-decreasing representative.
 
@@ -1038,21 +1053,21 @@ For the next step, we decompose the identity into a sum of these idempotents:
 	whence these two functions are equal.
 \end{prf}
 \begin{rmk}\label{rmk-weight-spaces}
-Using lemma~\ref{lem:decomp-one}, we can then decompose any $V\in M(n,r)$ into weight spaces:
+Using lemma~\ref{lem:decomp-one}, we can then decompose any $V\in \Pol(n,r)$ into weight spaces:
 \[V=\1\cdot V=\sum_{\alpha\in\Lambda(n,r)}\xi_\alpha V\]
 which we will denote 
 \[\xi_\alpha V=V^\alpha.\]
 \end{rmk}
 
 \begin{defn}\label{defn:character}
-	The \textbf{formal character} of a representation $V\in M(n,r)$ is a polynomial 
+	The \textbf{formal character} of a representation $V\in \Pol(n,r)$ is a polynomial 
 	\[\Phi_V(X_1,\dots,X_n)=\sum_{\alpha\in\Lambda(n,r)}(\dim V^\alpha)X_1^{\alpha_1}\cdots X_n^{\alpha_n}=\sum_{\alpha\in\Lambda_+(n,r)}(\dim V^\alpha)m_\alpha(X_1,\dots,X_n)\]
 	where $m_\alpha$ is the \textit{monomial symmetric polynomial}
 	\[m_\alpha(X_1,\dots,X_n)=\sum_{\sigma\in\frakS_n}X_{\sigma(1)}^{\alpha_1}\cdots X_{\sigma(n)}^{\alpha_n}.\]
 \end{defn}
 
 \subsubsection{Irreducible representations}
-The irreducible representations in $M(n,r)$ are given by a couple of results by some of the big names in representation theory: the original proof for $k=\bbC$ was proven in \cite[p.37]{schur-thesis} and then 
+The irreducible representations in $\Pol(n,r)$ are given by a couple of results by some of the big names in representation theory: the original proof for $k=\bbC$ was proven in \cite[p.37]{schur-thesis} and then 
 generalized in a later paper by Weyl \cite{weyl} and in work by Chevalley\footnote{Green \cite{green} mentions a paper by Serre: \textit{Groupes de Grothendieck des Sch\'emas en Groupes R\'eductifs D\'eploy\'es} \cite{serre-chevalley}, which 
 makes mention to Chevalley's contributions in proving the existence of modules with prescribed characters. This author was unable to find Chevalley's work.}:
 \begin{thm}\label{thm:irreps}
@@ -1247,7 +1262,7 @@ and
 From the discussion in the last section it is evident that the combinatorics behind the representation theory of $S(n,r)$ and $\frakS_r$ have some intersections
 in their use of Young tableaux and this connection is more than superficial. In fact, there is a functor relating the representations
 of these two objects in the following way:
-\subsection{Construction of the functor \texorpdfstring{$\calF$}{F}}
+\subsection{Construction of the Schur-Weyl functor \texorpdfstring{$\calF$}{F}}
 
 Let $V\in M_k(n,r)$ be a $S(n,r)$-representation and select any weight $\alpha\in\Lambda(n,r)$. Then the weight space (cf. rmk~\ref{rmk-weight-spaces})
 \[V^\alpha=\xi_\alpha V\]
@@ -1356,10 +1371,10 @@ This leads to the result:
 \subsection{Properties of \texorpdfstring{$\calF$ and $\calG$}{F and G}}
 Returning to the specific case of $S=S(n,r)$ and $eSe\cong\frakS_r$, the theory developed in the last part
 gives us a pair of functors
-\[\calF:M(n,r)\to \lmod{\frakS_r},\qquad \calG:\lmod{\frakS_r}\to M(n,r),\]
+\[\calF:\Pol(n,r)\to \lmod{\frakS_r},\qquad \calG:\lmod{\frakS_r}\to \Pol(n,r),\]
 each of which preserve irreducibility. We also have that
 \begin{prop}
-	If $M\in M(n,r)$ is irredicible and if $eM\ne 0$, then $\calG\circ\calF(M)=\calG(eM)\cong M.$
+	If $M\in \Pol(n,r)$ is irredicible and if $eM\ne 0$, then $\calG\circ\calF(M)=\calG(eM)\cong M.$
 \end{prop}
 \begin{prf}
 	Notice by prop.~\ref{prop:F-irred} and the following discussion that $eM$ is irreducible and (by assumption) nonzero, so
@@ -1370,7 +1385,7 @@ each of which preserve irreducibility. We also have that
 \end{prf}
 
 \subsection{In positive characteristic}
-Schur's classical work dealt only with the case when $k$ is a field of characteristic zero. In Aquilino and Reischuk's paper 
+Schur's classical work dealt only with the case when $k$ is a field of characteristic zero. In Aquilino and Reischuk's paper \cite{aquilino-reischuk} 
 on the monoidal structure of $\lmod{S(n,d)}$, the authors mention that (in general),
 \[\lmod{S(n,d)}\not\cong\lmod{\frakS_d}.\]
 
@@ -1406,10 +1421,8 @@ by defining it for projectives and taking the appropriate colimits. In the latte
 is further elucidated and it is proven that the Schur-Weyl functor $\calF$ is monoidal.
 
 \subsection{Polynomial maps}
-{\color{red} TODO: Rewrite this to account for the fact I am now using the algebraic definition of polynomial maps instead of the geometric one.}
-
 Let $V,W$ be vector spaces over a field $k$. There are many equivalent formulations of polynomial maps between such spaces, 
-but one that this author of this paper finds particulaly motivating is the following:
+but one that this author of this paper finds particulaly motivating is the scheme-theoretic one:
 \begin{defn}\label{defn:poly-maps}
 	Let $V,W$ be as above. Then the set of \textbf{polynomial maps from $V$ to $W$} is defined to be 
 	\[\Hom_\text{Pol}(V,W)\eqdef \Hom_{\Sch/k}(V,W).\]
@@ -1419,25 +1432,24 @@ To make sense of this definition, one recalls that every $V\in\Vectk$ correspond
 $\Spec S^\ast(V^\vee)=V\otimes_k-$ (which we, through an abuse of notation, again denote $V$) represented by the symmetric algebra of the dual of $V$. Thus the polynomial maps
 are precisely the rational maps one considers between these objects in their algebro-geometric realizations.
 
-\begin{rmk}
-	In Friedlander and Suslin's original paper, they define these maps abstractly as $S^\ast(V^\vee)\otimes W$. That this 
-	agrees with our definition (assuming that $V$ and $W$ are finite dimensional) follows from the following series of isomorphisms:
-	\begin{align*}
-		\Hom_\text{Pol}(V,W)&\eqdef\Hom_{\Sch/k}(V,W)\\
-		&\simeq\Hom_{\Alg_k}(S^\ast(W^\vee),S^\ast(V^\vee))\\
-		&\simeq\Hom_{\Alg_k}(W^\vee,S^\ast(V^\vee))\\
-		&\simeq W\otimes S^\ast(V^\vee)
-	\end{align*}
-	where we used above properties of affine schemes and standard facts of the linear algebra of finite dimensional vector spaces as well as the fact that 
-	a map from $S^\ast(V)$ is determined uniquely by its images on $V$.
-\end{rmk}
-For reasons that will become apparent shortly, it is easier to use the above remarks to define a 
-polynomial map in the following way:
+For reasons that will become apparent shortly, it is easier to identify the polynomial maps with elements of a vector space in the following way:
 \begin{defn}
 	If $V,W\in\Vectk$ are finite dimensional, a \textbf{polynomial map $f:V\to W$} can be alternatively defined as an element 
 	\[f\in W\otimes S^\ast(V^\vee)\cong\Hom_{\Sch/k}(V,W)\]
 	through the identifications above.
 \end{defn}
+\begin{rmk}
+	In Friedlander and Suslin's original paper, they take this to be the first definition of a polynomial map. That this 
+	agrees with the geometric definition (assuming that $V$ and $W$ are finite dimensional) follows from the following series of isomorphisms:
+	\begin{align*}
+		\Hom_\text{Pol}(V,W)&\eqdef\Hom_{\Sch/k}(V,W)\\
+		&\simeq\Hom_{\Alg_k}(S^\ast(W^\vee),S^\ast(V^\vee))\\
+		&\simeq\Hom_{k}(W^\vee,S^\ast(V^\vee))\\
+		&\simeq W\otimes S^\ast(V^\vee)
+	\end{align*}
+	where we used above properties of affine schemes and standard facts of the linear algebra of finite dimensional vector spaces as well as the fact that 
+	a map from $S^\ast(V)$ is determined uniquely by its images on $V$.
+\end{rmk}
 
 The upshot to this seemingly more \textit{ad hoc} definition is that, while it introduces the restriction of finite dimensionality (which will suffice for our 
 definitions anyways), it enables us to make more simple the following idea:
@@ -1487,9 +1499,9 @@ of a strict polynomial functor. I am nothing if I am not true to my word:
 		is homogeneous of degree $n$ (in the sense of \ref{def:homog-poly-map}).
 	\end{enumerate}
 \end{lem}
-\begin{prf}
-	\color{red} sketch out ideas here. Maybe just important ones.
-\end{prf}
+%\begin{prf}
+%	\color{red} sketch out ideas here. Maybe just important ones.
+%\end{prf}
 
 \begin{defn}
 	The category $\calP_d$ is the full subcategory 
@@ -1514,7 +1526,7 @@ we get
 	&\cong\Hom(S^d(\Hom(V,W)^\vee)^\vee,\Hom(T(V),T(W)))\\
 	&\cong\Hom(S^d(\Hom(V,W)^\vee)^\vee\otimes T(V),T(W))
 \end{align*}
-and by using that $\Gamma^d(X)\cong S^d(X^\vee)^\vee$ and letting $V=W=k^n$, we can identify a canonical map 
+and by using that $\Gamma^d(X)\cong S^d(X^\vee)^\vee\eqdef (S^d)^\sharp(X)$ and letting $V=W=k^n$, we can identify a canonical map 
 \[T_{k^n\,k^n}:\Gamma^d(\End(k^n))\otimes T(k^n)\to T(k^n)\]
 which gives us an action of $\Gamma^d(\End(k^n))$ on $T(k^n)$ and one can see without too much trouble that 
 \[\Gamma^d(\End(k^n))\cong S(n,d).\]
@@ -1526,18 +1538,20 @@ the stucture of homogeneous degree $d$ polynomial maps: there the author changes
 to encode the desired properties into the functors, rather than take a subcategory of objects satisfying a condition (which 
 is inherently more difficult to work with).
 \begin{defn}\label{defn:div-powers}
-	Let $k$ be any commutative ring. Then $P_k\subset \Vect_k$ is the full subcategory of finitely-generated projective $k$-modules.
+	When $k$ is any commutative ring, one can define the category $P_k\subseteq \lmod{k}$ as the full subcategory of finitely-generated projective $k$-modules.
+	In this paper, we require that $k$ is an infinite field. In this case, $P_k=\Vect_k$, but we use the former notation so that 
+	it aligns more closely with Krause's work.
 
 	Define $\Gamma^d P_k$ to be the category of \textbf{divided powers}---the objects are the same as those of $P_k$, but such that 
 	\[\Hom_{\Gamma^dP_k}(V,W)=\Gamma^d\Hom_{P_k}(V,W)\]
-	where $\Gamma^d X=(X^{\otimes d})^{\frakS_d}$ denotes the \textbf{$d^{\text{th}}$} divided powers of the $k$-module $X$.
+	where $\Gamma^d X=(X^{\otimes d})^{\frakS_d}$ denotes the \textbf{$d^{\text{th}}$} divided powers of the vector space $X$.
 
 	Finally, as a matter of notation, let 
 	\[\Rep\Gamma^d_k=\Rep\Gamma^dP_k=\Func(\Gamma^dP_k,\lmod k)\]
 	which we (suggestively) call the \textbf{category of homogeneous degree $d$ strict polynomial functors.}
 \end{defn}
-\begin{rmk}
-	Of course, when $k$ is a field, we get that $P_k=\Vectk$ and an element
+\begin{rmk}\label{rmk:action}
+	Of course since $P_k=\Vectk$, an element
 	\[T\in\Rep\Gamma^d_k=\Func(\Gamma^d\Vectk,\Vectk),\]
 	is a functor that, on objects, is a map $\Vectk\to \Vectk$ and on morphisms is of the form 
 	\[T_{VW}:\Hom_{\Gamma^d\Vectk}(V,W)=\Gamma^d\Hom_k(V,W)\to \Hom_k(T(V),T(W))\]
@@ -1545,9 +1559,16 @@ is inherently more difficult to work with).
 	\[\Gamma^d(V,W)\otimes T(V)\to T(W)\]
 	just as we got in the discussion following thm.~\ref{thm:FS-equiv}.
 \end{rmk}
-
-{\color{red} Finish up proving that this category is also equivalent. Maybe try to see if I can cook up an equivalence directly between $\calP_d$ and $\Rep\Gamma^d_k?$}
-
+Using the idea in the last remark, Krause proves that there is another equivalence of categories:
+\begin{thm}[{\cite[Thm. 2.10]{krause-strict-poly-func}}]
+	Let $d,n$ be positive integers. Then evaluation at $k^n$ induces a functor 
+	\[\Rep\Gamma^d_k\to \lmod{S(n,d)}\]
+	which is an equivalence of categories when $n\ge d$.
+\end{thm}
+The key idea of this proof is to restrict attention to small projective generators of $\Rep\Gamma^d_k$. A class of these 
+are the weight spaces $\Gamma^\lambda$ of the object $\Gamma^{d,k^n}$. Then it just remains to see that 
+\[\End_{\Gamma^d_k}(\Gamma^{d,k^n})\cong S_k(n,d)\]
+and the result follows.	
 \subsection{The monoidal structure on \texorpdfstring{$\Rep\Gamma^d_k$}{Rep Gdk}}
 One of the upshots of Krause's reformulation of strict polynomial functors is that it admits a more obvious monoidal 
 structure. His construction of the tensor product on $\Rep\Gamma_k^d$ takes the following tack: notice that the Yoneda embedding 
@@ -1729,8 +1750,9 @@ and by a decomposition result (their lemma 3.1), then have that
 \[\bigoplus_A {^\lambda M}\cong{^\lambda M}\otimes_k{^\mu M}\]
 which is the crucial step in separating into a tensor product of $\frakS_d$ modules.
 
-\subsection{A dictionary}
-{\color{red} Spell out how one can translate between the three different categories: irreducibles and tensor structure.}
+%I like this idea. I will try to do it, if time allows.
+%\subsection{A dictionary}
+%{\color{red} Spell out how one can translate between the three different categories: irreducibles and tensor structure.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1903,13 +1925,9 @@ which we call \textbf{the derived tensor product}. This can defined via a Kan ex
 	satisfying the same universal property with the natural transformations reversed.
 \end{defn}
 
-This gives us a property characterizing the functor, but in practice one usually computes this via resolutions. Let $M,N\in\calA$ for some abelian monoidal category $\calA$. Then 
+This gives us a property characterizing the functor, but in practice one usually computes this via resolutions. In the simplest case, let $M,N\in\calA$ for some abelian monoidal category $\calA$. Then 
 \[M[0]\otimes^\mathbf{L}_R N[0]=F_\bullet\otimes G_\bullet\]
 where $F_\bullet$ and $G_\bullet$ are chain complexes quasi-isomorphic to $M[0]$ and $N[0]$, respectively (e.g. flat resolutions).
-
-More generally, if $\calA$ has enough projectives, so does $\Ch(\calA)$. So if $A_\bullet,B_\bullet\in\D(\calA)$, one can take projective (\textit{a fortiori} flat) 
-resolutions of them to compute 
-{\color{red} This is still weird.}
 
 %\subsection{Compatibility of monoidal structures}
 
