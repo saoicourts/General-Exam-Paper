@@ -105,8 +105,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Getting a taste}
 Let's begin with some computations elucidating the phenomenon. Let $k=\bbC$ and $A=k[x_{ij}|1\le i,j\le 3]_{\det}$ be the polynomial ring localized 
-at the determinant of $(x_{ij})_{i,j}$. This is a Hopf algera with coalgebra structure 
-\[\Delta(x_{ij})=\sum_k x_{ik}\otimes x_{kj}\quad\text{and}\quad \varepsilon(x_{ij})=\delta_{ij}.\]
+at the determinant of $(x_{ij})_{i,j}$. 
 
 Let $A(3,3)$ be the degree $3$ graded piece (from the standard grading on polynomial rings). Then 
 \[S(3,3)=A(3,3)^\vee=\Hom_k(A(3,3),k)\]
@@ -159,15 +158,7 @@ planning on talking about today.
 	\begin{thm}[Schur]
 		Every polynomial representation of $\Gamma$ decomposes as a direct sum of homogeneous representations.
 	\end{thm}
-	In the light of this new definition, it makes sense to go back and confirm that, on $k$ points it still aligns with our 
-	definition. But if we evaulate at $k$, our matrices in $\GL_n(k)$ are, equivalently, maps $g:k[x_{ij}]_{\det}\to k$ and
-	$\rho(g)=g\circ\rho^\ast:k[y_{ij}]_{\det}\to k$. But then if $V=\langle v_i\rangle$,
-	\[g\cdot v_i=\rho(g)v_i=\sum_j \rho(g)_{ij}v_j=\sum_j g\circ\rho^\ast(y_{ij})v_j\]
-	and so the structure maps of $\rho$ are 
-	\[f_{ij}(g)=g\circ\rho^\ast(y_{ij})\]
-	so since the image of $\rho^\ast$ lies in the homogeneous degree $r$ polynomials, we see this is the same as the original condition.
 
-	Therefore we can also extend our old notation:
 	\begin{defn}
 		From now on, let $\Pol(n)$ and $\Pol(n,r)$ denote the polynomial and homogeneous degree $r$ group scheme 
 		representations of $\GL_n$.
@@ -189,7 +180,7 @@ planning on talking about today.
 		\end{thm}
 		The key observation here is the comultiplication preserves degree.
 
-		\subsubsection{Colagebras}
+		\subsubsection{Comodules}
 		Recall that a (right) $A=A(n,r)$ comodule is a vector space $V$ along with a map 
 		\[\phi:V\to V\otimes A\]
 		satisfying counit and coassociativity axioms. These coalesce into a category of left $A$ comodules with morphisms 
@@ -207,13 +198,6 @@ planning on talking about today.
 		\begin{thm}
 			The map $\Psi$ given above is a functor and an equivalence of categories.
 		\end{thm}
-		\begin{rmk}
-			To show that $\Gamma$-module morphisms go to comodule morphisms takes a little work, mostly in decoding 
-			the different notation we've set up here. From that, the fullness and faithfulness fall out and essential surjectivity 
-			follows by defining the action 
-			\[g\cdot v =(\id\otimes e_g)\circ\phi(v)\]
-			and one can compute this homogeneous degree $r$ (giving us our pseudo inverse).
-		\end{rmk}
 
 		\subsubsection{The Schur Algebra}
 		\begin{defn}
@@ -221,46 +205,12 @@ planning on talking about today.
 			\[S(n,r)=(A(n,r))^\vee=\Hom_k(A(n,r),k).\]
 		\end{defn}
 		Since $A(n,r)$ is a coalgebra, this gives $S(n,r)$ an algebra structure. A standard result is the following:
-		\begin{lem}
-			The category of finite dimensional right comodules of a coalgebra $\Lambda$ is the same as the category 
-			of finite dimensional left modules of $\Lambda^\vee$.
-		\end{lem}
-		\begin{cor}
+		\begin{thm}
 			The categories $\lmod{S(n,r)}$ and $\rcomod{A(n,r)}$ are equivalent (isomorphic!).
-		\end{cor}
-		\begin{rmk}
-			The unit $\1\in S(n,r)$ is given by $\1(x_{\underline i,\underline j})=x_{\underline i,\underline j}(I_n)$. The multiplication is, as 
-			per usual, given by 
-			\[(\alpha\cdot\beta)(x_{\underline i,\underline j})=\sum_{\underline k\in I(n,r)}\alpha(x_{\underline i,\underline k})\beta(x_{\underline k,\underline j}).\]
-		\end{rmk}
-	\subsection{Weights and irreducible representations}
-	Recall the definitions of multi-indices and weights from before. Now that we are working with $S(n,r)$-modules, 
-	we can give another formulation of weight spaces: Let $\alpha\in\Lambda(n,r)$ and let 
-	\[\xi_\alpha=\xi_{\underline i,\underline i}\quad\text{for some}\quad \underline i\in\alpha.\]
-	Then if $V\in \lmod{S(n,r)}$, the weight space corresponding to $\alpha$ is 
-	\[V^\alpha=\xi_{\alpha}V.\]
-	\begin{prop}
-		This agrees with the original defintion of $V^\alpha$ in terms of the action by diagonal matrices.
-	\end{prop}
-	Then the fact (which can be checked by evaluating at the $x_{\underline i,\underline j}$) that 
-	\[\1=\sum_{\alpha\in\Lambda(n,r)}\xi_\alpha\]
-	gives us a proof of the fact that 
-	\[V=\oplus_{\alpha\in \Lambda(n,r)}V^\alpha.\]
+		\end{thm}
 
 	\subsection{The SW functor}
-	Let's begin by reformulating the Schur-Weyl functor: first we see a small lemma:
-	\begin{lem}
-		For $\alpha\in\Lambda(n,r)$ and $i,j\in I(n,r)$,
-		\[\xi_\alpha\xi_{i,j}=\begin{cases}
-			\xi_{i,j}, & i\in\alpha\\
-			0, &\text{otherwise}
-		\end{cases}\quad\text{and}\quad\xi_{i,j}\xi_\alpha=\begin{cases}
-			\xi_{i,j}, & j\in\alpha\\
-			0, &\text{otherwise}
-		\end{cases}\]
-	\end{lem}
-	This can be checked by evaluating at $x_{\underline a,\underline b}$. Then in particular we see that $\xi_\omega^2=\xi_\omega\eqdef e$,
-	an idempotent in $\Lambda\eqdef S(n,r)$. From there, there is a general theory which says the functors 
+	There is a general theory which says the functors 
 	\[\calF:\lmod{\Lambda}\to \lmod{e\Lambda e}\quad\text{via}\quad \calF(V)=eV\]
 	and 
 	\[\calG:\lmod{e\Lambda e}\to \lmod{\Lambda}\quad\text{via}\quad \calF(W)=\Lambda e\otimes_{e\Lambda e}W/(\Lambda e\otimes_{e\Lambda e}W)_e\]
@@ -286,79 +236,8 @@ planning on talking about today.
 		As long as his functor preserves irreducibles, as does $\calG$.
 	\end{rmk}
 
-	Schur's classical work dealt only with the case when $k$ is a field of characteristic zero. In Aquilino and Reischuk's paper \cite{aquilino-reischuk} 
-	on the monoidal structure of $\lmod{S(n,d)}$, the authors mention that (in general),
-	\[\lmod{S(n,d)}\not\cong\lmod{\frakS_d}.\]
-
-	To fix this problem, the authors restrict attention to the ``nicely behaved ones''. Let $M^\lambda$ denote 
-	the $\lambda\in\Lambda(n,d)$ weight space of $E^{\otimes d}=(k^n)^{\times d}$. Then one can define 
-	\begin{defn}
-		Let $M=\{M^\lambda|\lambda\in\Lambda(n,d)\}$ and let the category $\mathbf{add}(M)$ be the full subcategory of $\lmod{\frakS_d}$ consisting 
-		of modules that are summands of finite direct sums of weight modules $M^\lambda\in M$.
-	\end{defn}
-	One can define an analogous subcategory $\mathbf{add}(S(n,d))$, and the usual Schur-Weyl functor 
-	\[\calF(M)=\xi_\omega M=M^\omega\]
-	restricts to an equivalence between the categories $\mathbf{add}(M)$ and $\mathbf{add}(S(n,d)).$
-
 	\subsection{Strict polynomial functors}
-	\begin{rmk}
-		In our opinion, the best definition of these maps is as follows:
-		Let $V,W$ be finite dimensional vector spaces over $k$. Then the set of \textbf{polynomial maps from $V$ to $W$} is defined to be 
-		\[\Hom_\text{Pol}(V,W)\eqdef \Hom_{\Sch/k}(V,W).\]
-	\end{rmk}
-	
-	\begin{defn}
-		If $V,W\in\Vectk$ are finite dimensional, a \textbf{polynomial map $f:V\to W$} can be alternatively defined as an element 
-		\[f\in W\otimes S^\ast(V^\vee)\cong\Hom_{\Sch/k}(V,W)\]
-		through the identifications above. An element is said to be \textbf{homogeneous degree $d$} 
-		if $f\in W\otimes S^d(V^\vee)$.
-	\end{defn}
-	\begin{defn}
-		A \textbf{strict polynomial functor} is a functor $T:\Vect_k\to \Vect_k$ such that for any $V,W\in\Vect_k$,
-		the map on $\Hom$s
-		\[T_{V,W}:\Hom_k(V,W)\to \Hom_k(T(V),T(W))\]
-		is a polynomial map. That is,
-		\[T_{V,W}\in\Hom_\text{Pol}\big(\Hom_k(V,W), \Hom_k(T(V),T(W))\big)\]
-	\end{defn}
-	\begin{lem}[Lem. 2.2 in \cite{friedlander-suslin}]
-		Let $T$ be a strict polynomial functor and let $n\ge 0$ be an integer. Then the following conditions are equivalent:
-		\begin{enumerate}
-			\item For any $V\in\Vectk$, any field extension $k'/k$ and any $0\ne\lambda\in k'$, the $k'$-linear 
-			map $T_{k'}(\lambda\cdot 1_{V_{k'}})\in\End_{k'}(T(V)_{k'})$ coincides with $\lambda^n1_{T(V)_{k'}}$.
-			\item For any $V\in\Vectk$, $n$ is the only weight of the representation of the algebraic group $\Gm$ in $T(V)$
-			obtained by applying $T$ to the evident representation of $\Gm$ in $V$.
-			\item For any $V,W\in\Vectk$, the polynomial map 
-			\[T_{V,W}:\Hom_k(V,W)\to \Hom_k(T(V),T(W))\] 
-			is homogeneous of degree $n$.
-		\end{enumerate}
-	\end{lem}
-	\begin{defn}
-		The category $\calP_d$ is the full subcategory 
-		\[\calP_d\subset\Func(\Vectk,\Vectk)\]
-		whose objects are the \textbf{strict polynomial functors of degree $d$.}
-	\end{defn}
-	
-	We refer the reader to \cite[Thm. 3.2]{friedlander-suslin} for a proof of the following fact:
-	\begin{thm}\label{thm:FS-equiv}
-		Let $n\ge d$. Then the map
-		\[\Psi:\calP_d\to \lmod {S(n,d)}\]
-		given by evaluation at $k^n$:
-		\[T\mapsto T(k^n)\]
-		is an equivalence of categories with quasi-inverse 
-		\[M\mapsto\Gamma^{d,n}\otimes_{S(n,d)}M\]
-		where $\Gamma^{d,n}=\Gamma^d\circ\Hom_k(k^n,-)$ and $\Gamma^dV=(V^{\otimes d})^{\frakS_d}$.
-	\end{thm}
-	
-	The important idea in this proof is that, for any polynomial functor $T$ and any finite-dimensional $V,W\in\Vectk$,
-	we get 
-	\begin{align*}T_{VW}&\in\Hom(T(V),T(W))\otimes S^d(\Hom(V,W)^\vee)\\
-		&\cong\Hom(S^d(\Hom(V,W)^\vee)^\vee,\Hom(T(V),T(W)))\\
-		&\cong\Hom(S^d(\Hom(V,W)^\vee)^\vee\otimes T(V),T(W))
-	\end{align*}
-	and by using that $\Gamma^d(X)\cong S^d(X^\vee)^\vee\eqdef (S^d)^\sharp(X)$ and letting $V=W=k^n$, we can identify a canonical map 
-	\[T_{k^n\,k^n}:\Gamma^d(\End(k^n))\otimes T(k^n)\to T(k^n)\]
-	which gives us an action of $\Gamma^d(\End(k^n))$ on $T(k^n)$ and one can see without too much trouble that 
-	\[\Gamma^d(\End(k^n))\cong S(n,d).\]
+	The idea of SPF was developed first in \cite{friedlander-suslin} and then iterated on in \cite{krause-strict-poly-func}.
 
 	\begin{defn}\label{defn:div-powers}
 		When $k$ is any commutative ring, one can define the category $P_k\subseteq \lmod{k}$ as the full subcategory of finitely-generated projective $k$-modules.
@@ -379,8 +258,7 @@ planning on talking about today.
 		is a functor that, on objects, is a map $\Vectk\to \Vectk$ and on morphisms is of the form 
 		\[T_{VW}:\Hom_{\Gamma^d\Vectk}(V,W)=\Gamma^d\Hom_k(V,W)\to \Hom_k(T(V),T(W))\]
 		which, leveraging $\otimes$-$\Hom$ adjunction, gives us a map 
-		\[\Gamma^d(V,W)\otimes T(V)\to T(W)\]
-		just as we got in the discussion following thm.~\ref{thm:FS-equiv}.
+		\[\Gamma^d\Hom(V,W)\otimes T(V)\to T(W)\]
 	\end{rmk}
 	Using the idea in the last remark, Krause proves that there is another equivalence of categories:
 	\begin{thm}[{\cite[Thm. 2.10]{krause-strict-poly-func}}]
@@ -404,26 +282,12 @@ planning on talking about today.
 			\[\calF(\1_{\Rep\Gamma^d_k})=\1_{k\frakS_d}.\]
 		\end{thm}
 
-		What is the tensor product on $\Gamma^d_k?$ It is defined in Krause's paper. We use the following lemma (fairly standard in category theory c.f. \cite{maclane-moerdijk})
-		\begin{lem}\label{lem:yoneda-dense}
-			Given a small category $\calC$, let $y$ be the Yoneda embedding 
-			\[y:(\calC)\to \Func(\calC\op,\Set)=\PreSh(\calC).\]
-			Then every element in $\PreSh(\calC)$ is (in a canonical way) a colimit of elements in the image of $y$. That is, for some collection of $C_i\in \calC$,
-			\[X=\colim_{\longrightarrow i}y(C_i)\]
-		\end{lem}
-		The final observation is that $\Hom(y(-),E):\PreSh(\calC)\to \PreSh(\calC)$ is naturally isomorphic to the identity, meaning its adjoint
-		\[F=\id_{\PreSh(\calC)}(F)\simeq L(F)=\colim D_F=\colim_i \Hom(-,C_i)=\colim_i y(C_i)\]
-		Let $0\to X\to Y\to Z\to 0$ be an exact sequence of elements in $\Rep\Gamma^d_k$. Then by applying $\Gamma^{d,V}$ and 
-		applying the Yoneda isomorphism $\Hom(\Gamma^{d,V},X)\simeq X(V)$, we get that 
-		\[0\to X(V)\to Y(V)\to Z(V)\to 0\]
-		is exact whence 
-		\[0\to \Hom(\Gamma^{d,V},X)\to \Hom(\Gamma^{d,V},Y)\to\Hom(\Gamma^{d,V},Z)\to 0\]
-		is. This proves the fact that 
-		\begin{lem}
-			For all $V\in\Gamma^dP_k$, $\Gamma^{d,V}$ is a projective object.
-		\end{lem}
+		Let $V\in \Gamma^d_k$ and let
+		\[\Gamma^{d,V}=\Hom_{\Rep\Gamma^d_k}(-,V)\]
+		be the image of $V$ under the Yoneda embedding.
 
-		One can similarly define internal hom:
+		Using that all presheaves are colimits of representable ones, one can define the tensor product and internal hom:
+		\[X\otimes_{\Gamma^d_k}Y\eqdef \colim_{\Gamma^{d,V}\to X}\colim_{\Gamma^{d,W}\to Y}\Gamma^{d,V\otimes W}\]
 		\[\iHom_{\Gamma^d_k}(X,Y)\eqdef \lim_{\Gamma^{d,V}\to X}\colim_{\Gamma^{d,W}\to Y}\Gamma^{d,\Hom(V,W)}\]
 		which in \cite[prop 2.4]{krause-strict-poly-func} is shown to satisfy the usual adjunction:
 		\begin{prop}[Krause]
@@ -487,19 +351,6 @@ planning on talking about today.
 	\end{defn}
 	Thus we have a \textbf{locally-ringed space} $\Spec\calC$ for any TTC $\calC$.
 
-	Balmer emphasizes that this is the ``correct'' ringed space structure to put on $\Spc\calC$. To do so, one defines an abstract support datum:
-	\begin{defn}
-		A \textbf{support datum} for a TTC $\calC$ is a pair 
-		\[(X,\sigma)\]
-		where $X$ is a topological space and $\sigma:\calC\to \operatorname{closed}(X)$ is a map sending $a\mapsto\sigma_a$ such that 
-		\begin{enumerate}
-			\item $\sigma(0)=\varnothing$ and $\sigma(1)=X$,
-			\item $\sigma(a\oplus b)=\sigma(a)\cup\sigma(b)$,
-			\item $\sigma (a[1])=\sigma(a)$,
-			\item $\sigma(a)\subseteq \sigma(b)\cup\sigma(c)$ for any triangle $a\to b\to c\to a[1]$,
-			\item $\sigma(a\otimes b)=\sigma(a)\cap\sigma(b).$
-		\end{enumerate}
-	\end{defn}
 	In Thomason \cite{thomason}, the author classifies the triangulated tensor subcategories 
 	of $\Dperf(X)$, thereby defining the set $\Spc\Dperf(X)$. Applying Balmer's language and structure, he proved that 
 	\begin{thm}[{\cite[thm. 6.3(a)]{balmer-spc}}]
@@ -515,92 +366,7 @@ planning on talking about today.
 		where, $\stmod(kG)$ is the full subcategory of the stable module category consisting of the finitely generated modules and $H^\bullet(G,k)=\Ext_G^\bullet(k,k)$ is the cohomology ring of $G$.
 	\end{thm}
 
-		\subsubsection{Derived categories}
-		Recall the category of chain complexes in an abelian category and chain homotopies: $g\sim h$ if $f=g-h$ is nullhomotopic:
-		\begin{defn}
-			Two chain maps $f,g:C_\bullet\to D_\bullet$ in $\Ch(\calA)$ are said to be \textbf{chain homotopic} if their difference is chain nullhomotopic. That is, if 
-			there exists maps $\sigma_i:C_i\to D_{i+1}$ such that 
-			\[f_n-g_n=\partial\circ\sigma_n+\sigma_{n-1}\circ\partial.\]
-		\end{defn}
-
-		\begin{defn}
-			Given the category $\Ch(\calA)$, we define the \textbf{homotopy category} $\K(\calA)$ to be the category whose objects are the 
-			same as those in $\Ch(\calA)$ and whose morphisms between any two chains $C_\bullet$ and $D_\bullet$ are 
-			\[\Hom_{\K(\calA)}(C_\bullet,D_\bullet)\eqdef \Hom_{\Ch(\calA)}(C_\bullet,D_\bullet)/H\]
-			where $H$ consists of all chain nullhomotopic maps from $C_\bullet$ to $D_\bullet$.
-		\end{defn}
-		We will call a diagram of the form 
-		\[fs^{-1}:X\xleftarrow{s} X_1\xrightarrow{f} Y\]
-		where $s\in S$ a \textbf{fraction} and say that two fractions $fs^{-1}$ and $gt^{-1}$ are equivalent if there exists an element $X_3$ fitting 
-		into the commutative diagram below:
-		\begin{center}
-			\begin{tikzcd}
-				& X_1\ar[dl,swap,"s"]\ar[dr,"f"] &\\
-				X & X_3\ar[u]\ar[l]\ar[r]\ar[d] & Y\\
-				& X_2\ar[ul,"t"]\ar[ur,"g",swap] &
-			\end{tikzcd}
-		\end{center}
-
-		Then from this we can define
-		\begin{defn}
-			Let $\calT$ be a triangulated category and $S$ be a multiplicative system for $\calT$. Then the \textbf{Verdier localization of $\calT$ at $S$}, 
-			$\calT[S^{-1}]$ (or $\calT/S$) is a category whose objects are the same as those of $\calT$ and whose morphisms are equivalence classes of 
-			fractions of maps, as defined above.
-		\end{defn}
-		\begin{defn}
-			Given a triangulated category $\calT$, a \textbf{multiplicative system} $S$ in $\calT$ is a collection of morphisms 
-			in $\calT$ satisfying the following properties:
-			\begin{itemize}
-				\item If $s,s'\in S$, so are $s\circ s'$ and $s'\circ s$ (whenever either of these make sense).
-				\item $\id_X\in S$ for all $X\in\calT$
-				\item (\textbf{Ore condition}) If $t\in S$ with $t:Z\to Y$ then for every $g:X\to Y$ there are maps $f$ and $s$ (with $s\in S$) such that the diagram in figure \ref{fig:fractions} commutes. The symmetric statement also holds.
-				\item (\textbf{Cancellation}) If $f,g:X\to Y$ are two morphisms, then there is an $s\in S$ with $sf=sg$ if and only if there is a $t\in S$ with $ft=gt$.
-			\end{itemize}
-		\end{defn}
-		\begin{figure}
-			\centering
-			\begin{tikzcd}
-				W\ar[d,"s"]\ar[r,"f"] & Z\ar[d,"t"]\\
-				X\ar[r,"g"] & Y
-			\end{tikzcd}
-			\caption{Ore condition in a multiplicative system}
-			\label{fig:fractions}
-		\end{figure}
-		From this more general framework, we can very simply define the \textbf{derived category of an abelian category $\calA$}
-		to be 
-		\[\D(\calA)=\K(\calA)[W^{-1}]\]
-		where $W$ is the collection of weak homotopy equivalences (quasi-isomorphisms). For our purposes, it will suffice 
-		to restrict to the full triangulated subcategory $\K^\text{b}(\calA)$, giving us the \textbf{bounded derived category}
-		\[\Db(\calA)=\K^\text{b}(\calA)[W^{-1}].\]
-
-		In the context of $R$ (where $R$ is a $k$ algebra) modules, there is a tensor bifunctor 
-		\[-\otimes_R-:\rmod R\times\lmod R\to \Vectk\]
-		and since it is right exact, but not exact, we can take the left derived functor
-		\[-\otimes_R^\mathbf{L}-\eqdef \L(-\otimes_R-):\D(\rmod R)\times\D(\lmod R)\to\D(\Vectk)\]
-		which we call \textbf{the derived tensor product}. This can defined via a Kan extension:
-		\begin{defn}
-			Let $\calF:\calA\to \calB$ be an additive functor between abelian categories. Then since $\calF$ preserves 
-			chain homotopies, it descends to a functor $\K\calF:\K(\calA)\to \K(\calB)$. 
-			
-			We define the \textbf{right derived functor} (if it exists) to be a functor $\R\calF:\D(\calA)\to\D(\calB)$ along with a natural transformation $\xi:q\circ\K\calF\to \R\calF\circ q$ such that
-			for any $\calG:\D(\calA)\to \D(\calB)$ and $\zeta:q\circ\K\calF\Rightarrow \calG\circ q$
-			fitting into the diagram 
-			\begin{center}
-				\begin{tikzcd}[row sep=large]
-					\K(\calA)\ar[r,"\K\calF"]\ar[dr,"q",swap] & \K(\calB)\ar[r,"q"]\ar[d,"\zeta",Rightarrow] & \D(\calB)\\
-					& \D(\calA)\ar[ur,bend right=45,"\R\calF",swap]\ar[phantom,bend right=45,ur,""{name=RF}]\ar[ur,"\calG"]\ar[phantom,ur,""{name=G,below}] & \arrow[from=RF,to=G,Rightarrow,"\eta"]
-				\end{tikzcd}
-			\end{center}
-			there exists 
-			a unique $\eta:\R\calF\Rightarrow \calG$ such that $\eta q\circ \xi=\zeta$.
-			In other words, 
-			
-			\begin{center}
-				$\R\calF$ is the \textit{right Kan extension of $q\circ\K\calF$ along the localization map $q$.}
-			\end{center}
-			Similarly, the left derived functor $\L\calF$ can be defined as the left Kan extension of $q\circ\K\calF$ along $q$,
-			satisfying the same universal property with the natural transformations reversed.
-		\end{defn}
+		
 
 	\subsection{Extensions and problems to work on}
 	The following are some rough outlines of research programs that we can look into moving forward. They vary in depth and difficulty and the questions 
@@ -629,7 +395,7 @@ planning on talking about today.
 			$S(3,10)$ over a field of characteristic 5 has wild representation type.
 		\end{thm}
 
-		This has dimension 66! This gives us an ample supply of computationally-tangible objects whose representation theory 
+		This has dimension 816! This gives us an ample supply of computationally-tangible objects whose representation theory 
 		could shine light on the representation theory of wild type algebras in general.
 
 		\subsubsection{Representation theory of the \texorpdfstring{$q$}{q}-Schur algebra}
