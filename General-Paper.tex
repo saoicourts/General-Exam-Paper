@@ -1074,8 +1074,8 @@ makes mention to Chevalley's contributions in proving the existence of modules w
 	Fix the usual lexicographical ordering on monomials in $k[X_1,\dots,X_n]$. Let $n$ and $r$ be given integers with $n\ge 1$ and $r\ge 0$ Let $k$ be an infinite field. Then 
 	\begin{enumerate}
 		\item For each $\lambda\in\Lambda_+(n,r)$, there exists an (absolutely) irreducible module $F_{\lambda,k}$
-		in $M_k(n,r)$ whose character $\Phi_{\lambda,k}$ has leading term $X_1^{\lambda_1}\cdots X_n^{\lambda_n}$.
-		\item Every irreducible $V\in M_k(n,r)$ is isomorphic to $F_{\lambda,k}$ for exactly one $\lambda\in \Lambda_+(n,r)$.
+		in $\Pol(n,r)$ whose character $\Phi_{\lambda,k}$ has leading term $X_1^{\lambda_1}\cdots X_n^{\lambda_n}$.
+		\item Every irreducible $V\in \Pol(n,r)$ is isomorphic to $F_{\lambda,k}$ for exactly one $\lambda\in \Lambda_+(n,r)$.
 	\end{enumerate}
 \end{thm}
 So then the problem of classifying the simple modules (the ``basic building blocks'' in the semisimple case) is completely solved for infinite fields.
@@ -1264,7 +1264,7 @@ in their use of Young tableaux and this connection is more than superficial. In 
 of these two objects in the following way:
 \subsection{Construction of the Schur-Weyl functor \texorpdfstring{$\calF$}{F}}
 
-Let $V\in M_k(n,r)$ be a $S(n,r)$-representation and select any weight $\alpha\in\Lambda(n,r)$. Then the weight space (cf. rmk~\ref{rmk-weight-spaces})
+Let $V\in \Pol(n,r)$ be a $S(n,r)$-representation and select any weight $\alpha\in\Lambda(n,r)$. Then the weight space (cf. rmk~\ref{rmk-weight-spaces})
 \[V^\alpha=\xi_\alpha V\]
 becomes a $S(\alpha)\eqdef\xi_\alpha S(n,r)\xi_\alpha$-module using the action from $S(n,r)$. Now if we allow $r\le n$ and let
 \[\omega=(1,\dots,1,0,\dots,0)\in\Lambda(n,r)\]
@@ -1316,10 +1316,10 @@ Using this result, we prove a more obviously useful statement:
 	and it is bijective since it is bijective on the respective bases and is thus bijective as a linear map.
 \end{prf}
 The upshot of these lemmas is that one can define the \textbf{Schur-Weyl functor} 
-\[\calF:M_k(n,r)\to \Rep(\frakS_r)\]
+\[\calF:\Pol(n,r)\to \Rep(\frakS_r)\]
 via the map that sends any representation $V$ to its $\omega$ weight space $V^\omega\in \lmod {S(\omega)}\simeq \Rep(\frakS_r)$.
 
-\subsection{The general theory}
+\subsecti on{The general theory}
 The idea of the Schur functor fits into a larger context: Let $S$ be a $k$-algebra and let $M\in\lmod S$. Furthermore, let $e\in S$ be a (nonzero)
 idempotent. Then one can define a functor 
 \[\calF:\lmod S\to\lmod {eSe}\quad\text{via}\quad V\mapsto eV.\]
